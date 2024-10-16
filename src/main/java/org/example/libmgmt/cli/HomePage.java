@@ -35,7 +35,7 @@ public class HomePage extends Page {
         System.out.println("[2] Manager.");
         System.out.println("Enter selection: ");
         Scanner sc = new Scanner(System.in);
-        char cmd = (char) sc.nextByte();
+        int cmd = sc.nextInt();
         sc.close();
         switch(cmd) {
             case 1 -> {
@@ -52,26 +52,160 @@ public class HomePage extends Page {
 
     // Shows specialized homepage for manager user.
     private void managerHomepage() {
+        System.out.println("Welcome, [Manager]!");
+        System.out.println("Choose an action:");
+        System.out.println("[0] Exit");
+        System.out.println("[1] Add Document");
+        System.out.println("[2] Remove Document");
+        System.out.println("[3] Update Document");
+        System.out.println("[4] Find Document");
+        System.out.println("[5] Display Document");
+        System.out.println("[6] Add User");
+        System.out.println("[7] Borrow Document");
+        System.out.println("[8] Return Document");
+        System.out.println("[9] Display User Info");
+        System.out.print("Enter selection: ");
+        Scanner sc = new Scanner(System.in);
+        int cmd = sc.nextInt();
+        switch (cmd) {
+            case 0 -> {
+                SceneManager.switchPage(null);
+            }
+            case 1 -> {
+                addDocumentUI();
+            }
+            case 2 -> {
+                removeDocumentUI();
+            }
+            case 3 -> {
+                updateDocumentUI();
+            }
+            case 4 -> {
+                searchDocUI();
+            }
+            case 5 -> {
+                displayDocumentUI();
+            }
+            case 6 -> {
+                addUserUI();
+            }
+            case 7 -> {
+                borrowDocumentUI();
+            }
+            case 8 -> {
+                returnDocumentUI();
+            }
+            case 9 -> {
+                displayUserInfoUI();
+            }
+        }
+    }
 
+    private void addDocumentUI() {
+        // Metadata of new document: title, author, publisher, ...
+        Document newDoc = new Document(...);
+
+        // Adds document to document DB. After sending ADD request, addDocument receives a docId.
+        // We will store document content in a separate database, due to the large size of document content (May go up to
+        // thousands pages with lots of photos). That PDF file takes quite a time to load, but only one book content is shown at a time.
+        // We will use docId to download content only when user select display document.
+        doc.addDocument();
+
+        // Document content: the actual data/content inside the book
+        // Document content may have it own class, or just use some class/library object to hold the file. You can decide or we will discuss later.
+        DocumentContent dc = new DocumentContent(contentFile);
+        doc.updateContent(dc);
+    }
+
+    private void removeDocumentUI() {
+        // The currently selected document. All functions below also use this representation.
+        Document doc;
+
+        // Remove all document data from DB with matched docID
+        doc.removeDocument();
+    }
+
+    private void updateDocumentUI() {
+        Document doc;
+        DocumentContent updateContent;
+
+        // Copy doc object to this, we will modify this.
+        Document updatedVersion = new document(needUpdate);
+
+        // ...Code to modify needUpdate, put it into updatedVersion. If updatedVersion == doc (no change's been made), don't query the server.
+        // We can compare 2 version in updateInfo method, then we don't need to wrap updateInfo into this if block.
+        if (!updatedVersion.equals(needUpdate)) {
+            doc.updateInfo(updatedVersion);
+        }
+        // Upload new PDF file to updateContent. If there's no need to update content, let it null and we won't push content change to server
+        // Similar to updateInfo above, we can check if content is null in updateContent method.
+        if (updateContent != null) {
+            doc.updateContent(updateContent);
+        }
+    }
+
+    private void displayDocumentUI() {
+        Document doc;
+        DocumentContent docContent = doc.downloadContent();
+    }
+
+    private void addUserUI() {
+        // Create new user with basic info: username, full name(display name), email, ... (password not included).
+        // If successfully created, server will generate a random password then send back to user.
+        User newUser = new User(...);
+        String pwd = newUser.addUser();
+        System.out.println("Password: " + pwd);
+        System.out.println("Remember to change password");
+    }
+
+    private void borrowDocumentUI() {
+        // A form will be displayed. Some fields in the form: Document, User, Borrow Date, Return Date, ...(many more if you can think of)
+        Document doc = getSearchResult(keyword).get(ith_item);
+        User borrower = findUser(username);
+        // ...
+        // May show a bit info of document and borrower for librarian to review if doc is suitable for borrower or borrower is restricted from some aspects.
+        if (doc.isAvailable()) {
+            // borrowDocument(doc, user, isAdminRequest)
+            Request.borrowDocument(doc, borrower, true);
+        }
+    }
+
+    private void displayUserInfoUI() {
+        User user;
+        // Some getter method to get user info
+        // ...
+    }
+
+    private void returnDocumentUI() {
+        Document doc;
+        long copyId;
+        User user;
+        // Each physical copy of a document has its unique identification number. Use that to verify it is the authentic copy from library, not a fake replacement.
+        returnDocument(user, doc, copyId);
     }
 
     // Shows specialized homepage for member user.
     public void memberHomepage() {
         System.out.println("Welcome, [Member]!");
         System.out.println("Choose an action:");
+        System.out.println("[0] Exit");
         System.out.println("[1] View library");
         System.out.println("[2] Search for documents");
         System.out.println("[3] View book borrowed history");
         System.out.println("[4] Change account info");
         System.out.print("Enter selection: ");
         Scanner sc = new Scanner(System.in);
-        char cmd = (char) sc.nextByte();
+        int cmd = sc.nextInt();
+        sc.close();
         switch (cmd) {
+            case 0 -> {
+                SceneManager.switchPage(null);
+            }
             case 1 -> {
                 viewLibrary();
             }
             case 2 -> {
-                searchDoc();
+                searchDocUI();
             }
             case 3 -> {
                 borrowHistory();
@@ -90,7 +224,7 @@ public class HomePage extends Page {
         System.out.println("[3] Latest Thesis'");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter selection: ");
-        char section = (char) sc.nextByte();
+        int section = sc.nextInt();
         sc.close();
         // Get documents info corresponding to each section. Later all 3 sections are shown simultaneously, each with 10 - 15 books.
         // Fetch more books if user select see more.
@@ -106,11 +240,12 @@ public class HomePage extends Page {
     }
 
     // Searches for documents.
-    private void searchDoc() {
-        System.out.println("Seach for document.");
+    private void searchDocUI() {
+        System.out.println("Search for document.");
         System.out.print("Enter keyword: ");
         Scanner sc = new Scanner(System.in);
         String keyword = sc.nextLine();
+        sc.close();
 
         // Search for documents, of course!
         ArrayList<Document> result = getSearchResult(keyword);
@@ -195,11 +330,27 @@ public class HomePage extends Page {
             System.out.print("New password: ");
             confirmPwd = sc.nextLine();
         }
+        applyPasswordChange(user.getUsername(), confirmPwd);
         System.out.println("Password changed successfully!");
         sc.close();
 
     }
 
+    public void viewDocumentInfo(Document doc) {
+        // ...Code to show doc info
+        // will use getter to get info
+
+        System.out.println("Borrow the physical document? (Y/n):");
+        Scanner sc = new Scanner(System.in);
+        char cmd = (char) sc.nextByte();
+        if (cmd == 'Y' || cmd == 'y') {
+            // borrowBook(doc, user, isAdminRequest)
+            Request.borrowDocument(doc, user, false);
+        }
+    }
+
     // Later the change will be sent as a request and will be examined manually
-    private void changePersonalInfo() {}
+    private void changePersonalInfo() {
+        Request.changePersonalInfo(user, updatedUser, false);
+    }
 }

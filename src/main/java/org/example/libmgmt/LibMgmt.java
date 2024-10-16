@@ -14,6 +14,7 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
+import org.example.libmgmt.cli.Main;
 
 
 import java.io.IOException;
@@ -31,6 +32,8 @@ public class LibMgmt extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+
+//        launch();
+        Main.main();
     }
 }

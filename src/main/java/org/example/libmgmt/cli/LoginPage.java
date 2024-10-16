@@ -108,7 +108,7 @@ public class LoginPage extends Page {
             System.out.print("Password: ");
             rePwd = sc.nextLine();
         }
-
+        createAccount(username, rePwd);
         System.out.println("Account successfully created! Go back to login page.");
         sc.close();
     }
