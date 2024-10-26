@@ -34,6 +34,6 @@ public class LibMgmt extends Application {
     public static void main(String[] args) {
 
 //        launch();
-        Main.main();
+        Main.main(args);
     }
 }

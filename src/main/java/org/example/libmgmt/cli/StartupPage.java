@@ -2,6 +2,7 @@ package org.example.libmgmt.cli;
 
 public class StartupPage extends Page {
     public StartupPage() {
+
         System.out.println("Welcome to LibMa 1.0!");
     }
 

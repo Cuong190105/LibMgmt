@@ -1,7 +1,7 @@
 package org.example.libmgmt.cli;
 
 public class Main {
-    public static void main() {
+    public static void main(String args[]) {
         //Initialize app
         SceneManager.init();
 

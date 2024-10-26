@@ -1,5 +1,8 @@
 package org.example.libmgmt.cli;
 
+import javax.print.Doc;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class HomePage extends Page {
@@ -15,16 +18,17 @@ public class HomePage extends Page {
 
     public HomePage(String username) {
         // Check if the user is logged in (Login session for this user created when authenticating)
-        if (isLoggedIn(username)) {
+//        if (isLoggedIn(username)) {
             // User's constructor takes 1 argument (username) to fetch other data from server.
-            user = new User(username);
+            UserDAO userDAO = UserDAO.getInstance();
+            user = userDAO.getUserFromUsername(username);
             SceneManager.switchPage(this);
-        } else {
-            System.out.println("Authentication failed. Press enter to get back to login session.");
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
-            sc.close();
-        }
+//        } else {
+//            System.out.println("Authentication failed. Press enter to get back to login session.");
+//            Scanner sc = new Scanner(System.in);
+//            sc.nextLine();
+//            sc.close();
+//        }
     }
 
     // Shows content on page.
@@ -36,7 +40,7 @@ public class HomePage extends Page {
         System.out.println("Enter selection: ");
         Scanner sc = new Scanner(System.in);
         int cmd = sc.nextInt();
-        sc.close();
+        //sc.close();
         switch(cmd) {
             case 1 -> {
                 memberHomepage();
@@ -71,45 +75,56 @@ public class HomePage extends Page {
             case 0 -> {
                 SceneManager.switchPage(null);
             }
-            case 1 -> {
-                addDocumentUI();
-            }
-            case 2 -> {
-                removeDocumentUI();
-            }
-            case 3 -> {
-                updateDocumentUI();
-            }
-            case 4 -> {
-                searchDocUI();
-            }
-            case 5 -> {
-                displayDocumentUI();
-            }
-            case 6 -> {
-                addUserUI();
-            }
-            case 7 -> {
-                borrowDocumentUI();
-            }
-            case 8 -> {
-                returnDocumentUI();
-            }
-            case 9 -> {
-                displayUserInfoUI();
-            }
+//            case 1 -> {
+//                addDocumentUI();
+//            }
+//            case 2 -> {
+//                removeDocumentUI();
+//            }
+//            case 3 -> {
+//                updateDocumentUI();
+//            }
+//            case 4 -> {
+//                searchDocUI();
+//            }
+//            case 5 -> {
+//                displayDocumentUI();
+//            }
+//            case 6 -> {
+//                addUserUI();
+//            }
+//            case 7 -> {
+//                borrowDocumentUI();
+//            }
+//            case 8 -> {
+//                returnDocumentUI();
+//            }
+//            case 9 -> {
+//                displayUserInfoUI();
+//            }
         }
     }
 
     private void addDocumentUI() {
         // Metadata of new document: title, author, publisher, ...
-        Document newDoc = new Document(...);
+        //Document newDoc = new Document(...);
+        Scanner sc = new Scanner(System.in);
+        String title = sc.next();
+        sc.nextLine();//call if from next to nextLine
+        String author = sc.nextLine();
+        String publisher = sc.nextLine();
+        int quantity = sc.nextInt();
+        String tags = sc.next();
+        int visited = sc.nextInt();
+        Document newDoc = new Document(title, author, publisher, quantity, tags, visited);
 
         // Adds document to document DB. After sending ADD request, addDocument receives a docId.
         // We will store document content in a separate database, due to the large size of document content (May go up to
         // thousands pages with lots of photos). That PDF file takes quite a time to load, but only one book content is shown at a time.
         // We will use docId to download content only when user select display document.
-        doc.addDocument();
+        DocumentDAO docDAO = DocumentDAO.getInstance();
+        newDoc.setDocID(docDAO.addDocument(newDoc));
+        //doc.addDocument();
 
         // Document content: the actual data/content inside the book
         // Document content may have it own class, or just use some class/library object to hold the file. You can decide or we will discuss later.
@@ -122,7 +137,9 @@ public class HomePage extends Page {
         Document doc;
 
         // Remove all document data from DB with matched docID
-        doc.removeDocument();
+        //doc.removeDocument();
+        DocumentDAO docDAO = DocumentDAO.getInstance();
+        docDAO.deleteDocument(doc.getDocID());
     }
 
     private void updateDocumentUI() {
@@ -196,7 +213,7 @@ public class HomePage extends Page {
         System.out.print("Enter selection: ");
         Scanner sc = new Scanner(System.in);
         int cmd = sc.nextInt();
-        sc.close();
+        //sc.close();
         switch (cmd) {
             case 0 -> {
                 SceneManager.switchPage(null);
@@ -225,7 +242,8 @@ public class HomePage extends Page {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter selection: ");
         int section = sc.nextInt();
-        sc.close();
+        //sc.close();
+
         // Get documents info corresponding to each section. Later all 3 sections are shown simultaneously, each with 10 - 15 books.
         // Fetch more books if user select see more.
         // On book list screen, each book is represented with the book cover photo, title and author. Other info will be shown in book info screen.
@@ -245,7 +263,7 @@ public class HomePage extends Page {
         System.out.print("Enter keyword: ");
         Scanner sc = new Scanner(System.in);
         String keyword = sc.nextLine();
-        sc.close();
+//        sc.close();
 
         // Search for documents, of course!
         ArrayList<Document> result = getSearchResult(keyword);
@@ -279,7 +297,7 @@ public class HomePage extends Page {
         System.out.print("Enter selection: ");
         Scanner sc = new Scanner(System.in);
         int cmd = sc.nextInt();
-        sc.close();
+//        sc.close();
         switch (cmd) {
             case 1 -> {
                 changePwd();
@@ -332,10 +350,36 @@ public class HomePage extends Page {
         }
         applyPasswordChange(user.getUsername(), confirmPwd);
         System.out.println("Password changed successfully!");
-        sc.close();
+//        sc.close();
 
     }
 
+    public boolean isCorrectPassword(String username, String password) {
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        Account account = accountDAO.getAccountFromUsername(username);
+        if (Objects.equals(account.getPassword(), password)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isValidPassword(String password) {
+        if (password.length() < 6) return false;
+        if (password.contains(" ")) return false;
+        for (int i = 0; i < password.length(); ++i) {
+            char x = password.charAt(i);
+            if (x < 33 || x > 126) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void applyPasswordChange(String username, String newPass) {
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        Account account = new Account(username, newPass);
+        accountDAO.changePassword(account);
+    }
     public void viewDocumentInfo(Document doc) {
         // ...Code to show doc info
         // will use getter to get info

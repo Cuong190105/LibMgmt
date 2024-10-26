@@ -3,6 +3,7 @@ package org.example.libmgmt.cli;
 import java.util.Scanner;
 
 public class LoginPage extends Page {
+    private static final int LOGIN_SUCCEEDED = 1;
     public LoginPage(){
         SceneManager.switchPage(this);
     }
@@ -16,7 +17,7 @@ public class LoginPage extends Page {
         System.out.println("[0] Exit.");
         Scanner sc = new Scanner(System.in);
         int option = sc.nextInt();
-        sc.close();
+        //sc.close();
         switch (option) {
             case 1 -> {
                 signIn();
@@ -31,7 +32,9 @@ public class LoginPage extends Page {
                 SceneManager.switchPage(null);
             }
         }
+        //sc.close();
     }
+
     public void signIn() {
         Scanner sc = new Scanner(System.in);
         System.out.println("SIGN IN");
@@ -54,11 +57,12 @@ public class LoginPage extends Page {
             System.out.println("Wrong credentials! Press enter to get back.");
             sc.nextLine();
         }
-        sc.close();
+        //sc.close();
     }
 
     public void signUp() {
         Scanner sc = new Scanner(System.in);
+
         System.out.println("SIGN UP");
         System.out.print("Username: ");
         String username = sc.nextLine();
@@ -70,11 +74,12 @@ public class LoginPage extends Page {
             System.out.println("Username must have at least 6 characters.");
             System.out.println("Only letters (A-Z and a-z), digits (0-9), underscores (_) and periods (.) are allowed.");
             System.out.println("Retype? (Y/n): ");
-            char cmd = (char) sc.nextByte();
+            char cmd = sc.next().charAt(0);
             if (cmd == 'N' || cmd == 'n') {
                 return;
             }
             System.out.print("Username: ");
+            sc.nextLine();
             username = sc.nextLine();
         }
         System.out.print("Password: ");
@@ -88,11 +93,12 @@ public class LoginPage extends Page {
         while (!isValidPassword(pwd)) {
             System.out.println("Password must have at least 6 characters and contain only common use letters, digits or punctuation characters!");
             System.out.println("Retype? (Y/n): ");
-            char cmd = (char) sc.nextByte();
+            char cmd = sc.next().charAt(0);
             if (cmd == 'N' || cmd == 'n') {
                 return;
             }
             System.out.print("Password: ");
+            sc.nextLine();
             pwd = sc.nextLine();
         }
 
@@ -101,18 +107,71 @@ public class LoginPage extends Page {
 
         while (pwd.compareTo(rePwd) != 0) {
             System.out.println("Those passwords are not identical! Retype? (Y/n): ");
-            char cmd = (char) sc.nextByte();
+            char cmd = sc.next().charAt(0);
             if (cmd == 'N' || cmd == 'n') {
                 return;
             }
-            System.out.print("Password: ");
+            System.out.print("Confirm Password: ");
+            sc.nextLine();
             rePwd = sc.nextLine();
         }
         createAccount(username, rePwd);
         System.out.println("Account successfully created! Go back to login page.");
-        sc.close();
+        //sc.close();
     }
 
+    //From here
+    public int authenticate(String username, String pwd) {
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        Account account = AccountDAO.getAccountFromUsername(username);
+        if (account == null || account.getPassword().compareTo(pwd) != 0) {
+            if (account != null) System.out.println(account.getPassword() + "   " + pwd);
+            return 0;
+        }
+        return 1;
+    }
+
+    private boolean isValidUsername(String username) {
+        if (username.length() < 6) return false;
+        if (username.contains(" ")) return false;
+        for (int i = 0; i < username.length(); ++i) {
+            char x = username.charAt(i);
+            if (x >= 'a' && x <= 'z') continue;
+            if (x >= 'A' && x <= 'Z') continue;
+            if (x == '.' || x == '_') continue;
+            return false;
+        }
+
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        Account acc = accountDAO.getAccountFromUsername(username);
+        if (acc != null) return false;
+        return true;
+    }
+
+    private boolean isValidPassword(String password) {
+        if (password.length() < 6) return false;
+        if (password.contains(" ")) return false;
+        for (int i = 0; i < password.length(); ++i) {
+            char x = password.charAt(i);
+            if (x < 33 || x > 126) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void createAccount(String username, String password) {
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        Account acc = new Account();
+        acc.setUsername(username);
+        acc.setPassword(password);
+        accountDAO.addAccount(acc);
+
+        UserDAO userDAO = UserDAO.getInstance();
+        User user = new User();
+        user.setUsername(username);
+        user.setUID(userDAO.addUser(username));
+    }
     // No need to do. Just for demonstration.
     public void retrievePwd() {
 
