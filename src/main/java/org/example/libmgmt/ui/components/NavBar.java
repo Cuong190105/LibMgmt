@@ -34,11 +34,11 @@ public class NavBar {
     }
 
     private void setFunction() {
-        dashboard.setOnAction(actionEvent -> switchToDashboard());
-        request.setOnAction(actionEvent -> switchToRequest());
-        member.setOnAction(actionEvent -> switchToMember());
-        library.setOnAction(actionEvent -> switchToBook());
-        feedback.setOnAction(actionEvent -> switchToFeedback());
+        dashboard.setOnAction(_ -> switchToDashboard());
+        request.setOnAction(_ -> switchToRequest());
+        member.setOnAction(_ -> switchToMember());
+        library.setOnAction(_ -> switchToBook());
+        feedback.setOnAction(_ -> switchToFeedback());
     }
 
     private void loadMedia() {
@@ -49,21 +49,11 @@ public class NavBar {
             iconStream[i] = LibMgmt.class.getResourceAsStream("img/navbar/" + iconName[i] + ".png");
             if (iconStream[i] != null) {
                 switch(i) {
-                    case 0 -> {
-                        dashboard.setGraphic(new ImageView(new Image(iconStream[i])));
-                    }
-                    case 1 -> {
-                        request.setGraphic(new ImageView(new Image(iconStream[i])));
-                    }
-                    case 2 -> {
-                        member.setGraphic(new ImageView(new Image(iconStream[i])));
-                    }
-                    case 3 -> {
-                        library.setGraphic(new ImageView(new Image(iconStream[i])));
-                    }
-                    case 4 -> {
-                        feedback.setGraphic(new ImageView(new Image(iconStream[i])));
-                    }
+                    case 0 -> dashboard.setGraphic(new ImageView(new Image(iconStream[i])));
+                    case 1 -> request.setGraphic(new ImageView(new Image(iconStream[i])));
+                    case 2 -> member.setGraphic(new ImageView(new Image(iconStream[i])));
+                    case 3 -> library.setGraphic(new ImageView(new Image(iconStream[i])));
+                    case 4 -> feedback.setGraphic(new ImageView(new Image(iconStream[i])));
                 }
             }
         }

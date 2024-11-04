@@ -40,27 +40,21 @@ public class LoginForm {
     }
 
     private void setFunction() {
-        EventHandler<KeyEvent> disableLoginOnBlankForm = new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (usrnField.getText().isEmpty() || pwdField.getText().isEmpty()) {
-                    signInBtn.setDisable(true);
-                } else {
-                    signInBtn.setDisable(true);
-                }
+        EventHandler<KeyEvent> disableLoginOnBlankForm = keyEvent -> {
+            if (usrnField.getText().isEmpty() || pwdField.getText().isEmpty()) {
+                signInBtn.setDisable(true);
+            } else {
+                signInBtn.setDisable(true);
             }
         };
 
         usrnField.setOnKeyTyped(disableLoginOnBlankForm);
         pwdField.setOnKeyTyped(disableLoginOnBlankForm);
 
-        signInBtn.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                String username = usrnField.getText();
-                String password = pwdField.getText();
-                //Validate
-            }
+        signInBtn.setOnMousePressed(mouseEvent -> {
+            String username = usrnField.getText();
+            String password = pwdField.getText();
+            //Validate
         });
     }
 
