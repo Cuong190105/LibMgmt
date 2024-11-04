@@ -13,6 +13,8 @@ import org.example.libmgmt.ui.page.PageType;
 import java.io.InputStream;
 
 public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
+    public static final int LARGE_HEIGHT = 300;
+    public static final int SMALL_HEIGHT = 100;
     PageType pageType;
     ImageView logo;
     NavBar navBar;
@@ -71,13 +73,13 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
         switch (pageType) {
             case STARTUP_PAGE -> {
                 if (logo != null) {
-                    logo.setFitHeight(300);
+                    logo.setFitHeight(LARGE_HEIGHT);
                     BorderPane.setAlignment(logo, Pos.CENTER);
                     container.setCenter(logo);
                 }
             }
             case LOGIN_PAGE -> {
-                logo.setFitHeight(100);
+                logo.setFitHeight(SMALL_HEIGHT);
                 if (logo != null) {
                     BorderPane.setAlignment(logo, Pos.CENTER);
                     container.setCenter(logo);

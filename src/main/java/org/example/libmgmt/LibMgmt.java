@@ -14,7 +14,7 @@ public class LibMgmt extends Application {
 
     /** Initialize the application. */
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         stage.setTitle("LibMa 1.0");
         stage.setMinWidth(800);
         stage.setMinHeight(600);

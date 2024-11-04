@@ -34,36 +34,11 @@ public class NavBar {
     }
 
     private void setFunction() {
-        dashboard.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                switchToDashboard();
-            }
-        });
-        request.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                switchToRequest();
-            }
-        });
-        member.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                switchToMember();
-            }
-        });
-        library.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                switchToBook();
-            }
-        });
-        feedback.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                switchToFeedback();
-            }
-        });
+        dashboard.setOnAction(actionEvent -> switchToDashboard());
+        request.setOnAction(actionEvent -> switchToRequest());
+        member.setOnAction(actionEvent -> switchToMember());
+        library.setOnAction(actionEvent -> switchToBook());
+        feedback.setOnAction(actionEvent -> switchToFeedback());
     }
 
     private void loadMedia() {
