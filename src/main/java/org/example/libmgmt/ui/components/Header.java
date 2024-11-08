@@ -2,15 +2,14 @@ package org.example.libmgmt.ui.components;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 
 public class Header {
     private ImageView logo;
     private NavBar navBar;
-    private StackPane accountAction;
+    private AccountAction accountAction;
     private BorderPane container;
 
-    public Header(ImageView logo, NavBar navBar, StackPane accountAction, BorderPane container) {
+    public Header(ImageView logo, NavBar navBar, AccountAction accountAction, BorderPane container) {
         this.logo = logo;
         this.navBar = navBar;
         this.accountAction = accountAction;
@@ -25,7 +24,7 @@ public class Header {
         return navBar;
     }
 
-    public StackPane getAccountAction() {
+    public AccountAction getAccountAction() {
         return accountAction;
     }
 

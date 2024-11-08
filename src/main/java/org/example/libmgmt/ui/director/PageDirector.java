@@ -35,4 +35,14 @@ public class PageDirector {
         pageBuilder.setBody(bodyBuilder.build());
         pageBuilder.style();
     }
+
+    public void createMainPage(PageBuilder pageBuilder) {
+        pageBuilder.reset();
+        headerDirector.createMainPageHeader(headerBuilder);
+        bodyDirector.createMainPagePanel(bodyBuilder);
+        pageBuilder.setType(PageType.MAIN_PAGE);
+        pageBuilder.setHeader(headerBuilder.build());
+        pageBuilder.setBody(bodyBuilder.build());
+        pageBuilder.style();
+    }
 }

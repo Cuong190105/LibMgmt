@@ -1,6 +1,6 @@
 package org.example.libmgmt.ui.page;
 
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import org.example.libmgmt.ui.components.Header;
 import org.example.libmgmt.ui.components.body.Body;
 
@@ -8,9 +8,9 @@ public class Page {
     private final PageType pageType;
     private final Header header;
     private final Body body;
-    private final VBox container;
+    private final BorderPane container;
 
-    public Page(PageType pageType, Header header, Body body, VBox container) {
+    public Page(PageType pageType, Header header, Body body, BorderPane container) {
         this.pageType = pageType;
         this.header = header;
         this.body = body;
@@ -29,7 +29,7 @@ public class Page {
         return body;
     }
 
-    public VBox getContainer() {
+    public BorderPane getContainer() {
         return container;
     }
 }

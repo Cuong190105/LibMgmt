@@ -1,40 +1,48 @@
 package org.example.libmgmt.ui.components.body;
 
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class Body {
-    private BodyType type;
-    private Text sectionTitle;
-    private VBox content;
-    private StackPane container;
+    private final BodyType bodyType;
+    private final Label sectionTitle;
+    private final HBox subsectionList;
+    private final GridPane searchPanel;
+    private final VBox content;
+    private final VBox container;
 
-    public Body(BodyType type, Text sectionTitle, VBox content) {
-        this.type = type;
+    public Body(BodyType bodyType, Label sectionTitle, HBox subsectionList, GridPane searchPanel, VBox content, VBox container) {
+        this.bodyType = bodyType;
         this.sectionTitle = sectionTitle;
+        this.subsectionList = subsectionList;
+        this.searchPanel = searchPanel;
         this.content = content;
-        this.container = new StackPane();
-        styleBody();
-    }
-
-    private void styleBody() {
-
+        this.container = container;
     }
 
     public BodyType getBodyType() {
-        return type;
+        return bodyType;
     }
 
-    public Text getSectionTitle() {
+    public Label getSectionTitle() {
         return sectionTitle;
+    }
+
+    public HBox getSubsectionList() {
+        return subsectionList;
+    }
+
+    public GridPane getSearchPanel() {
+        return searchPanel;
     }
 
     public VBox getContent() {
         return content;
     }
 
-    public StackPane getContainer() {
+    public VBox getContainer() {
         return container;
     }
 }

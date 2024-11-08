@@ -1,11 +1,13 @@
 package org.example.libmgmt.ui.builder;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.example.libmgmt.LibMgmt;
+import org.example.libmgmt.ui.components.AccountAction;
 import org.example.libmgmt.ui.components.Header;
 import org.example.libmgmt.ui.components.NavBar;
 import org.example.libmgmt.ui.page.PageType;
@@ -13,19 +15,17 @@ import org.example.libmgmt.ui.page.PageType;
 import java.io.InputStream;
 
 public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
-    public static final int LARGE_HEIGHT = 300;
-    public static final int SMALL_HEIGHT = 100;
-    PageType pageType;
-    ImageView logo;
-    NavBar navBar;
-    StackPane accountControl;
-    BorderPane container;
+    private PageType pageType;
+    private static ImageView logo;
+    private NavBar navBar;
+    private AccountAction accountAction;
+    private BorderPane container;
 
     public HeaderBuilder() {
         pageType = null;
         navBar = null;
-        accountControl = null;
-        logo = null;
+        accountAction = null;
+        setLogo();
         container = new BorderPane();
     }
 
@@ -37,9 +37,9 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
     public void reset() {
         pageType = null;
         navBar = null;
-        accountControl = null;
+        accountAction = null;
         container = new BorderPane();
-        enableBorder();
+//        enableBorder();
     }
 
     @Override
@@ -47,8 +47,7 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
         this.pageType = pageType;
     }
 
-    @Override
-    public void setLogo() {
+    private void setLogo() {
         if (logo != null) {
             System.out.println("Logo loaded!");
             return;
@@ -65,7 +64,9 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
     @Override
     public void setControl() {
         this.navBar = new NavBar();
-        this.accountControl = new StackPane();
+        this.accountAction = new AccountAction();
+        this.container.setCenter(this.navBar.getLayout());
+        this.container.setCenter(this.accountAction.getLayout());
     }
 
     @Override
@@ -73,13 +74,13 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
         switch (pageType) {
             case STARTUP_PAGE -> {
                 if (logo != null) {
-                    logo.setFitHeight(LARGE_HEIGHT);
+                    logo.setFitWidth(600);
                     BorderPane.setAlignment(logo, Pos.CENTER);
                     container.setCenter(logo);
                 }
             }
             case LOGIN_PAGE -> {
-                logo.setFitHeight(SMALL_HEIGHT);
+                logo.setFitWidth(200);
                 if (logo != null) {
                     BorderPane.setAlignment(logo, Pos.CENTER);
                     container.setCenter(logo);
@@ -87,19 +88,22 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
             }
             case MAIN_PAGE -> {
                 if (logo != null) {
+                    logo.setFitWidth(100);
+                    BorderPane.setMargin(logo,new Insets(25, 25, 25, 0));
                     BorderPane.setAlignment(logo, Pos.CENTER_LEFT);
                     container.setLeft(logo);
                 }
-                BorderPane.setAlignment(navBar.getLayout(), Pos.CENTER);
-                BorderPane.setAlignment(accountControl, Pos.CENTER_RIGHT);
+//                BorderPane.setAlignment(navBar.getLayout(), Pos.CENTER);
+                BorderPane.setAlignment(accountAction.getLayout(), Pos.CENTER_RIGHT);
                 container.setCenter(navBar.getLayout());
-                container.setRight(accountControl);
+                container.setRight(accountAction.getLayout());
+
             }
         }
     }
 
     @Override
     public Header build() {
-        return new Header(logo, navBar, accountControl, container);
+        return new Header(logo, navBar, accountAction, container);
     }
 }

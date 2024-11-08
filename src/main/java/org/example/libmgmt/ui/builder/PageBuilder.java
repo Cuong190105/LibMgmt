@@ -1,6 +1,8 @@
 package org.example.libmgmt.ui.builder;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -15,10 +17,13 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
     private PageType type;
     private Header header;
     private Body body;
-    private VBox container;
+    private BorderPane container;
 
     public PageBuilder() {
-        container = new VBox();
+        container = new BorderPane();
+        container.setOnMousePressed(event -> {
+            ((Node) event.getSource()).requestFocus();
+        });
         reset();
     }
 
@@ -43,13 +48,13 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
     @Override
     public void setHeader(Header header) {
         this.header = header;
-        container.getChildren().add(header.getContainer());
+        container.setTop(header.getContainer());
     }
 
     @Override
     public void setBody(Body body) {
         this.body = body;
-        container.getChildren().add(body.getContainer());
+        container.setCenter(body.getContainer());
     }
 
     public void style() {
@@ -61,18 +66,23 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
         BackgroundFill bgFill = new BackgroundFill(linear, CornerRadii.EMPTY, Insets.EMPTY);
         Background BG = new Background(bgFill);
         container.setBackground(BG);
-
         switch (type) {
             case STARTUP_PAGE -> {
                 header.getContainer().prefHeightProperty().bind(container.prefHeightProperty());
             }
             case LOGIN_PAGE -> {
-
+                BorderPane.setMargin(header.getContainer(), new Insets(50, 0, 0 ,0));
+                BorderPane.setMargin(body.getContainer(), new Insets(50));
             }
             case MAIN_PAGE -> {
-
+                BorderPane.setMargin(header.getContainer(), new Insets(0, 25, 0 ,25));
+                BorderPane.setMargin(body.getContainer(), new Insets(0, 25, 25, 25));
             }
         }
+    }
+
+    public void bindSize(Scene scene) {
+        container.prefHeightProperty().bind(scene.heightProperty());
     }
 
     @Override

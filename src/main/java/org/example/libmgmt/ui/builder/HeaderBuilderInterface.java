@@ -5,7 +5,6 @@ import org.example.libmgmt.ui.page.PageType;
 
 public interface HeaderBuilderInterface {
     void setType(PageType pageType);
-    void setLogo();
     void setControl();
     Header build();
 }

@@ -13,12 +13,17 @@ public class BodyDirector {
     public void createLoginForm(BodyBuilder bodyBuilder) {
         bodyBuilder.reset();
         bodyBuilder.setType(BodyType.LOGIN_FORM);
+        bodyBuilder.setTitle("ĐĂNG NHẬP");
         LoginForm lf = new LoginForm();
         bodyBuilder.setContent(lf.getLoginForm());
+        bodyBuilder.style();
     }
 
-    public void createMain(BodyBuilder bodyBuilder) {
+
+    public void createMainPagePanel(BodyBuilder bodyBuilder) {
         bodyBuilder.reset();
-        bodyBuilder.setType(BodyType.HOME_SUPER);
+        bodyBuilder.setType(BodyType.MAIN_DASHBOARD);
+        bodyBuilder.setTitle("TRANG CHỦ");
+        bodyBuilder.style();
     }
 }
