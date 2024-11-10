@@ -17,7 +17,7 @@ public class UserDAO {
         return instance;
     }
 
-    public static User getUserFromUsername(String username) {
+    public User getUserFromUsername(String username) {
         User user = null;
         try {
             Connection db = LibraryDB.getConnection();

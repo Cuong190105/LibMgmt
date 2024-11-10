@@ -123,7 +123,7 @@ public class LoginPage extends Page {
     //From here
     public int authenticate(String username, String pwd) {
         AccountDAO accountDAO = AccountDAO.getInstance();
-        Account account = AccountDAO.getAccountFromUsername(username);
+        Account account = accountDAO.getAccountFromUsername(username);
         if (account == null || account.getPassword().compareTo(pwd) != 0) {
             if (account != null) System.out.println(account.getPassword() + "   " + pwd);
             return 0;

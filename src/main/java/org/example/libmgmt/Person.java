@@ -2,13 +2,13 @@ package org.example.libmgmt;
 
 public class Person {
     private int id;
-    private String name;
+    private String title;
     private String password;
     private float fine;
 
-    public Person(int id, String name, String password, float fine) {
+    public Person(int id, String title, String password, float fine) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.password = password;
         this.fine = fine;
     }
@@ -24,11 +24,11 @@ public class Person {
     }
 
     public String getName() {
-        return name;
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String title) {
+        this.title = title;
     }
 
     public String getPassword() {

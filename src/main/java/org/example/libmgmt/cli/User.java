@@ -1,9 +1,20 @@
 package org.example.libmgmt.cli;
 
+import java.sql.Date;
+
 public class User {
     private int UID;
     private String username;
     private String password;
+    private String address;
+    private Date dob;
+    private String email;
+    private String name;
+    private String sex;
+    private String phone;
+    private String SSN;
+    private boolean userType;
+
 
     public User() {
     }

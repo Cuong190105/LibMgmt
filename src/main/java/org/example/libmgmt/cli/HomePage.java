@@ -2,6 +2,7 @@ package org.example.libmgmt.cli;
 
 import javax.print.Doc;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -16,6 +17,7 @@ public class HomePage extends Page {
     // Default constructor to skip login session, used for testing.
     public HomePage() {}
 
+    //not
     public HomePage(String username) {
         // Check if the user is logged in (Login session for this user created when authenticating)
 //        if (isLoggedIn(username)) {
@@ -151,9 +153,12 @@ public class HomePage extends Page {
 
         // ...Code to modify needUpdate, put it into updatedVersion. If updatedVersion == doc (no change's been made), don't query the server.
         // We can compare 2 version in updateInfo method, then we don't need to wrap updateInfo into this if block.
-        if (!updatedVersion.equals(needUpdate)) {
-            doc.updateInfo(updatedVersion);
-        }
+//        if (!updatedVersion.equals(needUpdate)) {
+//            doc.updateInfo(updatedVersion);
+//        }
+        DocumentDAO docDAO = DocumentDAO.getInstance();
+        docDAO.updateDocument(updatedVersion);
+
         // Upload new PDF file to updateContent. If there's no need to update content, let it null and we won't push content change to server
         // Similar to updateInfo above, we can check if content is null in updateContent method.
         if (updateContent != null) {
@@ -166,6 +171,7 @@ public class HomePage extends Page {
         DocumentContent docContent = doc.downloadContent();
     }
 
+    //not
     private void addUserUI() {
         // Create new user with basic info: username, full name(display name), email, ... (password not included).
         // If successfully created, server will generate a random password then send back to user.
@@ -175,10 +181,15 @@ public class HomePage extends Page {
         System.out.println("Remember to change password");
     }
 
+    //not
     private void borrowDocumentUI() {
         // A form will be displayed. Some fields in the form: Document, User, Borrow Date, Return Date, ...(many more if you can think of)
-        Document doc = getSearchResult(keyword).get(ith_item);
-        User borrower = findUser(username);
+        DocumentDAO docDao = DocumentDAO.getInstance();
+        UserDAO userDAO = UserDAO.getInstance();
+        List<Document> docList = docDao.searchDocKey(keyword);
+        Document doc = docList.get(ith_item);
+
+        User borrower = userDAO.getUserFromUsername(username);
         // ...
         // May show a bit info of document and borrower for librarian to review if doc is suitable for borrower or borrower is restricted from some aspects.
         if (doc.isAvailable()) {
@@ -193,6 +204,7 @@ public class HomePage extends Page {
         // ...
     }
 
+    //not
     private void returnDocumentUI() {
         Document doc;
         long copyId;
@@ -247,7 +259,8 @@ public class HomePage extends Page {
         // Get documents info corresponding to each section. Later all 3 sections are shown simultaneously, each with 10 - 15 books.
         // Fetch more books if user select see more.
         // On book list screen, each book is represented with the book cover photo, title and author. Other info will be shown in book info screen.
-        ArrayList<Document> documentList = getDocumentList(section);
+        DocumentDAO docDao = DocumentDAO.getInstance();
+        List<Document> documentList = docDao.sortedList(false);
 
         // For this demo, only show title and author of document
         int idx = 1;
@@ -266,7 +279,8 @@ public class HomePage extends Page {
 //        sc.close();
 
         // Search for documents, of course!
-        ArrayList<Document> result = getSearchResult(keyword);
+        DocumentDAO docDao = DocumentDAO.getInstance();
+        List<Document> result = docDao.searchDocKey(keyword);
         System.out.println(result.size() + " result(s) found.");
 
         int idx = 1;
@@ -281,7 +295,7 @@ public class HomePage extends Page {
         System.out.println("Book History");
 
         // Query all borrow history records with matched UserID
-        ArrayList<Document> result = getBorrowHistory(userId);
+        List<Document> result = BorrowDAO.borrowHistory(userId);
 
         int idx = 1;
         for (Document d : result) {
@@ -380,6 +394,8 @@ public class HomePage extends Page {
         Account account = new Account(username, newPass);
         accountDAO.changePassword(account);
     }
+
+    //not - book borrowing should be directly
     public void viewDocumentInfo(Document doc) {
         // ...Code to show doc info
         // will use getter to get info
@@ -393,6 +409,7 @@ public class HomePage extends Page {
         }
     }
 
+    //not dunno
     // Later the change will be sent as a request and will be examined manually
     private void changePersonalInfo() {
         Request.changePersonalInfo(user, updatedUser, false);
