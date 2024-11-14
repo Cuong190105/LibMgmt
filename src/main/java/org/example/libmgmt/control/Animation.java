@@ -20,6 +20,13 @@ public class Animation {
         scene.setRoot(p.getContainer());
     }
 
+    public static void transitionToSignup(PageDirector pageDirector,
+                                          PageBuilder pageBuilder, Scene scene) {
+        pageDirector.createSignUpPage(pageBuilder);
+        Page p = pageBuilder.build();
+        scene.setRoot(p.getContainer());
+    }
+
     public static void logoutTransition(PageDirector pageDirector,
                                         PageBuilder pageBuilder, Scene scene) {
         transitionToLogin(pageDirector, pageBuilder, scene);

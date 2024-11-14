@@ -1,4 +1,4 @@
-package org.example.libmgmt.ui.components;
+package org.example.libmgmt.ui.components.header;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import org.example.libmgmt.LibMgmt;
+import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.style.Style;
 import org.example.libmgmt.ui.style.StyleNavBar;
 
@@ -59,21 +60,11 @@ public class NavBar {
                 img.setPreserveRatio(true);
                 img.setFitHeight(25);
                 switch(i) {
-                    case 0 -> {
-                        dashboard.setGraphic(img);
-                    }
-                    case 1 -> {
-                        request.setGraphic(img);
-                    }
-                    case 2 -> {
-                        member.setGraphic(img);
-                    }
-                    case 3 -> {
-                        library.setGraphic(img);
-                    }
-                    case 4 -> {
-                        feedback.setGraphic(img);
-                    }
+                    case 0 -> dashboard.setGraphic(img);
+                    case 1 -> request.setGraphic(img);
+                    case 2 -> member.setGraphic(img);
+                    case 3 -> library.setGraphic(img);
+                    case 4 -> feedback.setGraphic(img);
                 }
             } else {
                 System.out.println("Icon not found");
@@ -108,9 +99,10 @@ public class NavBar {
 //        Style.setDebugBorder(container);
     }
 
-    private void switchToDashboard() {
+    private void  switchToDashboard() {
         activeBtn.xProperty().unbind();
         activeBtn.xProperty().bind(dashboard.layoutXProperty());
+        UIHandler.switchToDashboard();
     }
 
     private void switchToRequest() {

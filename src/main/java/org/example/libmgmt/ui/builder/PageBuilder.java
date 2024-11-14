@@ -8,10 +8,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import org.example.libmgmt.ui.components.Header;
+import org.example.libmgmt.control.UIHandler;
+import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.components.body.Body;
 import org.example.libmgmt.ui.page.Page;
 import org.example.libmgmt.ui.page.PageType;
+import org.example.libmgmt.ui.style.Style;
 
 public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
     private PageType type;
@@ -27,17 +29,12 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
         reset();
     }
 
-    public void enableBorder() {
-        container.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-    }
-
     @Override
     public void reset() {
         type = null;
         header = null;
         body = null;
         container.getChildren().clear();
-//        enableBorder();
     }
 
     @Override
@@ -71,18 +68,17 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
                 header.getContainer().prefHeightProperty().bind(container.prefHeightProperty());
             }
             case LOGIN_PAGE -> {
-                BorderPane.setMargin(header.getContainer(), new Insets(50, 0, 0 ,0));
-                BorderPane.setMargin(body.getContainer(), new Insets(50));
+                UIHandler.setVpartition(header.getContainer(), 0.2);
+//                UIHandler.setVpartition(body.getContainer(), 0.8);
+                BorderPane.setMargin(header.getContainer(), new Insets(0, 25, 0 ,25));
+                BorderPane.setMargin(body.getContainer(), new Insets(0, 25, 25, 25));
             }
             case MAIN_PAGE -> {
                 BorderPane.setMargin(header.getContainer(), new Insets(0, 25, 0 ,25));
                 BorderPane.setMargin(body.getContainer(), new Insets(0, 25, 25, 25));
             }
         }
-    }
 
-    public void bindSize(Scene scene) {
-        container.prefHeightProperty().bind(scene.heightProperty());
     }
 
     @Override

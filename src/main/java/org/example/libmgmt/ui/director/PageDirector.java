@@ -27,11 +27,19 @@ public class PageDirector {
     }
 
     public void createLoginPage(PageBuilder pageBuilder) {
-        pageBuilder.reset();
-        headerDirector.createLoginLogo(headerBuilder);
+        if (pageBuilder.build().getPageType() != PageType.LOGIN_PAGE) {
+            pageBuilder.reset();
+            headerDirector.createLoginLogo(headerBuilder);
+            pageBuilder.setType(PageType.LOGIN_PAGE);
+            pageBuilder.setHeader(headerBuilder.build());
+        }
         bodyDirector.createLoginForm(bodyBuilder);
-        pageBuilder.setType(PageType.LOGIN_PAGE);
-        pageBuilder.setHeader(headerBuilder.build());
+        pageBuilder.setBody(bodyBuilder.build());
+        pageBuilder.style();
+    }
+
+    public void createSignUpPage(PageBuilder pageBuilder) {
+        bodyDirector.createSignUpForm(bodyBuilder);
         pageBuilder.setBody(bodyBuilder.build());
         pageBuilder.style();
     }
@@ -44,5 +52,9 @@ public class PageDirector {
         pageBuilder.setHeader(headerBuilder.build());
         pageBuilder.setBody(bodyBuilder.build());
         pageBuilder.style();
+    }
+
+    public void switchToDashboard(PageBuilder pageBuilder) {
+
     }
 }

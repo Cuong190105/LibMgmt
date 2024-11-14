@@ -5,11 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import org.example.libmgmt.LibMgmt;
-import org.example.libmgmt.ui.components.AccountAction;
-import org.example.libmgmt.ui.components.Header;
-import org.example.libmgmt.ui.components.NavBar;
+import org.example.libmgmt.ui.components.header.AccountAction;
+import org.example.libmgmt.ui.components.header.Header;
+import org.example.libmgmt.ui.components.header.NavBar;
 import org.example.libmgmt.ui.page.PageType;
 
 import java.io.InputStream;
@@ -27,10 +26,6 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
         accountAction = null;
         setLogo();
         container = new BorderPane();
-    }
-
-    public void enableBorder() {
-        container.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     @Override

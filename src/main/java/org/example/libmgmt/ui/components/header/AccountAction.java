@@ -1,4 +1,4 @@
-package org.example.libmgmt.ui.components;
+package org.example.libmgmt.ui.components.header;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

@@ -1,4 +1,4 @@
-package org.example.libmgmt.ui.components;
+package org.example.libmgmt.ui.components.body;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;

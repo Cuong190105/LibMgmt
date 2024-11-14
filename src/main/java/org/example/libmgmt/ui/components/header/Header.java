@@ -1,4 +1,4 @@
-package org.example.libmgmt.ui.components;
+package org.example.libmgmt.ui.components.header;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;

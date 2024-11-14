@@ -1,6 +1,6 @@
 package org.example.libmgmt.ui.builder;
 
-import org.example.libmgmt.ui.components.Header;
+import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.components.body.Body;
 import org.example.libmgmt.ui.page.Page;
 import org.example.libmgmt.ui.page.PageType;
