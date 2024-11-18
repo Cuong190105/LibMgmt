@@ -1,9 +1,10 @@
-package org.example.libmgmt.cli;
+package org.example.libmgmt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class UserDAO {
@@ -17,18 +18,31 @@ public class UserDAO {
         return instance;
     }
 
-    public User getUserFromUsername(String username) {
+    public User extractUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUID(rs.getInt("UID"));
+        user.setName(rs.getString("name"));
+        user.setSex(rs.getString("sex"));
+        user.setDob(rs.getDate("dob"));
+        user.setAddress(rs.getString("address"));
+        user.setPhone(rs.getString("phoneNumber"));
+        user.setEmail(rs.getString("email"));
+        user.setSSN(rs.getString("socialSecurityNumber"));
+        user.setUserType(rs.getBoolean("userType"));
+        user.setUsername(rs.getString("userName"));
+        return user;
+    }
+
+    public User getUserFromUID(int UID) {
         User user = null;
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "SELECT * FROM librarydb.user WHERE Username = ?";
+            String sql = "SELECT * FROM user WHERE UID = ?";
             PreparedStatement ps = db.prepareStatement(sql);
-            ps.setString(1, username);
+            ps.setInt(1, UID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user = new User();
-                user.setUID(rs.getInt("UID"));
-                user.setUsername(rs.getString("Username"));
+                user = extractUser(rs);
                 //user.setPassword(rs.getString("password"));
             }
 
@@ -38,14 +52,41 @@ public class UserDAO {
         return user;
     }
 
-    public int addUser(String username) {
+    public User getUserFromUsername(String username) {
+        User user = null;
+        try {
+            Connection db = LibraryDB.getConnection();
+            String sql = "SELECT * FROM user WHERE username = ?";
+            PreparedStatement ps = db.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = extractUser(rs);
+                //user.setPassword(rs.getString("password"));
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public int addUser(User user) {
         int userUID = 0;
 
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "INSERT INTO librarydb.user (Username) VALUES (?)";
+            String sql = "INSERT INTO user (name, sex, DOB, address, phoneNumber, email, socialSecurityNumber, userType, userName) VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = db.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // query may generate A_I key
-            ps.setString(1, username);
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getSex());
+            ps.setDate(3, user.getDob());
+            ps.setString(4, user.getAddress());
+            ps.setString(5, user.getPhone());
+            ps.setString(6, user.getEmail());
+            ps.setString(7, user.getSSN());
+            ps.setBoolean(8, user.isUserType());
+            ps.setString(9, user.getUsername());
             //ps.setString(2, password);
             int rowAffected = ps.executeUpdate();
 
@@ -72,4 +113,6 @@ public class UserDAO {
 //        System.out.println(userUID);
         return userUID;
     }
+
+
 }

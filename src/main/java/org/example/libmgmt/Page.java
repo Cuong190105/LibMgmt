@@ -1,4 +1,4 @@
-package org.example.libmgmt.cli;
+package org.example.libmgmt;
 
 public abstract class Page {
     public Page(){}

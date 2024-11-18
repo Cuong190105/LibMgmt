@@ -1,4 +1,4 @@
-package org.example.libmgmt.cli;
+package org.example.libmgmt;
 
 public class StartupPage extends Page {
     public StartupPage() {

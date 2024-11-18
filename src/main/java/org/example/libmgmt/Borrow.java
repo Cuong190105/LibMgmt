@@ -1,4 +1,4 @@
-package org.example.libmgmt.cli;
+package org.example.libmgmt;
 
 import java.sql.Date;
 

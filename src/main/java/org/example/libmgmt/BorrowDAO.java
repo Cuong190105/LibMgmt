@@ -1,4 +1,4 @@
-package org.example.libmgmt.cli;
+package org.example.libmgmt;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -23,7 +23,7 @@ public class BorrowDAO {
 
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "SELECT * FROM librarydb.borrow WHERE UID=? ORDER BY borrowingDate DESC";
+            String sql = "SELECT * FROM borrow WHERE UID=? ORDER BY borrowingDate DESC";
             PreparedStatement ps = db.prepareStatement(sql);
             ps.setInt(1, UID);
 

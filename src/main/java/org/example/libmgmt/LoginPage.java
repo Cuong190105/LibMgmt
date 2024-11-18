@@ -1,4 +1,4 @@
-package org.example.libmgmt.cli;
+package org.example.libmgmt;
 
 import java.util.Scanner;
 
@@ -161,16 +161,20 @@ public class LoginPage extends Page {
     }
 
     private void createAccount(String username, String password) {
-        AccountDAO accountDAO = AccountDAO.getInstance();
-        Account acc = new Account();
-        acc.setUsername(username);
-        acc.setPassword(password);
-        accountDAO.addAccount(acc);
+
 
         UserDAO userDAO = UserDAO.getInstance();
         User user = new User();
         user.setUsername(username);
-        user.setUID(userDAO.addUser(username));
+        int UID = userDAO.addUser(user);
+        user.setUID(UID);
+
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        Account acc = new Account();
+        acc.setUsername(username);
+        acc.setPassword(password);
+        acc.setUID(UID);
+        accountDAO.addAccount(acc);
     }
     // No need to do. Just for demonstration.
     public void retrievePwd() {

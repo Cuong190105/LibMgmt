@@ -1,4 +1,4 @@
-package org.example.libmgmt.cli;
+package org.example.libmgmt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,16 +23,17 @@ public class DocumentDAO {
         int docID = 0;
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "INSERT INTO librarydb.document (name, author, publisher, quantity, tags, visited, type) "
-                    + "VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO document (name, author, publisher, quantity, tags, visited, type, ISBN) "
+                    + "VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement ps = db.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // query may generate A_I key
-            ps.setString(1, doc.getTitle());
+            ps.setString(1, doc.getName());
             ps.setString(2, doc.getAuthor());
             ps.setString(3, doc.getPublisher());
             ps.setInt(4, doc.getQuantity());
-            ps.setString(5, doc.getTags());
+            ps.setString(5, doc.getTagsString());
             ps.setInt(6, doc.getVisited());
             ps.setBoolean(7, doc.getType());
+            ps.setString(8, doc.getISBN());
 
             int rowAffected = ps.executeUpdate();
             if (rowAffected > 0) {
@@ -50,7 +51,7 @@ public class DocumentDAO {
     public void deleteDocument(int docID) {
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "DELETE FROM librarydb.document where DocID = ?";
+            String sql = "DELETE FROM document where DocID = ?";
             PreparedStatement ps = db.prepareStatement(sql);
             ps.setInt(1,docID);
             ps.executeUpdate();
@@ -62,18 +63,20 @@ public class DocumentDAO {
     public void updateDocument(Document updated) {
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "UPDATE librarydb.document SET name = ?, author = ?, publisher = ?, "
-                    + "quantity = ?, tags = ?, visited = ?, type = ? WHERE id = ?";
+            String sql = "UPDATE document SET name = ?, author = ?, publisher = ?, "
+                    + "quantity = ?, tags = ?, visited = ?, type = ?, ISBN = ? WHERE docID = ?";
 
             PreparedStatement ps = db.prepareStatement(sql);
-            ps.setString(1, updated.getTitle());
+            ps.setString(1, updated.getName());
             ps.setString(2, updated.getAuthor());
             ps.setString(3, updated.getPublisher());
             ps.setInt(4, updated.getQuantity());
-            ps.setString(5, updated.getTags());
+            ps.setString(5, updated.getTagsString());
             ps.setInt(6, updated.getVisited());
             ps.setBoolean(7, updated.getType());
-            ps.setInt(8, updated.getDocID()); // Assuming Document has a method getId() to get the document ID
+            ps.setString(8, updated.getISBN());
+
+            ps.setInt(9, updated.getDocID()); // Assuming Document has a method getId() to get the document ID
 
             int rowAffected = ps.executeUpdate();
             if (rowAffected > 0) {
@@ -91,7 +94,7 @@ public class DocumentDAO {
 
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "SELECT * FROM librarydb.document WHERE name LIKE ?";
+            String sql = "SELECT * FROM document WHERE name LIKE ?";
 
             PreparedStatement ps = db.prepareStatement(sql);
             keyword = "%" + keyword + "%";//no 'quote'
@@ -105,7 +108,8 @@ public class DocumentDAO {
                 // Assuming Document has a constructor or setters to set fields
                 Document doc = new Document();
                 doc.setDocID(rs.getInt("docID"));
-                doc.setTitle(rs.getString("name"));
+                doc.setISBN(rs.getString("ISBN"));
+                doc.setName(rs.getString("name"));
                 doc.setAuthor(rs.getString("author"));
                 doc.setPublisher(rs.getString("publisher"));
                 doc.setQuantity(rs.getInt("quantity"));
@@ -128,7 +132,7 @@ public class DocumentDAO {
 
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "SELECT * FROM librarydb.document WHERE type = ? ORDER BY DocID DESC";
+            String sql = "SELECT * FROM document WHERE type = ? ORDER BY DocID DESC";
 
             PreparedStatement ps = db.prepareStatement(sql);
             ps.setBoolean(1, type); // 0 for books, 1 for thesis, etc.
@@ -138,7 +142,8 @@ public class DocumentDAO {
             while (rs.next()) {
                 Document doc = new Document();
                 doc.setDocID(rs.getInt("docID"));
-                doc.setTitle(rs.getString("name"));
+                doc.setISBN(rs.getString("ISBN"));
+                doc.setName(rs.getString("name"));
                 doc.setAuthor(rs.getString("author"));
                 doc.setPublisher(rs.getString("publisher"));
                 doc.setQuantity(rs.getInt("quantity"));
@@ -159,14 +164,15 @@ public class DocumentDAO {
         Document doc = null;
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "SELECT * FROM librarydb.document WHERE DocID = ?";
+            String sql = "SELECT * FROM document WHERE DocID = ?";
             PreparedStatement ps = db.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 doc = new Document();
                 doc.setDocID(rs.getInt("DocID"));
-                doc.setTitle(rs.getString("Title"));
+                doc.setISBN(rs.getString("ISBN"));
+                doc.setName(rs.getString("Name"));
                 doc.setAuthor(rs.getString("Author"));
                 doc.setPublisher(rs.getString("Publisher"));
                 doc.setQuantity(rs.getInt("Quantity"));
