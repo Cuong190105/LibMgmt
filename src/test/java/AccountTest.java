@@ -1,7 +1,7 @@
 
-import org.example.libmgmt.Account;
-import org.example.libmgmt.AccountDAO;
-import org.example.libmgmt.AccountDB;
+import org.example.libmgmt.DB.Account;
+import org.example.libmgmt.DB.AccountDAO;
+import org.example.libmgmt.DB.AccountDB;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

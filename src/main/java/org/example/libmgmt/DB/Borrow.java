@@ -1,4 +1,4 @@
-package org.example.libmgmt;
+package org.example.libmgmt.DB;
 
 import java.sql.Date;
 
@@ -7,7 +7,6 @@ public class Borrow {
     private Date borrowingDate, returnDate;
 
     public Borrow() {
-
     }
 
     public int getUID() {

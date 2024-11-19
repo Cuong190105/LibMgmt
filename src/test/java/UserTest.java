@@ -1,9 +1,7 @@
 
-import org.example.libmgmt.AccountDAO;
-import org.example.libmgmt.AccountDB;
-import org.example.libmgmt.LibraryDB;
-import org.example.libmgmt.User;
-import org.example.libmgmt.UserDAO;
+import org.example.libmgmt.DB.LibraryDB;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -87,5 +85,41 @@ public class UserTest {
             assertNotNull(actual);
             assertEquals(expected, actual);
         }
+    }
+
+    @Test
+    public void testDeleteUser() {
+        for (int i = 0; i < 2; ++i) {
+            int newUID = userDAO.addUser(sampleUsers.get(i));
+            sampleUsers.get(i).setUID(newUID);
+            assertEquals(i + 1, newUID);
+        }
+        userDAO.deleteUser(2);
+        User actual = userDAO.getUserFromUID(2);
+        assertNull(actual, "user should not be found");
+
+        for (int i = 1; i <= 1; ++i) {
+            actual = userDAO.getUserFromUID(i);
+            User expected = sampleUsers.get(i - 1);
+            assertNotNull(actual, "Doc should not be null");
+            assertEquals(expected,actual);
+        }
+    }
+
+    @Test
+    public void testUpdateDoc() {
+        for (int i = 0; i < 2; ++i) {
+            int newUID = userDAO.addUser(sampleUsers.get(i));
+            sampleUsers.get(i).setUID(newUID);
+            assertEquals(i + 1, newUID);
+        }
+
+        User user1 = userDAO.getUserFromUID(1);
+        user1.setName("Mama Mia");
+        user1.setSex("Female");
+        userDAO.updateUser(user1);
+
+        User get1 = userDAO.getUserFromUID(1);
+        assertEquals(user1, get1);
     }
 }

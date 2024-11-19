@@ -1,10 +1,9 @@
-package org.example.libmgmt;
+package org.example.libmgmt.DB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class AccountDAO {
     private static AccountDAO instance;

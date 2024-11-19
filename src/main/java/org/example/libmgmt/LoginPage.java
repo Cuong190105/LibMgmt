@@ -1,5 +1,10 @@
 package org.example.libmgmt;
 
+import org.example.libmgmt.DB.Account;
+import org.example.libmgmt.DB.AccountDAO;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
+
 import java.util.Scanner;
 
 public class LoginPage extends Page {

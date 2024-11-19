@@ -1,4 +1,4 @@
-package org.example.libmgmt;
+package org.example.libmgmt.DB;
 
 import java.sql.Date;
 import java.util.Objects;

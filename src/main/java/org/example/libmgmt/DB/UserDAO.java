@@ -1,9 +1,8 @@
-package org.example.libmgmt;
+package org.example.libmgmt.DB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -114,5 +113,41 @@ public class UserDAO {
         return userUID;
     }
 
+    public void deleteUser(int UID) {
+        try {
+            Connection db = LibraryDB.getConnection();
+            String sql = "DELETE FROM user where UID = ?";
+            PreparedStatement ps = db.prepareStatement(sql);
+            ps.setInt(1,UID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void updateUser(User updated) {
+        try {
+            Connection db = LibraryDB.getConnection();
+            String sql = "UPDATE user SET name = ?, sex = ?, dob = ?, "
+                    + "address = ?, phoneNumber = ?, email = ?, socialSecurityNumber = ?, userType = ?, userName = ? WHERE UID = ?";
+
+            PreparedStatement ps = db.prepareStatement(sql);
+            ps.setString(1, updated.getName());
+            ps.setString(2, updated.getSex());
+            ps.setDate(3, updated.getDob());
+            ps.setString(4, updated.getAddress());
+            ps.setString(5, updated.getPhone());
+            ps.setString(6, updated.getEmail());
+            ps.setString(7, updated.getSSN());
+            ps.setBoolean(8, updated.isUserType());
+            ps.setString(9, updated.getUsername());
+
+            ps.setInt(10, updated.getUID()); // Assuming Document has a method getId() to get the document ID
+
+            int rowAffected = ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

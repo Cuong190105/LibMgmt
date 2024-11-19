@@ -1,4 +1,4 @@
-package org.example.libmgmt;
+package org.example.libmgmt.DB;
 
 import java.util.ArrayList;
 import java.util.Collections;

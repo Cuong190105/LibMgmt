@@ -1,17 +1,16 @@
-package org.example.libmgmt;
+package org.example.libmgmt.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
-public class AccountDB {
+public class LibraryDB {
     private static Connection db;
     private static boolean isTesting;
 
     public static Connection getConnection() throws Exception {
         if (db == null) {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbName = (isTesting) ? "testdb" : "accountdb";
+            String dbName = (isTesting) ? "testdb" : "librarydb";
             db = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, "root", "");
         }
         return db;

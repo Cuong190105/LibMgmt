@@ -9,4 +9,6 @@ module org.example.libmgmt {
 
     opens org.example.libmgmt to javafx.fxml;
     exports org.example.libmgmt;
+    exports org.example.libmgmt.DB;
+    opens org.example.libmgmt.DB to javafx.fxml;
 }
