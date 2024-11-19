@@ -11,9 +11,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.example.libmgmt.control.Validator;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.style.Style;
+import org.example.libmgmt.ui.style.StyleForm;
 
 public class LoginForm {
     private TextField usrnField;
@@ -63,7 +65,7 @@ public class LoginForm {
             int status = Validator.authenticate(username, password);
             switch (status) {
                 case Validator.SUCCEED -> {
-                    UIHandler.switchPage();
+                    UIHandler.gotoMain();
                 }
                 case Validator.INVALID_CREDENTIALS -> {
                     container.setDisable(false);
@@ -84,7 +86,8 @@ public class LoginForm {
         Font font = Font.font("Inter", 20);
         warning.setVisible(false);
         warning.setManaged(false);
-        warning.setFont(font);
+        StyleForm.styleWarning(warning);
+        warning.setTextAlignment(TextAlignment.CENTER);
 
         Style.styleTextField(usrnField, 550, 100, 32, "Tên đăng nhập");
         Style.styleTextField(pwdField, 550, 100, 32, "Mật khẩu");

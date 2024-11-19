@@ -1,5 +1,6 @@
 package org.example.libmgmt.ui.style;
 
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
@@ -12,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class StyleCard {
     public static final Font titleFont = Font.font("Inter", FontWeight.BOLD, 20);
@@ -23,13 +25,15 @@ public class StyleCard {
         region.setMinSize(w, h);
         region.setMaxSize(w, h);
         region.setOnMouseEntered(_ -> {
-            region.setTranslateY(-5);
-            DropShadow s = new DropShadow(BlurType.GAUSSIAN, Color.BLACK, 5, 5, 5, 5);
-            region.setEffect(s);
+            TranslateTransition t = new TranslateTransition(Duration.millis(100), region);
+            t.setToY(-10);
+            t.play();
+
         });
         region.setOnMouseExited(_ -> {
-            region.setTranslateY(5);
-            region.setEffect(null);
+            TranslateTransition t = new TranslateTransition(Duration.millis(100), region);
+            t.setToY(0);
+            t.play();
         });
     }
 

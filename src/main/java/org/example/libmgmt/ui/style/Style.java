@@ -1,10 +1,8 @@
 package org.example.libmgmt.ui.style;
 
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
@@ -69,6 +67,15 @@ public class Style {
                 SMALL_CORNER, new BorderWidths(0))));
     }
 
+    public static void styleRoundedButton(Button btn, Color c, double w, double h, double textSize) {
+        styleRoundedButton(btn, w, h);
+        btn.setBackground(new Background(new BackgroundFill(
+                c, SMALL_CORNER, Insets.EMPTY
+        )));
+        btn.setFont(Font.font(FONT, textSize));
+        styleHoverEffect(btn);
+    }
+
     public static void styleHoverEffect(Region region) {
         DARKEN.setBrightness(-0.1);
         region.setOnMouseEntered(_ -> {
@@ -101,20 +108,15 @@ public class Style {
         region.setBorder(thicc);
     }
 
-    public static void styleComboBox(ComboBox cb, double w, double h,
-                                     double textsize, String prompt) {
-        cb.setBackground(Background.EMPTY);
-        cb.setPromptText(prompt);
-        cb.setStyle("-fx-prompt-text-fill: rgba(0, 0, 0, 0.3);");
-        cb.setMaxWidth(w);
-        cb.setMinHeight(h);
-        cb.setBorder(new Border(new BorderStroke(GRAY, BorderStrokeStyle.SOLID,
-                TINY_CORNER, BorderWidths.DEFAULT)));
-        cb.setStyle("-fx-font: " + textsize + " Inter;");
-    }
-
     public static void styleWrapText(Text text, double w, double size) {
         text.setFont(Font.font(FONT, size));
         text.setWrappingWidth(w);
+    }
+
+    public static void styleTextArea(TextArea text, double w, double size, String prompt) {
+        text.setFont(Font.font(FONT, size));
+        text.setWrapText(true);
+        text.setPrefWidth(w);
+        text.setPromptText(prompt);
     }
 }

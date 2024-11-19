@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.control.UIHandler;
+import org.example.libmgmt.ui.components.body.BodyType;
 import org.example.libmgmt.ui.style.Style;
 import org.example.libmgmt.ui.style.StyleNavBar;
 
@@ -102,27 +103,31 @@ public class NavBar {
     private void  switchToDashboard() {
         activeBtn.xProperty().unbind();
         activeBtn.xProperty().bind(dashboard.layoutXProperty());
-        UIHandler.switchToDashboard();
+        UIHandler.switchToSection(BodyType.MAIN_DASHBOARD);
     }
 
     private void switchToRequest() {
         activeBtn.xProperty().unbind();
         activeBtn.xProperty().bind(request.layoutXProperty());
+        UIHandler.switchToSection(BodyType.MAIN_REQUEST);
     }
 
     private void switchToMember() {
         activeBtn.xProperty().unbind();
         activeBtn.xProperty().bind(member.layoutXProperty());
+        UIHandler.switchToSection(BodyType.MAIN_MEMBER);
     }
 
     private void switchToLibrary() {
         activeBtn.xProperty().unbind();
         activeBtn.xProperty().bind(library.layoutXProperty());
+        UIHandler.switchToSection(BodyType.MAIN_LIBRARY);
     }
 
     private void switchToFeedback() {
         activeBtn.xProperty().unbind();
         activeBtn.xProperty().bind(feedback.layoutXProperty());
+        UIHandler.switchToSection(BodyType.MAIN_FEEDBACK);
     }
 
     public StackPane getLayout() {

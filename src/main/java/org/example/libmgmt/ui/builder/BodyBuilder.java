@@ -7,9 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import org.example.libmgmt.LibMgmt;
-import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.components.body.Body;
 import org.example.libmgmt.ui.components.body.BodyType;
 import org.example.libmgmt.ui.style.Style;
@@ -23,6 +21,7 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
     private VBox container;
 
     public BodyBuilder() {
+        container = new VBox();
         reset();
     }
 
@@ -33,7 +32,7 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
         subsectionList = new HBox();
         sectionTitle = new Label();
         searchPanel = new GridPane();
-        container = new VBox();
+        container.getChildren().clear();
     }
 
     @Override
@@ -43,26 +42,22 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
 
     @Override
     public void setTitle(String sectionTitle) {
-        this.sectionTitle.setText(sectionTitle);
-        container.getChildren().add(this.sectionTitle);
+        this.sectionTitle.setText(sectionTitle.toUpperCase());
     }
 
     @Override
     public void setSubsection(HBox subsectionList) {
         this.subsectionList = subsectionList;
-        container.getChildren().add(subsectionList);
     }
 
     @Override
     public void setSearchPanel(GridPane searchPanel) {
         this.searchPanel = searchPanel;
-        container.getChildren().add(searchPanel);
     }
 
     @Override
     public void setContent(Parent content) {
         this.content.setContent(content);
-        this.container.getChildren().add(this.content);
     }
 
     @Override
@@ -73,29 +68,40 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
 
         content.setFitToWidth(true);
         content.setPrefViewportWidth(Region.USE_PREF_SIZE);
-        content.setMaxWidth(Region.USE_PREF_SIZE);
         content.getStylesheets().add(LibMgmt.class.getResource("viewport.css").toExternalForm());
 
         Style.styleShadowBorder(container);
         BackgroundFill bgF = new BackgroundFill(Color.WHITE, Style.BIG_CORNER, Insets.EMPTY);
         container.setBackground(new Background(bgF));
-        container.setSpacing(50);
+        container.setSpacing(10);
+        if (content.getContent() != null) {
+            ((Region) content.getContent()).setPadding(new Insets(10, 0, 10, 0));
+        }
         switch (bodyType) {
-            case LOGIN_FORM:
-            case SIGNUP_FORM: {
-                container.setSpacing(25);
+            case AUTHENTICATION -> {
+                content.setMaxWidth(Region.USE_PREF_SIZE);
                 container.setAlignment(Pos.CENTER);
                 sectionTitle.setAlignment(Pos.CENTER);
                 container.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-                break;
             }
-            case MAIN_PANEL: {
+            case MAIN -> {
+                container.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                container.setAlignment(Pos.TOP_LEFT);
             }
         }
     }
 
     @Override
     public Body build() {
+        container.getChildren().add(sectionTitle);
+        if (!subsectionList.getChildren().isEmpty()) {
+            container.getChildren().add(subsectionList);
+        }
+        if (!searchPanel.getChildren().isEmpty()) {
+            container.getChildren().add(searchPanel);
+        }
+        container.getChildren().add(content);
+
         return new Body(bodyType, sectionTitle, subsectionList, searchPanel,
                 content, container);
     }

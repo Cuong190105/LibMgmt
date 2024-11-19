@@ -12,6 +12,7 @@ import org.example.libmgmt.control.Validator;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.style.Style;
+import org.example.libmgmt.ui.style.StyleForm;
 
 public class SignUpForm {
     private Label nameLabel;
@@ -79,9 +80,16 @@ public class SignUpForm {
         );
         yearField = new TextField();
         birthdateContainer = new GridPane();
-        birthdateContainer.add(dayField, 0, 0, 2, 1);
-        birthdateContainer.add(monthField, 2, 0, 6, 1);
-        birthdateContainer.add(yearField, 8, 0, 2, 1);
+        birthdateContainer.add(dayField, 0, 0);
+        birthdateContainer.add(monthField, 1, 0);
+        birthdateContainer.add(yearField, 2, 0);
+        ColumnConstraints c0 = new ColumnConstraints(),
+                c1 = new ColumnConstraints(),
+                c2 = new ColumnConstraints();
+        c0.setPercentWidth(25);
+        c1.setPercentWidth(40);
+        c2.setPercentWidth(35);
+        birthdateContainer.getColumnConstraints().addAll(c0, c1, c2);
         signUpBtn = new Button("Đăng ký");
         signInBtn = new Button("Đã có tài khoản?");
         buttonContainer = new VBox(signUpBtn, signInBtn);
@@ -283,8 +291,8 @@ public class SignUpForm {
         genderLabel.setFont(labelFont);
         birthdateLabel.setFont(labelFont);
 
-        Style.styleComboBox(genderField, 550, 50, 24, "");
-        Style.styleComboBox(monthField, 550, 50, 24, "Tháng");
+        StyleForm.styleComboBox(genderField, 550, 50, 24, "");
+        StyleForm.styleComboBox(monthField, 550, 50, 24, "Tháng");
 
         Style.styleRoundedButton(signUpBtn, 200, 50);
         signUpBtn.setBackground(new Background(new BackgroundFill(Style.DARKGREEN,
@@ -297,10 +305,10 @@ public class SignUpForm {
 
         buttonContainer.setAlignment(Pos.CENTER);
 
-        Style.styleWrapText(usrnNote, 500, 16);
-        Style.styleWrapText(pwdNote, 500, 16);
-        Style.styleWrapText(retypePwdNote, 500, 16);
-        Style.styleWrapText(birthdateNote, 500, 16);
+        StyleForm.styleWarning(usrnNote);
+        StyleForm.styleWarning(pwdNote);
+        StyleForm.styleWarning(retypePwdNote);
+        StyleForm.styleWarning(birthdateNote);
 
         birthdateContainer.setMaxWidth(550);
         birthdateContainer.setHgap(10);

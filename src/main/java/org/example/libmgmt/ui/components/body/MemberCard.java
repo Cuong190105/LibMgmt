@@ -1,5 +1,6 @@
 package org.example.libmgmt.ui.components.body;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,6 +36,7 @@ public class MemberCard {
         StyleCard.styleTitle(name, 150);
         StyleCard.styleContent(uid, 150);
         StyleCard.styleContent(userType, 150);
+        container.setPadding(new Insets(25));
     }
 
     public BorderPane getCard() {

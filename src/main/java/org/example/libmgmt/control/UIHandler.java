@@ -8,11 +8,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.Popup;
+import org.example.libmgmt.ui.components.body.BodyType;
+import org.example.libmgmt.ui.components.body.Document;
 import org.example.libmgmt.ui.director.PageDirector;
 import org.example.libmgmt.ui.page.Page;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public class UIHandler {
     private static UIHandler ui;
@@ -43,16 +42,8 @@ public class UIHandler {
         }
     }
 
-    public static void switchPage() {
-        Animation.transitionToMain(ui.pageDirector, ui.pageBuilder, ui.scene);
-    }
-
     public static void switchToSignUp() {
         Animation.transitionToSignup(ui.pageDirector, ui.pageBuilder, ui.scene);
-    }
-
-    public static void switchToDocument() {
-
     }
 
     public static void addPopup(Popup popup) {
@@ -67,7 +58,15 @@ public class UIHandler {
         region.prefHeightProperty().bind(ui.scene.heightProperty().multiply(portion));
     }
 
-    public static void switchToDashboard() {
-        ui.pageDirector.switchToDashboard(ui.pageBuilder);
+    public static void gotoMain() {
+        ui.pageDirector.createMainPage(ui.pageBuilder);
+    }
+
+    public static void switchToSection(BodyType bodyType) {
+        ui.pageDirector.createSectionPanel(ui.pageBuilder, bodyType);
+    }
+
+    public static void openDocDetail(Document doc) {
+        ui.pageDirector.createDocumentDetailPanel(ui.pageBuilder, doc);
     }
 }

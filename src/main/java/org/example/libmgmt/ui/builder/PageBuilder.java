@@ -69,7 +69,6 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
             }
             case LOGIN_PAGE -> {
                 UIHandler.setVpartition(header.getContainer(), 0.2);
-//                UIHandler.setVpartition(body.getContainer(), 0.8);
                 BorderPane.setMargin(header.getContainer(), new Insets(0, 25, 0 ,25));
                 BorderPane.setMargin(body.getContainer(), new Insets(0, 25, 25, 25));
             }
@@ -80,9 +79,12 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
         }
 
     }
-
     @Override
     public Page build() {
         return new Page(type, header, body, container);
+    }
+
+    public PageType getCurrentPageType() {
+        return type;
     }
 }

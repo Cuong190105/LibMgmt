@@ -43,6 +43,7 @@ public class Body {
         return content;
     }
 
+    /** Get body content. */
     public VBox getContainer() {
         return container;
     }

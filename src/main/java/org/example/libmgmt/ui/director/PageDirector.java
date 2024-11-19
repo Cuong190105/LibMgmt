@@ -3,7 +3,11 @@ package org.example.libmgmt.ui.director;
 import org.example.libmgmt.ui.builder.BodyBuilder;
 import org.example.libmgmt.ui.builder.HeaderBuilder;
 import org.example.libmgmt.ui.builder.PageBuilder;
+import org.example.libmgmt.ui.components.body.BodyType;
+import org.example.libmgmt.ui.components.body.Document;
 import org.example.libmgmt.ui.page.PageType;
+
+import static org.example.libmgmt.ui.components.body.BodyType.MAIN_DASHBOARD;
 
 public class PageDirector {
     private HeaderBuilder headerBuilder;
@@ -27,7 +31,7 @@ public class PageDirector {
     }
 
     public void createLoginPage(PageBuilder pageBuilder) {
-        if (pageBuilder.build().getPageType() != PageType.LOGIN_PAGE) {
+        if (pageBuilder.getCurrentPageType() != PageType.LOGIN_PAGE) {
             pageBuilder.reset();
             headerDirector.createLoginLogo(headerBuilder);
             pageBuilder.setType(PageType.LOGIN_PAGE);
@@ -46,15 +50,20 @@ public class PageDirector {
 
     public void createMainPage(PageBuilder pageBuilder) {
         pageBuilder.reset();
-        headerDirector.createMainPageHeader(headerBuilder);
-        bodyDirector.createMainPagePanel(bodyBuilder);
         pageBuilder.setType(PageType.MAIN_PAGE);
+        headerDirector.createMainPageHeader(headerBuilder);
         pageBuilder.setHeader(headerBuilder.build());
-        pageBuilder.setBody(bodyBuilder.build());
+        createSectionPanel(pageBuilder, MAIN_DASHBOARD);
         pageBuilder.style();
     }
 
-    public void switchToDashboard(PageBuilder pageBuilder) {
+    public void createSectionPanel(PageBuilder pageBuilder, BodyType bodyType) {
+        bodyDirector.createMainPagePanel(bodyBuilder, bodyType);
+        pageBuilder.setBody(bodyBuilder.build());
+    }
 
+    public void createDocumentDetailPanel(PageBuilder pageBuilder, Document doc) {
+        bodyDirector.createDocumentDetailPanel(bodyBuilder, doc);
+        pageBuilder.setBody(bodyBuilder.build());
     }
 }
