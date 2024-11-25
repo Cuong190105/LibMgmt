@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2024 at 07:07 PM
+-- Generation Time: Nov 24, 2024 at 02:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `testdb`
+-- Database: `librarydb`
 --
 CREATE DATABASE IF NOT EXISTS `testdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE DATABASE IF NOT EXISTS `librarydb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -67,8 +67,13 @@ CREATE TABLE `document` (
   `Quantity` int(11) DEFAULT NULL,
   `Tags` varchar(255) DEFAULT NULL,
   `Visited` int(11) DEFAULT NULL,
-  `Content` mediumblob NOT NULL,
-  `type` tinyint(1) DEFAULT 0
+  `type` tinyint(1) DEFAULT 0,
+  `ISBN` varchar(50) DEFAULT NULL,
+  `Votes` int(11) DEFAULT NULL,
+  `Score` double DEFAULT NULL,
+  `Cover` mediumblob DEFAULT NULL,
+  `Content` mediumblob DEFAULT NULL,
+  `Description` varchar(9999) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -88,7 +93,7 @@ CREATE TABLE `user` (
   `Email` varchar(255) DEFAULT NULL,
   `SocialSecurityNumber` varchar(50) DEFAULT NULL,
   `UserType` varchar(50) DEFAULT NULL,
-  `Username` varchar(255) NOT NULL
+  `avatar` mediumblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
