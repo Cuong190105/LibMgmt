@@ -1,5 +1,6 @@
 package org.example.libmgmt.DB;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,35 +8,44 @@ import java.util.Objects;
 
 public class Document {
     private int docID;
-    private String name;
+    private InputStream cover;
+
+    private String title;
+
     private String author;
     private String publisher;
     private int quantity;
     private List<String> tags;
     private int visited;
-    private boolean type;
+    private int publishYear;
+    private boolean thesis;
+    private String description;
     private String ISBN;
-    public static final boolean BOOK = false;
-    public static final boolean THESIS = true;
-
+    private int votes;
+    private int score;
     public Document() {}
 
-    public Document(String name, String author, String publisher, int quantity, String tags, int visited, boolean type) {
-        this.name = name;
+    public Document(int docID, InputStream cover, String title, String author, String publisher,
+                    int quantity, List<String> tags, int visited, int publishYear,
+                    boolean thesis, String description, String ISBN, int votes, int score) {
+        this.docID = docID;
+        this.cover = cover;
+        this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.quantity = quantity;
+        this.tags = tags;
         this.visited = visited;
-        this.type = type;
-        this.tags = new ArrayList<>();
-        if (tags != null && !tags.isEmpty()) {
-            Collections.addAll(this.tags, tags.split(","));
-        }
+        this.publishYear = publishYear;
+        this.thesis = thesis;
+        this.description = description;
+        this.ISBN = ISBN;
+        this.votes = votes;
+        this.score = score;
     }
 
-
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setAuthor(String author) {
@@ -50,30 +60,36 @@ public class Document {
         this.quantity = quantity;
     }
 
-
     public void setVisited(int visited) {
         this.visited = visited;
     }
 
-    public boolean isType() {
-        return type;
+    public int getPublishYear() {
+        return publishYear;
     }
 
-    public void setType(boolean type) {
-        this.type = type;
+    public void setPublishYear(int publishYear) {
+        this.publishYear = publishYear;
+    }
+
+    public boolean isThesis() {
+        return thesis;
+    }
+
+    public void setThesis(boolean thesis) {
+        this.thesis = thesis;
     }
 
     public void setDocID(int docID) {
         this.docID = docID;
-
     }
 
     public int getDocID() {
         return docID;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public String getAuthor() {
@@ -92,10 +108,6 @@ public class Document {
         return visited;
     }
 
-    public boolean getType() {
-        return type;
-    }
-
     public String getISBN() {
         return ISBN;
     }
@@ -106,6 +118,22 @@ public class Document {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public InputStream getCover() {
+        return cover;
+    }
+
+    public void setCover(InputStream cover) {
+        this.cover = cover;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setTags(String tags) {
@@ -123,24 +151,39 @@ public class Document {
         return ans;
     }
 
+    public int getVotes() {
+        return votes;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Document doc = (Document) obj;
         return this.docID == doc.docID &&
-                Objects.equals(this.name, doc.name) &&
+                Objects.equals(this.title, doc.title) &&
                 Objects.equals(this.author, doc.author) &&
                 Objects.equals(this.publisher, doc.publisher) &&
                 this.quantity == doc.quantity &&
                 Objects.equals(this.tags, doc.tags) &&
                 this.visited == doc.visited &&
-                this.type == doc.type;
+                this.thesis == doc.thesis;
     }
 
     public String print() {
-        return " " + docID + "  " + name + "  " + author + "  "
+        return " " + docID + "  " + title + "  " + author + "  "
                 + publisher + "  " + quantity + "  " + tags + "  "
-                + visited + "  " + type + "\n";
+                + visited + "  " + thesis + "\n";
+    }
+
+    /**
+     * Get average rating of this document.
+     */
+    public double getRating() {
+        return score * 1.0 / votes;
     }
 }

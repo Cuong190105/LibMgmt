@@ -4,8 +4,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import org.example.libmgmt.LibMgmt;
+import org.example.libmgmt.control.UIHandler;
+import org.example.libmgmt.control.UserControl;
+import org.example.libmgmt.ui.style.Style;
 import org.example.libmgmt.ui.style.StyleAccountAction;
 
 import java.io.InputStream;
@@ -14,7 +17,6 @@ public class AccountAction {
     private Button account;
     private Button notification;
     private HBox container;
-    //    private Button add;
 
     public AccountAction() {
         account = new Button();
@@ -43,24 +45,29 @@ public class AccountAction {
             }
         }
 
-//        iconStream[NUMBER_OF_BUTTONS - 1] = getUserAvatar();
-        iconStream[NUMBER_OF_BUTTONS - 1] = LibMgmt.class.getResourceAsStream("img/accountAction/user0123456.png");
-        ImageView img = new ImageView(new Image(iconStream[NUMBER_OF_BUTTONS - 1]));
-        img.setPreserveRatio(true);
-        img.setFitHeight(50);
-        account.setGraphic(img);
+        Image avatar = new Image(UserControl.getUser().getAvatar());
+        account.setBackground(new Background(new BackgroundImage(
+            avatar, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, new BackgroundSize(50, 50, false, false, false, true)
+        )));
     }
 
     private void setFunction() {
+        account.setOnMouseClicked(_ -> {
+            UIHandler.showAccountAction();
+        });
 
+        notification.setOnMouseClicked(_ -> {
+            UIHandler.showNotificationPanel();
+        });
     }
 
     private void style() {
-        StyleAccountAction.styleButton(notification);
-        StyleAccountAction.styleButton(account);
+        StyleAccountAction.styleButton(notification, false);
+        StyleAccountAction.styleButton(account, true);
+
         container.setAlignment(Pos.CENTER);
         container.setSpacing(25);
-//        Style.setDebugBorder(container);
     }
 
     public HBox getLayout() {

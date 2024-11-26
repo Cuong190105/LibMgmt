@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class Body {
@@ -11,10 +12,11 @@ public class Body {
     private final Label sectionTitle;
     private final HBox subsectionList;
     private final GridPane searchPanel;
-    private final ScrollPane content;
+    private final Region content;
     private final VBox container;
 
-    public Body(BodyType bodyType, Label sectionTitle, HBox subsectionList, GridPane searchPanel, ScrollPane content, VBox container) {
+    public Body(BodyType bodyType, Label sectionTitle, HBox subsectionList,
+                GridPane searchPanel, Region content, VBox container) {
         this.bodyType = bodyType;
         this.sectionTitle = sectionTitle;
         this.subsectionList = subsectionList;
@@ -39,7 +41,7 @@ public class Body {
         return searchPanel;
     }
 
-    public ScrollPane getContent() {
+    public Region getContent() {
         return content;
     }
 

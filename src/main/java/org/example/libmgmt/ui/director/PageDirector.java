@@ -1,10 +1,11 @@
 package org.example.libmgmt.ui.director;
 
+import org.example.libmgmt.DB.User;
 import org.example.libmgmt.ui.builder.BodyBuilder;
 import org.example.libmgmt.ui.builder.HeaderBuilder;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.body.BodyType;
-import org.example.libmgmt.ui.components.body.Document;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.ui.page.PageType;
 
 import static org.example.libmgmt.ui.components.body.BodyType.MAIN_DASHBOARD;
@@ -62,8 +63,13 @@ public class PageDirector {
         pageBuilder.setBody(bodyBuilder.build());
     }
 
-    public void createDocumentDetailPanel(PageBuilder pageBuilder, Document doc) {
+    public void createDocumentDetailPage(PageBuilder pageBuilder, Document doc) {
         bodyDirector.createDocumentDetailPanel(bodyBuilder, doc);
+        pageBuilder.setBody(bodyBuilder.build());
+    }
+
+    public void createMemberDetailPage(PageBuilder pageBuilder, User member) {
+        bodyDirector.createMemberDetailPanel(bodyBuilder, member);
         pageBuilder.setBody(bodyBuilder.build());
     }
 }

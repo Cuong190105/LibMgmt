@@ -1,10 +1,12 @@
 package org.example.libmgmt.ui.director;
 
-import javafx.scene.control.Button;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.ui.builder.BodyBuilder;
-import org.example.libmgmt.ui.components.body.*;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.ui.components.body.BodyType;
+import org.example.libmgmt.ui.components.body.DocumentSearchPanel;
+import org.example.libmgmt.ui.components.body.MemberSearchPanel;
+import org.example.libmgmt.ui.components.body.contentSection.*;
 
 public class BodyDirector {
     public void createLoginForm(BodyBuilder bodyBuilder) {
@@ -36,39 +38,31 @@ public class BodyDirector {
                 bodyBuilder.setTitle("YÊU CẦU");
             }
             case MAIN_MEMBER -> {
-                TilePane t = new TilePane();
-                for (int i = 0; i < 20; i++) {
-                    MemberCard m = new MemberCard();
-                    t.getChildren().add(m.getCard());
-                }
-                t.setVgap(25);
-                t.setHgap(25);
                 bodyBuilder.setTitle("THÀNH VIÊN");
-                SearchPanel panel = new SearchPanel();
-                panel.addViewOption("Tất cả", "Thủ thư", "Người đọc");
-                panel.addSortOption("Tên A-Z", "Tên Z-A", "Mã số 0-9", "Mã số 9-0");
-                bodyBuilder.setSearchPanel(panel.getPanel());
-                bodyBuilder.setContent(t);
+                MemberListView member = new MemberListView();
+                bodyBuilder.setSearchPanel(new MemberSearchPanel(member).getPanel());
+                bodyBuilder.setContent(member.getContent());
             }
             case MAIN_LIBRARY -> {
                 bodyBuilder.setTitle("THƯ VIỆN");
-                Button addBook = new Button("Thêm sách");
-                TilePane ti = new TilePane();
-                for (int i = 0; i < 20; i++) {
-                    DocumentCard m = new DocumentCard(new Document());
-                    ti.getChildren().add(m.getCard());
-                }
-                VBox t = new VBox(addBook, ti);
-                ti.setVgap(25);
-                ti.setHgap(25);
-                SearchPanel panel = new SearchPanel();
-                panel.addViewOption("Tất cả", "Sách", "Luận án");
-                panel.addSortOption("Tên A-Z", "Tên Z-A", "Mã số 0-9", "Mã số 9-0");
-                bodyBuilder.setSearchPanel(panel.getPanel());
-                bodyBuilder.setContent(t);
+                DocumentLibrary library = new DocumentLibrary();
+                bodyBuilder.setSearchPanel(new DocumentSearchPanel(library).getPanel());
+                bodyBuilder.setContent(library.getContent());
             }
             case MAIN_FEEDBACK -> {
-                bodyBuilder.setTitle("PHẢN HỒI");
+//                bodyBuilder.setTitle("PHẢN HỒI");
+//                SearchPanel panel = new SearchPanel();
+//                panel.addViewOption("Tất cả", "Chỉ quan trọng");
+//                panel.addSortOption("Mới nhất", "Cũ nhất");
+//                bodyBuilder.setSearchPanel(panel.getPanel());
+//                VBox t = new VBox();
+//                for (int i = 0; i < 20; i++) {
+//                    System.out.println(i);
+//                    FeedbackCard m = new FeedbackCard();
+//                    t.getChildren().add(m.getCard());
+//                }
+//                t.setSpacing(25);
+//                bodyBuilder.setContent(t);
             }
         }
         bodyBuilder.style();
@@ -80,6 +74,15 @@ public class BodyDirector {
         bodyBuilder.setTitle("Thông tin tài liệu");
         DocumentDetails dd = new DocumentDetails(doc);
         bodyBuilder.setContent(dd.getContent());
+        bodyBuilder.style();
+    }
+
+    public void createMemberDetailPanel(BodyBuilder bodyBuilder, User member) {
+        bodyBuilder.reset();
+        bodyBuilder.setType(BodyType.MEMBER_DETAIL);
+        bodyBuilder.setTitle("Thông tin thành viên");
+        UserDetails ud = new UserDetails(member);
+        bodyBuilder.setContent(ud.getContent());
         bodyBuilder.style();
     }
 }

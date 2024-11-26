@@ -17,7 +17,6 @@ import javafx.util.Duration;
 
 public class StyleCard {
     public static final Font titleFont = Font.font("Inter", FontWeight.BOLD, 20);
-    public static final Font contentFont = Font.font("Inter", 12);
     public static final Background bg = new Background(new BackgroundFill(Style.LIGHTGREEN,
             Style.SMALL_CORNER, Insets.EMPTY));
     public static void styleCard(Region region, double w, double h) {
@@ -35,6 +34,7 @@ public class StyleCard {
             t.setToY(0);
             t.play();
         });
+        Style.styleHoverEffect(region);
     }
 
     public static void styleTitle(Label title, double w) {
@@ -44,12 +44,6 @@ public class StyleCard {
     }
 
     public static void styleContent(Text content, double w) {
-        Style.styleWrapText(content, w, 12);
-    }
-
-    public static void styleImg(ImageView img , double w) {
-        img.setPreserveRatio(true);
-        img.setSmooth(true);
-        img.setFitWidth(w);
+        Style.styleWrapText(content, w, 16);
     }
 }

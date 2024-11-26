@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class UserDAO {
     private static UserDAO instance;
@@ -26,9 +27,9 @@ public class UserDAO {
         user.setAddress(rs.getString("address"));
         user.setPhone(rs.getString("phoneNumber"));
         user.setEmail(rs.getString("email"));
-        user.setSSN(rs.getString("socialSecurityNumber"));
-        user.setUserType(rs.getBoolean("userType"));
-        user.setUsername(rs.getString("userName"));
+        user.setSSN(rs.getString("ssn"));
+        user.setLibrarian(rs.getBoolean("isLibrarian"));
+        user.setAvatar(rs.getBlob("avatar"));
         return user;
     }
 
@@ -84,8 +85,7 @@ public class UserDAO {
             ps.setString(5, user.getPhone());
             ps.setString(6, user.getEmail());
             ps.setString(7, user.getSSN());
-            ps.setBoolean(8, user.isUserType());
-            ps.setString(9, user.getUsername());
+            ps.setBoolean(8, user.isLibrarian());
             //ps.setString(2, password);
             int rowAffected = ps.executeUpdate();
 
@@ -139,8 +139,7 @@ public class UserDAO {
             ps.setString(5, updated.getPhone());
             ps.setString(6, updated.getEmail());
             ps.setString(7, updated.getSSN());
-            ps.setBoolean(8, updated.isUserType());
-            ps.setString(9, updated.getUsername());
+            ps.setBoolean(8, updated.isLibrarian());
 
             ps.setInt(10, updated.getUID()); // Assuming Document has a method getId() to get the document ID
 
@@ -149,5 +148,9 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<User> searchUser(String text) {
+        return null;
     }
 }

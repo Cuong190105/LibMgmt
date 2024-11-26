@@ -6,17 +6,19 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.components.body.BodyType;
-import org.example.libmgmt.ui.components.body.Document;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.ui.director.PageDirector;
 import org.example.libmgmt.ui.page.Page;
 
 public class UIHandler {
     private static UIHandler ui;
-    private PageDirector pageDirector;
-    private PageBuilder pageBuilder;
+    private final PageDirector pageDirector;
+    private final PageBuilder pageBuilder;
     private Scene scene;
     private Page page;
 
@@ -29,14 +31,16 @@ public class UIHandler {
         if (ui == null) {
             ui = new UIHandler();
             ui.pageDirector.createStartupPage(ui.pageBuilder);
+//            switchToSection(BodyType.MAIN_MEMBER);
             ui.page = ui.pageBuilder.build();
             ui.scene = new Scene(ui.page.getContainer(), 800, 800);
             setVpartition(ui.page.getContainer(), 1);
             stage.setScene(ui.scene);
+            ui.scene.getStylesheets().add(LibMgmt.class.getResource("button.css").toExternalForm());
             stage.show();
             Timeline t = new Timeline(new KeyFrame(
                     Duration.millis(1000),
-                    e -> Animation.transitionToLogin(ui.pageDirector, ui.pageBuilder, ui.scene)
+                    _ -> Animation.transitionToLogin(ui.pageDirector, ui.pageBuilder, ui.scene)
             ));
             t.play();
         }
@@ -47,6 +51,7 @@ public class UIHandler {
     }
 
     public static void addPopup(Popup popup) {
+        ui.page.addPopUp(popup);
     }
 
     public static void switchToLogin() {
@@ -67,6 +72,17 @@ public class UIHandler {
     }
 
     public static void openDocDetail(Document doc) {
-        ui.pageDirector.createDocumentDetailPanel(ui.pageBuilder, doc);
+        ui.pageDirector.createDocumentDetailPage(ui.pageBuilder, doc);
+    }
+
+    public static void openMemberDetails(User member) {
+        ui.pageDirector.createMemberDetailPage(ui.pageBuilder, member);
+    }
+
+    public static void showAccountAction() {
+
+    }
+
+    public static void showNotificationPanel() {
     }
 }

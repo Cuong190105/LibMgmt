@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -20,6 +21,7 @@ public class Style {
     public static final CornerRadii TINY_CORNER = new CornerRadii(3);
     public static final Color DARKGREEN = Color.rgb(114, 191, 120);
     public static final Color LIGHTGREEN = Color.rgb(211, 238, 152);
+    public static final Color YELLOW = Color.rgb(254, 255, 159);
     public static final Color GRAY = Color.rgb(192, 192, 192);
     public static final Color WHITE = Color.WHITE;
     public static final Border debugBorder = new Border(new BorderStroke(
@@ -39,6 +41,7 @@ public class Style {
 
     public static void styleTextField(TextField tf, double w, double h,
                                       double size, String prompt) {
+        tf.setMaxWidth(w);
         tf.setPrefWidth(w);
         tf.setMinHeight(h);
         tf.setFont(Font.font(FONT, size));
@@ -53,11 +56,15 @@ public class Style {
         lb.setFont(Font.font(FONT, FontWeight.BOLD, size));
     }
 
-    public static void styleCircleButton(Button btn, double size, Background bg) {
+    public static void styleCircleButton(Button btn, double size) {
         btn.setMaxSize(size, size);
         btn.setMinSize(size, size);
+        btn.setShape(new Circle(size / 2));
+    }
+
+    public static void styleCircleButton(Button btn, double size, Background bg) {
+        styleCircleButton(btn, size);
         btn.setBackground(bg);
-        btn.setShape(new Circle(size/2));
     }
 
     public static void styleRoundedButton(Button btn, double w, double h) {
@@ -108,8 +115,12 @@ public class Style {
         region.setBorder(thicc);
     }
 
-    public static void styleWrapText(Text text, double w, double size) {
+    public static void styleText(Text text, double size) {
         text.setFont(Font.font(FONT, size));
+    }
+
+    public static void styleWrapText(Text text, double w, double size) {
+        styleText(text, size);
         text.setWrappingWidth(w);
     }
 
@@ -118,5 +129,11 @@ public class Style {
         text.setWrapText(true);
         text.setPrefWidth(w);
         text.setPromptText(prompt);
+    }
+
+    public static void styleImg(ImageView img, double w) {
+        img.setPreserveRatio(true);
+        img.setFitWidth(w);
+        img.setSmooth(true);
     }
 }

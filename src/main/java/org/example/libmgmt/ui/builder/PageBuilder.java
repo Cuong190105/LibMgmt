@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.components.body.Body;

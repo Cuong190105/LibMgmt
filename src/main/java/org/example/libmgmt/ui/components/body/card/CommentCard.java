@@ -1,4 +1,4 @@
-package org.example.libmgmt.ui.components.body;
+package org.example.libmgmt.ui.components.body.card;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -7,6 +7,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.LibMgmt;
+import org.example.libmgmt.ui.components.body.Comment;
+import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.style.Style;
 
 public class CommentCard {
@@ -19,8 +23,14 @@ public class CommentCard {
     private GridPane container;
 
     public CommentCard(Comment comment) {
-        User reader = new User(comment.getUserId());
-        this.avatar = new ImageView(new Image(reader.getAvatar()));
+        User reader = new User();
+        try {
+            this.avatar = new ImageView(new Image(reader.getAvatar()));
+        } catch (Exception e){
+            this.avatar = new ImageView(new Image(
+                    LibMgmt.class.getResourceAsStream("img/accountAction/user0123456.png")
+            ));
+        }
         avatarContainer = new VBox(avatar);
         this.name = new Label(reader.getName());
         this.commentDate = new Text(comment.getDate());
@@ -40,7 +50,6 @@ public class CommentCard {
         Style.styleWrapText(commentDate, 100, 12);
         Style.styleWrapText(comment, 600, 16);
         container.setHgap(25);
-        container.setVgap(5);
     }
 
     public GridPane getCard() {

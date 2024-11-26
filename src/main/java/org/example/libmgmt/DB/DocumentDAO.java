@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DocumentDAO {
     private static DocumentDAO instance;
-    private DocumentDAO() {};
+    private DocumentDAO() {}
 
     public static DocumentDAO getInstance() {
         if (instance == null) {
@@ -26,13 +26,13 @@ public class DocumentDAO {
             String sql = "INSERT INTO document (name, author, publisher, quantity, tags, visited, type, ISBN) "
                     + "VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement ps = db.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // query may generate A_I key
-            ps.setString(1, doc.getName());
+            ps.setString(1, doc.getTitle());
             ps.setString(2, doc.getAuthor());
             ps.setString(3, doc.getPublisher());
             ps.setInt(4, doc.getQuantity());
             ps.setString(5, doc.getTagsString());
             ps.setInt(6, doc.getVisited());
-            ps.setBoolean(7, doc.getType());
+            ps.setBoolean(7, doc.isThesis());
             ps.setString(8, doc.getISBN());
 
             int rowAffected = ps.executeUpdate();
@@ -67,13 +67,13 @@ public class DocumentDAO {
                     + "quantity = ?, tags = ?, visited = ?, type = ?, ISBN = ? WHERE docID = ?";
 
             PreparedStatement ps = db.prepareStatement(sql);
-            ps.setString(1, updated.getName());
+            ps.setString(1, updated.getTitle());
             ps.setString(2, updated.getAuthor());
             ps.setString(3, updated.getPublisher());
             ps.setInt(4, updated.getQuantity());
             ps.setString(5, updated.getTagsString());
             ps.setInt(6, updated.getVisited());
-            ps.setBoolean(7, updated.getType());
+            ps.setBoolean(7, updated.isThesis());
             ps.setString(8, updated.getISBN());
 
             ps.setInt(9, updated.getDocID()); // Assuming Document has a method getId() to get the document ID
@@ -89,38 +89,34 @@ public class DocumentDAO {
         }
     }
 
-    public List<Document> searchDocKey(String keyword) {
+    public List<Document> searchDocKey(String keyword) throws Exception {
         List<Document> documents = new ArrayList<>();
 
-        try {
-            Connection db = LibraryDB.getConnection();
-            String sql = "SELECT * FROM document WHERE name LIKE ?";
+        Connection db = LibraryDB.getConnection();
+        String sql = "SELECT * FROM document WHERE name LIKE ?";
 
-            PreparedStatement ps = db.prepareStatement(sql);
-            keyword = "%" + keyword + "%";//no 'quote'
-            ps.setString(1, keyword);
+        PreparedStatement ps = db.prepareStatement(sql);
+        keyword = "%" + keyword + "%";//no 'quote'
+        ps.setString(1, keyword);
 //            ps.setString(2, searchKeyword);
 //            ps.setString(3, searchKeyword);
 
-            ResultSet rs = ps.executeQuery();
+        ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                // Assuming Document has a constructor or setters to set fields
-                Document doc = new Document();
-                doc.setDocID(rs.getInt("docID"));
-                doc.setISBN(rs.getString("ISBN"));
-                doc.setName(rs.getString("name"));
-                doc.setAuthor(rs.getString("author"));
-                doc.setPublisher(rs.getString("publisher"));
-                doc.setQuantity(rs.getInt("quantity"));
-                doc.setTags(rs.getString("tags"));
-                doc.setVisited(rs.getInt("visited"));
-                doc.setType(rs.getBoolean("type"));
+        while (rs.next()) {
+            // Assuming Document has a constructor or setters to set fields
+            Document doc = new Document();
+            doc.setDocID(rs.getInt("docID"));
+            doc.setISBN(rs.getString("ISBN"));
+            doc.setTitle(rs.getString("name"));
+            doc.setAuthor(rs.getString("author"));
+            doc.setPublisher(rs.getString("publisher"));
+            doc.setQuantity(rs.getInt("quantity"));
+            doc.setTags(rs.getString("tags"));
+            doc.setVisited(rs.getInt("visited"));
+            doc.setThesis(rs.getBoolean("type"));
 
-                documents.add(doc);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            documents.add(doc);
         }
 
         return documents;
@@ -143,13 +139,13 @@ public class DocumentDAO {
                 Document doc = new Document();
                 doc.setDocID(rs.getInt("docID"));
                 doc.setISBN(rs.getString("ISBN"));
-                doc.setName(rs.getString("name"));
+                doc.setTitle(rs.getString("name"));
                 doc.setAuthor(rs.getString("author"));
                 doc.setPublisher(rs.getString("publisher"));
                 doc.setQuantity(rs.getInt("quantity"));
                 doc.setTags(rs.getString("tags"));
                 doc.setVisited(rs.getInt("visited"));
-                doc.setType(rs.getBoolean("type"));
+                doc.setThesis(rs.getBoolean("type"));
 
                 documents.add(doc);
             }
@@ -172,13 +168,13 @@ public class DocumentDAO {
                 doc = new Document();
                 doc.setDocID(rs.getInt("DocID"));
                 doc.setISBN(rs.getString("ISBN"));
-                doc.setName(rs.getString("Name"));
+                doc.setTitle(rs.getString("Name"));
                 doc.setAuthor(rs.getString("Author"));
                 doc.setPublisher(rs.getString("Publisher"));
                 doc.setQuantity(rs.getInt("Quantity"));
                 doc.setTags(rs.getString("Tags"));
                 doc.setVisited(rs.getInt("Visited"));
-                doc.setType(rs.getBoolean("Type"));
+                doc.setThesis(rs.getBoolean("Type"));
             }
 
         } catch(Exception e) {

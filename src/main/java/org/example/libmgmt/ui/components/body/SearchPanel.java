@@ -7,19 +7,20 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.style.Style;
 
-public class SearchPanel {
-    private TextField searchBox;
+public abstract class SearchPanel {
+    protected TextField searchBox;
+    protected ComboBox<String> viewOption;
+    protected ComboBox<String> sortingOption;
     private Label viewLabel;
-    private ComboBox<String> viewOption;
     private HBox viewContainer;
     private Label sortbyLabel;
-    private ComboBox<String> sortingOption;
     private HBox sortbyContainer;
     private GridPane panel;
 
@@ -38,13 +39,11 @@ public class SearchPanel {
         style();
     }
 
-    public void addViewOption(String... option) {
-        viewOption.getItems().addAll(option);
-    }
+    public abstract void setFunction();
 
-    public void addSortOption(String... option) {
-        sortingOption.getItems().addAll(option);
-    }
+    public abstract void addViewOption();
+
+    public abstract void addSortOption();
 
     public String getViewOption() {
         return viewOption.getValue();
@@ -73,22 +72,22 @@ public class SearchPanel {
         )));
         searchBox.setPadding(new Insets(0, 0, 0, 50));
 
-        Font labelFont = Font.font("Inter", 16);
+        Font labelFont = Font.font("Inter", 14);
         viewLabel.setFont(labelFont);
         sortbyLabel.setFont(labelFont);
 
         viewOption.setBackground(Background.EMPTY);
-        viewOption.setStyle("-fx-font: 16 Inter");
+        viewOption.setStyle("-fx-font: 14 Inter");
         sortingOption.setBackground(Background.EMPTY);
-        sortingOption.setStyle("-fx-font: 16 Inter");
+        sortingOption.setStyle("-fx-font: 14 Inter");
 
         viewContainer.setAlignment(Pos.CENTER_LEFT);
         sortbyContainer.setAlignment(Pos.CENTER_LEFT);
 
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
-        col1.setPercentWidth(50);
-        col2.setPercentWidth(50);
+        col1.setPercentWidth(40);
+        col2.setPercentWidth(60);
         panel.getColumnConstraints().addAll(col1, col2);
 
         panel.setVgap(10);

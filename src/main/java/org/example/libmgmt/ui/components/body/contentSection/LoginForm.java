@@ -1,0 +1,128 @@
+package org.example.libmgmt.ui.components.body.contentSection;
+
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import org.example.libmgmt.control.UserControl;
+import org.example.libmgmt.control.UIHandler;
+import org.example.libmgmt.ui.style.Style;
+import org.example.libmgmt.ui.style.StyleForm;
+
+import java.util.Random;
+
+public class LoginForm {
+    private TextField usrnField;
+    private PasswordField pwdField;
+    private Text warning;
+    private Button signInBtn;
+    private Button signUpBtn;
+    private VBox container;
+
+    public LoginForm() {
+        initializeElements();
+        setFunction();
+        styleForm();
+    }
+
+    private void initializeElements() {
+        usrnField = new TextField();
+        pwdField = new PasswordField();
+        warning = new Text();
+        signInBtn = new Button("Đăng nhập");
+        signUpBtn = new Button("Tạo tài khoản");
+        container = new VBox(usrnField, pwdField, warning, signInBtn, signUpBtn);
+    }
+
+    private void loginHandler() {
+        String username = usrnField.getText();
+        String password = pwdField.getText();
+        container.setDisable(true);
+        signInBtn.setText("Đang đăng nhập...");
+        int status = UserControl.authenticate(username, password);
+        if (status == UserControl.SUCCEED) {
+            UIHandler.gotoMain();
+            return;
+        }
+        container.setDisable(false);
+        warning.setManaged(true);
+        warning.setVisible(true);
+        signInBtn.setText("Đăng nhập");
+        switch (status) {
+            case UserControl.INVALID_CREDENTIALS ->
+                    warning.setText("Thông tin đăng nhập không chính xác.");
+            case UserControl.COULD_NOT_CONNECT ->
+                    warning.setText("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+            case UserControl.PASSWORD_NOT_MATCHES ->
+                    warning.setText("Mật khẩu không khớp với tên đăng nhập được cung cấp.");
+            case UserControl.USERNAME_NOT_EXISTS ->
+                    warning.setText("Tên đăng nhập không tồn tại.");
+        }
+    }
+
+    private void setFunction() {
+        signInBtn.setDisable(true);
+        container.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                loginHandler();
+            }
+        });
+
+        usrnField.setOnKeyReleased(key -> {
+            if (!key.getCode().equals(KeyCode.ENTER)) {
+                signInBtn.setDisable(usrnField.getText().isEmpty() || pwdField.getText().isEmpty());
+                if (warning.isVisible()) {
+                    warning.setVisible(false);
+                    warning.setManaged(false);
+                }
+            }
+        });
+
+        pwdField.setOnKeyReleased(key -> {
+            if (!key.getCode().equals(KeyCode.ENTER)) {
+                signInBtn.setDisable(usrnField.getText().isEmpty() || pwdField.getText().isEmpty());
+                if (warning.isVisible()) {
+                    warning.setVisible(false);
+                    warning.setManaged(false);
+                }
+            }
+        });
+
+        signUpBtn.setOnKeyReleased(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                UIHandler.switchToSignUp();
+            }
+        });
+
+        signInBtn.setOnMousePressed(_ -> loginHandler());
+        signUpBtn.setOnMousePressed(_ -> UIHandler.switchToSignUp());
+    }
+
+    private void styleForm() {
+        warning.setVisible(false);
+        warning.setManaged(false);
+        StyleForm.styleWarning(warning);
+        warning.setTextAlignment(TextAlignment.CENTER);
+
+        Style.styleTextField(usrnField, 550, 100, 32, "Tên đăng nhập");
+        Style.styleTextField(pwdField, 550, 100, 32, "Mật khẩu");
+
+        Style.styleRoundedButton(signInBtn, Style.DARKGREEN, 200, 50, 24);
+        Style.styleRoundedButton(signUpBtn, Color.TRANSPARENT, 200, 50, 24);
+
+        container.setSpacing(25);
+        container.setAlignment(Pos.CENTER);
+        container.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+    }
+
+    public VBox getLoginForm() {
+        return container;
+    }
+}

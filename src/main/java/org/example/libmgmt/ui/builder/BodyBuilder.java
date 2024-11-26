@@ -2,7 +2,6 @@ package org.example.libmgmt.ui.builder;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -17,7 +16,7 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
     private Label sectionTitle;
     private HBox subsectionList;
     private GridPane searchPanel;
-    private ScrollPane content;
+    private Region content;
     private VBox container;
 
     public BodyBuilder() {
@@ -56,8 +55,8 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
     }
 
     @Override
-    public void setContent(Parent content) {
-        this.content.setContent(content);
+    public void setContent(Region content) {
+        this.content = content;
     }
 
     @Override
@@ -66,16 +65,16 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
         VBox.setMargin(sectionTitle, new Insets(25, 25, 0, 25));
         VBox.setMargin(content, new Insets(0, 25, 25, 25));
 
-        content.setFitToWidth(true);
-        content.setPrefViewportWidth(Region.USE_PREF_SIZE);
+//        content.setPrefViewportWidth(Region.USE_PREF_SIZE);
         content.getStylesheets().add(LibMgmt.class.getResource("viewport.css").toExternalForm());
+        VBox.setVgrow(content, Priority.ALWAYS);
 
         Style.styleShadowBorder(container);
         BackgroundFill bgF = new BackgroundFill(Color.WHITE, Style.BIG_CORNER, Insets.EMPTY);
         container.setBackground(new Background(bgF));
-        container.setSpacing(10);
-        if (content.getContent() != null) {
-            ((Region) content.getContent()).setPadding(new Insets(10, 0, 10, 0));
+//        container.setSpacing(10);
+        if (content != null) {
+            content.setPadding(new Insets(10, 0, 10, 0));
         }
         switch (bodyType) {
             case AUTHENTICATION -> {
@@ -85,8 +84,10 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
                 container.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
             }
             case MAIN -> {
+                content.prefWidthProperty().bind(container.widthProperty());
                 container.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 container.setAlignment(Pos.TOP_LEFT);
+//                Style.setDebugBorder(content);
             }
         }
     }

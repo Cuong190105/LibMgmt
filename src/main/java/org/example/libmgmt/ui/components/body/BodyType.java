@@ -9,5 +9,5 @@ public enum BodyType {
     MAIN_FEEDBACK,
     MAIN_MEMBER,
     MAIN_LIBRARY,
-    DOC_DETAIL,
+    DOC_DETAIL, MEMBER_DETAIL,
 }

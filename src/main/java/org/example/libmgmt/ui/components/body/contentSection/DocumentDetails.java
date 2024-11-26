@@ -1,24 +1,28 @@
-package org.example.libmgmt.ui.components.body;
+package org.example.libmgmt.ui.components.body.contentSection;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import org.example.libmgmt.LibMgmt;
+import org.example.libmgmt.control.UserControl;
+import org.example.libmgmt.ui.components.body.Comment;
+import org.example.libmgmt.ui.components.body.card.CommentCard;
+import org.example.libmgmt.DB.Document;
+import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.style.Style;
 
-import java.util.concurrent.Flow;
-
-import static org.example.libmgmt.control.MainControl.thisUser;
+import static java.util.stream.Collectors.joining;
 
 public class DocumentDetails {
     private final Label authorsLabel = new Label("Tác giả");
@@ -34,8 +38,10 @@ public class DocumentDetails {
     private Text publisher;
     private Text description;
     private Text tags;
-    private Button readDocument;
+    private Button preview;
     private Button borrowDocument;
+    private Button editDocument;
+    private Button removeDocument;
     private GridPane infoTable;
     private FlowPane detailContainer;
 
@@ -56,22 +62,40 @@ public class DocumentDetails {
     private Label commentsLabel;
     private VBox comments;
     private VBox container;
+    private ScrollPane wrapper;
 
+    /**
+     * Creates a new document.
+     */
     public DocumentDetails(Document doc) {
         this.doc = doc;
-        cover = new ImageView(new Image(doc.getCover()));
+        try {
+            cover = new ImageView(new Image(doc.getCover()));
+        } catch (Exception e) {
+            cover = new ImageView(new Image(
+                    LibMgmt.class.getResourceAsStream("img/bookCoverPlaceholder.png")
+            ));
+        }
         title = new Label(doc.getTitle());
-        authors = new Text(doc.getAuthors());
+        authors = new Text(doc.getAuthor());
         publisher = new Text(doc.getPublisher());
         description = new Text(doc.getDescription());
-        tags = new Text(doc.getTags());
-        readDocument = new Button("Đọc trực tuyến");
-        borrowDocument = new Button("Mượn sách");
+        tags = new Text(doc.getTags().stream().collect(joining(", ")));
+        preview = new Button("Xem trước");
         infoTable = new GridPane();
         infoTable.add(title, 0, 0, 2, 1);
         infoTable.addColumn(0, authorsLabel, publisherLabel,
-                tagsLabel, descriptionLabel, readDocument);
-        infoTable.addColumn(1, authors, publisher, tags, description, borrowDocument);
+                tagsLabel, descriptionLabel, preview);
+        infoTable.addColumn(1, authors, publisher, tags, description);
+        if (UserControl.getUser().isLibrarian()) {
+            removeDocument = new Button("Xóa tài liệu");
+            editDocument = new Button("Chỉnh sửa");
+            infoTable.addColumn(0, removeDocument);
+            infoTable.addColumn(1, editDocument);
+        } else {
+            borrowDocument = new Button("Mượn tài liệu");
+            infoTable.addColumn(1, borrowDocument);
+        }
         detailContainer = new FlowPane(cover, infoTable);
         commentsLoaded = 0;
         setSummaryAndUserCritics();
@@ -81,6 +105,7 @@ public class DocumentDetails {
         loadComment();
         container = new VBox(detailContainer, ratingSectionTitle,
                 summaryAndUserCritics, commentsLabel, comments);
+        wrapper = new ScrollPane(container);
         setFunction();
         style();
     }
@@ -178,9 +203,9 @@ public class DocumentDetails {
         Style.styleWrapText(tags, 400, 16);
         Style.styleWrapText(description, 400, 16);
 
-        Style.styleRoundedButton(readDocument, Style.LIGHTGREEN, 200, 50, 20);
+        Style.styleRoundedButton(preview, Style.LIGHTGREEN, 200, 50, 20);
         Style.styleRoundedButton(borrowDocument, Style.DARKGREEN, 200, 50, 20);
-        GridPane.setMargin(readDocument, new Insets(30, 0, 0, 0));
+        GridPane.setMargin(preview, new Insets(30, 0, 0, 0));
         GridPane.setMargin(borrowDocument, new Insets(30, 0, 0, 0));
         detailContainer.setPadding(new Insets(0,0,0,50));
         detailContainer.setHgap(150);
@@ -203,7 +228,7 @@ public class DocumentDetails {
 
         Style.styleTitle(userCriticsLabel, 24);
         userCritics.setSpacing(10);
-        if (thisUser.hasRead(doc.getDocId())) {
+        if (/*thisUser.hasRead(doc.getDocId())*/true) {
             Style.styleTextArea(userComment, 500, 16,
                     "Nhập đánh giá của bạn (Tối đa 500 kí tự).");
         } else {
@@ -232,7 +257,7 @@ public class DocumentDetails {
         container.setSpacing(20);
     }
 
-    public VBox getContent() {
-        return container;
+    public ScrollPane getContent() {
+        return wrapper;
     }
 }

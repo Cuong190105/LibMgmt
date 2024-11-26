@@ -11,7 +11,7 @@ import org.example.libmgmt.ui.style.Style;
 import static javafx.scene.paint.Color.BLACK;
 
 public class Star {
-    public static final double[] vertices = {
+    private static final double[] vertices = {
             10, 0,
             12.06, 6.34,
             20, 6.34,

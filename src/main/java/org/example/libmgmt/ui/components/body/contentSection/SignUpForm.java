@@ -1,16 +1,17 @@
-package org.example.libmgmt.ui.components.body;
+package org.example.libmgmt.ui.components.body.contentSection;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import org.example.libmgmt.control.Validator;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.components.Popup;
+import org.example.libmgmt.ui.components.body.DateGroup;
 import org.example.libmgmt.ui.style.Style;
 import org.example.libmgmt.ui.style.StyleForm;
 
@@ -28,15 +29,14 @@ public class SignUpForm {
     private Button signUpBtn;
     private Button signInBtn;
     private ComboBox<String> genderField;
-    private GridPane birthdateContainer;
-    private TextField dayField;
-    private ComboBox<String> monthField;
-    private TextField yearField;
+    private DateGroup birthdate;
     private Text usrnNote;
     private Text pwdNote;
     private Text retypePwdNote;
     private Text birthdateNote;
     private VBox buttonContainer;
+    private VBox wrapper;
+    private ScrollPane scrollPane;
     private VBox container;
 
     public SignUpForm() {
@@ -62,34 +62,7 @@ public class SignUpForm {
                 "Nữ",
                 "Khác"
         );
-        dayField = new TextField();
-        monthField = new ComboBox<>();
-        monthField.getItems().addAll(
-                "Tháng 1",
-                "Tháng 2",
-                "Tháng 3",
-                "Tháng 4",
-                "Tháng 5",
-                "Tháng 6",
-                "Tháng 7",
-                "Tháng 8",
-                "Tháng 9",
-                "Tháng 10",
-                "Tháng 11",
-                "Tháng 12"
-        );
-        yearField = new TextField();
-        birthdateContainer = new GridPane();
-        birthdateContainer.add(dayField, 0, 0);
-        birthdateContainer.add(monthField, 1, 0);
-        birthdateContainer.add(yearField, 2, 0);
-        ColumnConstraints c0 = new ColumnConstraints(),
-                c1 = new ColumnConstraints(),
-                c2 = new ColumnConstraints();
-        c0.setPercentWidth(25);
-        c1.setPercentWidth(40);
-        c2.setPercentWidth(35);
-        birthdateContainer.getColumnConstraints().addAll(c0, c1, c2);
+        birthdate = new DateGroup();
         signUpBtn = new Button("Đăng ký");
         signInBtn = new Button("Đã có tài khoản?");
         buttonContainer = new VBox(signUpBtn, signInBtn);
@@ -99,37 +72,35 @@ public class SignUpForm {
                 "chỉ chứa chữ cái, chữ số, và các kí tự thường dùng.");
         retypePwdNote = new Text("Mật khẩu không khớp với mật khẩu đã nhập.");
         birthdateNote = new Text("Vui lòng nhập ngày sinh hợp lệ.");
-        container = new VBox(nameLabel, nameField,
+        wrapper = new VBox(nameLabel, nameField,
                 usrnLabel, usrnField, usrnNote,
                 pwdLabel, pwdField, pwdNote,
                 retypePwdLabel, retypePwdField, retypePwdNote,
                 genderLabel, genderField,
-                birthdateLabel, birthdateContainer, birthdateNote,
-                buttonContainer);
+                birthdateLabel, birthdate.getContent(), birthdateNote
+        );
+        scrollPane = new ScrollPane(wrapper);
+        container = new VBox(scrollPane, buttonContainer);
     }
 
     private void disableSubmitOnBlankForm() {
-        if (nameField.getText().isEmpty()
+        signUpBtn.setDisable(nameField.getText().isEmpty()
                 || usrnField.getText().isEmpty()
                 || pwdField.getText().isEmpty()
                 || retypePwdField.getText().isEmpty()
-                || dayField.getText().isEmpty()
-                || yearField.getText().isEmpty()
-                || genderField.getValue() == null
-                || monthField.getValue() == null) {
-            signUpBtn.setDisable(true);
-        } else {
-            signUpBtn.setDisable(false);
-        }
+                || birthdate.getDay().isEmpty()
+                || birthdate.getMonth().compareTo("Tháng") == 0
+                || birthdate.getYear().isEmpty()
+                || genderField.getValue() == null);
     }
 
     private int validateInfo() {
         String username = usrnField.getText();
         String password = pwdField.getText();
         String retypePassword = retypePwdField.getText();
-        String day = dayField.getText();
-        String month = monthField.getValue();
-        String year = yearField.getText();
+        String day = birthdate.getDay();
+        String month = birthdate.getMonth();
+        String year = birthdate.getYear();
 
         int status = 0;
 
@@ -155,6 +126,41 @@ public class SignUpForm {
         }
     }
 
+    private void signUpHandler() {
+        container.setDisable(true);
+        signUpBtn.setText("Đang đăng ký...");
+        int status = validateInfo();
+        if (status == 0) {
+            Popup p = new Popup("Đăng ký thành công!",
+                    "Bấm OK để quay lại đăng nhập.");
+            p.addOkBtn();
+            UIHandler.addPopup(p);
+        } else {
+            signUpBtn.setText("Đăng ký");
+            container.setDisable(false);
+            if ((status & 1) == 1) {
+                Style.setFieldWarningBorder(usrnField);
+                usrnNote.setVisible(true);
+                usrnNote.setManaged(true);
+            }
+            if ((status & 2) == 2) {
+                Style.setFieldWarningBorder(pwdField);
+                pwdNote.setVisible(true);
+                pwdNote.setManaged(true);
+            }
+            if ((status & 4) == 4) {
+                Style.setFieldWarningBorder(retypePwdField);
+                retypePwdNote.setVisible(true);
+                retypePwdNote.setManaged(true);
+            }
+            if ((status & 8) == 8) {
+                birthdate.toggleWarningBorder(true);
+                birthdateNote.setVisible(true);
+                birthdateNote.setManaged(true);
+            }
+        }
+    }
+
     private void setFunction() {
         usrnNote.setVisible(false);
         usrnNote.setManaged(false);
@@ -166,11 +172,12 @@ public class SignUpForm {
         birthdateNote.setManaged(false);
         signUpBtn.setDisable(true);
 
-        nameField.setOnKeyTyped(e -> {
+        nameField.setOnKeyTyped(_ -> {
             disableSubmitOnBlankForm();
             trimText(nameField, 50);
         });
-        usrnField.setOnKeyTyped(e -> {
+
+        usrnField.setOnKeyTyped(_ -> {
             disableSubmitOnBlankForm();
             trimText(usrnField, 30);
             if (usrnNote.isVisible()) {
@@ -179,7 +186,8 @@ public class SignUpForm {
                 usrnNote.setManaged(false);
             }
         });
-        pwdField.setOnKeyTyped(e -> {
+
+        pwdField.setOnKeyTyped(_ -> {
             disableSubmitOnBlankForm();
             trimText(pwdField, 50);
             if (pwdNote.isVisible()) {
@@ -188,7 +196,8 @@ public class SignUpForm {
                 pwdNote.setManaged(false);
             }
         });
-        retypePwdField.setOnKeyTyped(e -> {
+
+        retypePwdField.setOnKeyTyped(_ -> {
             disableSubmitOnBlankForm();
             trimText(retypePwdField, 50);
             if (retypePwdNote.isVisible()) {
@@ -197,75 +206,35 @@ public class SignUpForm {
                 retypePwdNote.setManaged(false);
             }
         });
-        dayField.setOnKeyTyped(e -> {
-            disableSubmitOnBlankForm();
-            trimText(dayField, 2);
-            if (birthdateNote.isVisible()) {
-                dayField.setBorder(null);
-                monthField.setBorder(null);
-                yearField.setBorder(null);
-                birthdateNote.setVisible(false);
-                birthdateNote.setManaged(false);
-            }
-        });
-        yearField.setOnKeyTyped(e -> {
-            disableSubmitOnBlankForm();
-            trimText(yearField, 4);
-            if (birthdateNote.isVisible()) {
-                dayField.setBorder(null);
-                monthField.setBorder(null);
-                yearField.setBorder(null);
-                birthdateNote.setVisible(false);
-                birthdateNote.setManaged(false);
-            }
-        });
-        genderField.setOnAction(e -> {
-            disableSubmitOnBlankForm();
-        });
-        monthField.setOnAction(e -> {
+
+        birthdate.setFunction(() -> {
             disableSubmitOnBlankForm();
             if (birthdateNote.isVisible()) {
-                dayField.setBorder(null);
-                monthField.setBorder(null);
-                yearField.setBorder(null);
                 birthdateNote.setVisible(false);
                 birthdateNote.setManaged(false);
+                birthdate.toggleWarningBorder(false);
             }
+            return 0;
+        });
+
+        genderField.setOnAction(_ -> {
+            disableSubmitOnBlankForm();
+            genderField.show();
         });
 
         signUpBtn.setOnMousePressed(_ -> {
-            container.setDisable(true);
-            signUpBtn.setText("Đang đăng ký...");
-            int status = validateInfo();
-            if (status == 0) {
-                Popup p = new Popup("Đăng ký thành công!",
-                        "Bấm OK để quay lại đăng nhập.");
-                p.addOkBtn();
-                UIHandler.addPopup(p);
-            } else {
-                container.setDisable(false);
-                if ((status & 1) == 1) {
-                    Style.setFieldWarningBorder(usrnField);
-                    usrnNote.setVisible(true);
-                    usrnNote.setManaged(true);
-                }
-                if ((status & 2) == 2) {
-                    Style.setFieldWarningBorder(pwdField);
-                    pwdNote.setVisible(true);
-                    pwdNote.setManaged(true);
-                }
-                if ((status & 4) == 4) {
-                    Style.setFieldWarningBorder(retypePwdField);
-                    retypePwdNote.setVisible(true);
-                    retypePwdNote.setManaged(true);
-                }
-                if ((status & 8) == 8) {
-                    Style.setFieldWarningBorder(dayField);
-                    Style.setFieldWarningBorder(monthField);
-                    Style.setFieldWarningBorder(yearField);
-                    birthdateNote.setVisible(true);
-                    birthdateNote.setManaged(true);
-                }
+            signUpHandler();
+        });
+
+        signUpBtn.setOnKeyPressed(key -> {
+            if (key.getCode().equals(KeyCode.ENTER)) {
+                signUpHandler();
+            }
+        });
+
+        signInBtn.setOnKeyPressed(key -> {
+            if (key.getCode().equals(KeyCode.ENTER)) {
+                UIHandler.switchToLogin();
             }
         });
 
@@ -276,13 +245,11 @@ public class SignUpForm {
 
     private void styleForm() {
         Font labelFont = Font.font("Inter", FontWeight.BOLD, 20);
-        Insets textboxInset = new Insets(0, 25, 0, 25);
-        Style.styleTextField(nameField, 550, 50, 24, "");
-        Style.styleTextField(usrnField, 550, 50, 24, "");
-        Style.styleTextField(pwdField, 550, 50, 24, "");
-        Style.styleTextField(retypePwdField, 550, 50, 24, "");
-        Style.styleTextField(dayField, 550, 50, 24, "Ngày");
-        Style.styleTextField(yearField, 550, 50, 24, "Năm");
+        Style.styleTextField(nameField, 550, 50, 16, "");
+        Style.styleTextField(usrnField, 550, 50, 16, "");
+        Style.styleTextField(pwdField, 550, 50, 16, "");
+        Style.styleTextField(retypePwdField, 550, 50, 16, "");
+        birthdate.style(550);
 
         nameLabel.setFont(labelFont);
         usrnLabel.setFont(labelFont);
@@ -292,7 +259,6 @@ public class SignUpForm {
         birthdateLabel.setFont(labelFont);
 
         StyleForm.styleComboBox(genderField, 550, 50, 24, "");
-        StyleForm.styleComboBox(monthField, 550, 50, 24, "Tháng");
 
         Style.styleRoundedButton(signUpBtn, 200, 50);
         signUpBtn.setBackground(new Background(new BackgroundFill(Style.DARKGREEN,
@@ -310,14 +276,12 @@ public class SignUpForm {
         StyleForm.styleWarning(retypePwdNote);
         StyleForm.styleWarning(birthdateNote);
 
-        birthdateContainer.setMaxWidth(550);
-        birthdateContainer.setHgap(10);
         VBox.setMargin(buttonContainer, new Insets(15, 0, 0, 0));
-        HBox.setHgrow(dayField, Priority.ALWAYS);
-        HBox.setHgrow(monthField, Priority.ALWAYS);
-        HBox.setHgrow(yearField, Priority.ALWAYS);
-        container.setSpacing(10);
-        container.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        wrapper.setSpacing(10);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        scrollPane.setFitToWidth(true);
+        buttonContainer.setSpacing(10);
+        container.setMaxWidth(Region.USE_PREF_SIZE);
     }
 
     public VBox getForm() {
