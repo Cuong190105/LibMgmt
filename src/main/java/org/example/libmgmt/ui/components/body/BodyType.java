@@ -1,7 +1,6 @@
 package org.example.libmgmt.ui.components.body;
 
 public enum BodyType {
-    STARTUP,
     AUTHENTICATION,
     MAIN,
     MAIN_DASHBOARD,
@@ -9,5 +8,4 @@ public enum BodyType {
     MAIN_FEEDBACK,
     MAIN_MEMBER,
     MAIN_LIBRARY,
-    DOC_DETAIL, MEMBER_DETAIL,
 }
