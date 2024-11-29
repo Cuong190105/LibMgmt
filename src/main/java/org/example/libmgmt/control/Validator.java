@@ -1,6 +1,11 @@
 package org.example.libmgmt.control;
 
+import org.example.libmgmt.DB.Account;
+import org.example.libmgmt.DB.AccountDAO;
+import org.example.libmgmt.DB.UserDAO;
+
 import java.time.Year;
+import java.util.Objects;
 
 public class Validator {
     public static final int SUCCEED = 0;
@@ -15,10 +20,21 @@ public class Validator {
         for (int j = 0; j < 1000000; j++) {
             i += 2;
         }
-        if (!isValidUsername(username) || !isValidPassword(password)) {
+        if (!isValidUsernameAndPassword(username, password)) {
             return INVALID_CREDENTIALS;
         }
         return SUCCEED;
+    }
+
+    public static boolean isValidUsernameAndPassword(String username, String password) {
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        Account acc = accountDAO.getAccountFromUsername(username);
+        if (acc == null || !Objects.equals(acc.getPassword(), password)) {
+            return false;
+        }
+
+        return username.length() <= 30 && username.matches("\\A([a-zA-Z0-9_.]+){6,}\\z")
+                && password.length() <= 50 && password.matches("\\A([!-~]+){8,}\\z");
     }
 
     public static boolean isValidPassword(String password) {
@@ -60,5 +76,10 @@ public class Validator {
                 limit = 30;
         }
         return Integer.parseInt(day) <= limit;
+    }
+
+    public static boolean isUsernameExisted(String username) {
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        return accountDAO.getAccountFromUsername(username) != null;
     }
 }

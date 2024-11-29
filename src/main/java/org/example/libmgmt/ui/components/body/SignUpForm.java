@@ -8,11 +8,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.example.libmgmt.DB.Account;
+import org.example.libmgmt.DB.AccountDAO;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
 import org.example.libmgmt.control.Validator;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.style.Style;
 import org.example.libmgmt.ui.style.StyleForm;
+
+import java.sql.Date;
 
 public class SignUpForm {
     private Label nameLabel;
@@ -145,6 +151,9 @@ public class SignUpForm {
         if (!Validator.isValidDate(day, month, year)) {
             status |= 8;
         }
+        if (Validator.isUsernameExisted(username)) {
+            status |= 16;
+        }
         return status;
     }
 
@@ -238,6 +247,7 @@ public class SignUpForm {
             signUpBtn.setText("Đang đăng ký...");
             int status = validateInfo();
             if (status == 0) {
+                addAccountToDB();
                 Popup p = new Popup("Đăng ký thành công!",
                         "Bấm OK để quay lại đăng nhập.");
                 p.addOkBtn();
@@ -265,6 +275,9 @@ public class SignUpForm {
                     Style.setFieldWarningBorder(yearField);
                     birthdateNote.setVisible(true);
                     birthdateNote.setManaged(true);
+                }
+                if ((status & 16) == 16) {
+
                 }
             }
         });
@@ -322,5 +335,28 @@ public class SignUpForm {
 
     public VBox getForm() {
         return container;
+    }
+
+    public void addAccountToDB() {
+        Account acc = new Account();
+        User user = new User();
+        user.setName(nameField.getText());
+        user.setSex(genderField.getValue());
+        String dob = String.format("%04d-%02d-%02d",
+                Integer.parseInt(yearField.getText()),
+                Integer.parseInt(monthField.getValue().substring(6)),
+                Integer.parseInt(dayField.getText()));
+        user.setDob(Date.valueOf(dob));
+
+        UserDAO userDAO = UserDAO.getInstance();
+        int UID = userDAO.addUser(user);
+        user.setUID(UID);
+
+        acc.setUID(UID);
+        acc.setUsername(usrnField.getText());
+        acc.setPassword(pwdField.getText());
+
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        accountDAO.addAccount(acc);
     }
 }

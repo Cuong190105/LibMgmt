@@ -1,11 +1,11 @@
 package org.example.libmgmt.DB;
 
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.Objects;
 
 public class User {
     private int UID;
-    private String username;
     private String address;
     private Date dob;
     private String email;
@@ -13,14 +13,13 @@ public class User {
     private String sex;
     private String phone;
     private String SSN;
-    private boolean userType;
-
+    private boolean isLibrarian;
+    private InputStream avatar;
 
     public User() {
     }
 
-    public User(String username, String address, Date dob, String email, String name, String sex, String phone, String SSN, boolean userType) {
-        this.username = username;
+    public User(String address, Date dob, String email, String name, String sex, String phone, String SSN, boolean isLibrarian) {
         this.address = address;
         this.dob = dob;
         this.email = email;
@@ -28,7 +27,7 @@ public class User {
         this.sex = sex;
         this.phone = phone;
         this.SSN = SSN;
-        this.userType = userType;
+        this.isLibrarian = isLibrarian;
     }
 
     public int getUID() {
@@ -37,14 +36,6 @@ public class User {
 
     public void setUID(int UID) {
         this.UID = UID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getAddress() {
@@ -103,12 +94,12 @@ public class User {
         this.SSN = SSN;
     }
 
-    public boolean isUserType() {
-        return userType;
+    public boolean isLibrarian() {
+        return isLibrarian;
     }
 
-    public void setUserType(boolean userType) {
-        this.userType = userType;
+    public void setLibrarian(boolean librarian) {
+        this.isLibrarian = librarian;
     }
 
     @Override
@@ -117,7 +108,6 @@ public class User {
         if (obj == null || getClass() != obj.getClass()) return false;
         User user = (User) obj;
         return UID == user.UID &&
-                Objects.equals(username, user.username) &&
                 Objects.equals(address, user.address) &&
                 dob.equals(user.dob) &&
                 Objects.equals(email, user.email) &&
@@ -125,6 +115,6 @@ public class User {
                 Objects.equals(sex, user.sex) &&
                 Objects.equals(phone, user.phone) &&
                 Objects.equals(SSN, user.SSN) &&
-                userType == user.userType;
+                isLibrarian == user.isLibrarian;
     }
 }

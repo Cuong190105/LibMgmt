@@ -3,6 +3,7 @@ package org.example.libmgmt.ui.director;
 import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.ui.builder.BodyBuilder;
 import org.example.libmgmt.ui.components.body.*;
 
@@ -50,6 +51,7 @@ public class BodyDirector {
                 bodyBuilder.setSearchPanel(panel.getPanel());
                 bodyBuilder.setContent(t);
             }
+
             case MAIN_LIBRARY -> {
                 bodyBuilder.setTitle("THƯ VIỆN");
                 Button addBook = new Button("Thêm sách");

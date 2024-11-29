@@ -20,8 +20,8 @@ public class UserTest {
     @BeforeEach
     public void reset() throws Exception{
         sampleUsers = new ArrayList<>();
-        sampleUsers.add(new User("kimhoho", "29 Cau Giay", Date.valueOf("2000-05-05"), "abs@gmail.com", "Do Trung", "Male", "0987666321", "23020085", false));
-        sampleUsers.add(new User("kimono", "29 Xuan Thuy", Date.valueOf("2004-05-05"), "absddsd@gmail.com", "Akiko", "Female", "0987666321", "23020185", false));
+        sampleUsers.add(new User("29 Cau Giay", Date.valueOf("2000-05-05"), "abs@gmail.com", "Do Trung", "Male", "0987666321", "23020085", false));
+        sampleUsers.add(new User("29 Xuan Thuy", Date.valueOf("2004-05-05"), "absddsd@gmail.com", "Akiko", "Female", "0987666321", "23020185", false));
         userDAO = UserDAO.getInstance();
         LibraryDB.setTesting();
 
@@ -39,8 +39,9 @@ public class UserTest {
                 `Email` varchar(255) DEFAULT NULL,
                 `SocialSecurityNumber` varchar(50) DEFAULT NULL,
                 `UserType` varchar(50) DEFAULT NULL,
-                `Username` varchar(255) NOT NULL
+                `Avatar` mediumblob DEFAULT NULL
                 )""";
+
         db.prepareStatement(createTableSQL).execute();
 
         // Clear table data and reset AUTO_INCREMENT to 1

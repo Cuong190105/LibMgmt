@@ -72,4 +72,16 @@ public class AccountDAO {
             e.printStackTrace();
         }
     }
+
+    public void deleteAccount(int UID) {
+        try {
+            Connection db = AccountDB.getConnection();
+            String sql = "DELETE FROM account where UID = ?";
+            PreparedStatement ps = db.prepareStatement(sql);
+            ps.setInt(1,UID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

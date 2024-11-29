@@ -4,7 +4,7 @@ import org.example.libmgmt.ui.builder.BodyBuilder;
 import org.example.libmgmt.ui.builder.HeaderBuilder;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.body.BodyType;
-import org.example.libmgmt.ui.components.body.Document;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.ui.page.PageType;
 
 import static org.example.libmgmt.ui.components.body.BodyType.MAIN_DASHBOARD;

@@ -27,8 +27,7 @@ public class UserDAO {
         user.setPhone(rs.getString("phoneNumber"));
         user.setEmail(rs.getString("email"));
         user.setSSN(rs.getString("socialSecurityNumber"));
-        user.setUserType(rs.getBoolean("userType"));
-        user.setUsername(rs.getString("userName"));
+        user.setLibrarian(rs.getBoolean("userType"));
         return user;
     }
 
@@ -51,31 +50,31 @@ public class UserDAO {
         return user;
     }
 
-    public User getUserFromUsername(String username) {
-        User user = null;
-        try {
-            Connection db = LibraryDB.getConnection();
-            String sql = "SELECT * FROM user WHERE username = ?";
-            PreparedStatement ps = db.prepareStatement(sql);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = extractUser(rs);
-                //user.setPassword(rs.getString("password"));
-            }
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
+//    public User getUserFromUsername(String username) {
+//        User user = null;
+//        try {
+//            Connection db = LibraryDB.getConnection();
+//            String sql = "SELECT * FROM user WHERE username = ?";
+//            PreparedStatement ps = db.prepareStatement(sql);
+//            ps.setString(1, username);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                user = extractUser(rs);
+//                //user.setPassword(rs.getString("password"));
+//            }
+//
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        }
+//        return user;
+//    }
 
     public int addUser(User user) {
         int userUID = 0;
 
         try {
             Connection db = LibraryDB.getConnection();
-            String sql = "INSERT INTO user (name, sex, DOB, address, phoneNumber, email, socialSecurityNumber, userType, userName) VALUES (?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO user (name, sex, DOB, address, phoneNumber, email, socialSecurityNumber, userType) VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement ps = db.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // query may generate A_I key
             ps.setString(1, user.getName());
             ps.setString(2, user.getSex());
@@ -84,8 +83,8 @@ public class UserDAO {
             ps.setString(5, user.getPhone());
             ps.setString(6, user.getEmail());
             ps.setString(7, user.getSSN());
-            ps.setBoolean(8, user.isUserType());
-            ps.setString(9, user.getUsername());
+            ps.setBoolean(8, user.isLibrarian());
+
             //ps.setString(2, password);
             int rowAffected = ps.executeUpdate();
 
@@ -129,7 +128,7 @@ public class UserDAO {
         try {
             Connection db = LibraryDB.getConnection();
             String sql = "UPDATE user SET name = ?, sex = ?, dob = ?, "
-                    + "address = ?, phoneNumber = ?, email = ?, socialSecurityNumber = ?, userType = ?, userName = ? WHERE UID = ?";
+                    + "address = ?, phoneNumber = ?, email = ?, socialSecurityNumber = ?, userType = ? WHERE UID = ?";
 
             PreparedStatement ps = db.prepareStatement(sql);
             ps.setString(1, updated.getName());
@@ -139,10 +138,8 @@ public class UserDAO {
             ps.setString(5, updated.getPhone());
             ps.setString(6, updated.getEmail());
             ps.setString(7, updated.getSSN());
-            ps.setBoolean(8, updated.isUserType());
-            ps.setString(9, updated.getUsername());
-
-            ps.setInt(10, updated.getUID()); // Assuming Document has a method getId() to get the document ID
+            ps.setBoolean(8, updated.isLibrarian());
+            ps.setInt(9, updated.getUID()); // Assuming Document has a method getId() to get the document ID
 
             int rowAffected = ps.executeUpdate();
 

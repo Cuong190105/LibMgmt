@@ -9,7 +9,7 @@ import javafx.util.Duration;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.components.body.BodyType;
-import org.example.libmgmt.ui.components.body.Document;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.ui.director.PageDirector;
 import org.example.libmgmt.ui.page.Page;
 

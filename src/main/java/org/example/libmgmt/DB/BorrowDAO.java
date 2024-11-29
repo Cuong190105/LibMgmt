@@ -31,14 +31,46 @@ public class BorrowDAO {
             while (rs.next()) {
                 Borrow br = new Borrow();
                 br.setUID(UID);
-                br.setDocID(rs.getInt("DocID"));
-                br.setBorrowingDate(rs.getDate("BorrowingDate"));
-                br.setReturnDate(rs.getDate("ReturnDate"));
+                br.setDocID(rs.getInt("docID"));
+                br.setBorrowingDate(rs.getDate("borrowingDate"));
+                br.setDueDate(rs.getDate("dueDate"));
+                br.setReturnDate(rs.getDate("returnDate"));
+
                 borrowList.add(br);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return borrowList;
+    }
+
+    public void addBorrow(Borrow br) {
+        try {
+            Connection db = LibraryDB.getConnection();
+            String sql = "INSERT INTO borrow (UID, docID, borrowingDate, dueDate, returnDate) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement ps = db.prepareStatement(sql); // query may generate A_I key
+            ps.setInt(1, br.getUID());
+            ps.setInt(2, br.getDocID());
+            ps.setDate(3, br.getBorrowingDate());
+            ps.setDate(4, br.getDueDate());
+            ps.setDate(5, br.getReturnDate());
+
+            ps.executeUpdate();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteBorrow(String column, int value) {
+        try {
+            Connection db = LibraryDB.getConnection();
+            String sql = "DELETE FROM borrow where" + column + " = ?";
+            PreparedStatement ps = db.prepareStatement(sql);
+            ps.setInt(1,value);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

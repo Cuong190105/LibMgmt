@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.ui.style.Style;
 
 public class CommentCard {
@@ -19,7 +20,7 @@ public class CommentCard {
     private GridPane container;
 
     public CommentCard(Comment comment) {
-        User reader = new User(comment.getUserId());
+        User reader = new User(comment.getUID());
         this.avatar = new ImageView(new Image(reader.getAvatar()));
         avatarContainer = new VBox(avatar);
         this.name = new Label(reader.getName());

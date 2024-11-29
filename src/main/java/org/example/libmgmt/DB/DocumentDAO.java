@@ -26,7 +26,7 @@ public class DocumentDAO {
             String sql = "INSERT INTO document (name, author, publisher, quantity, tags, visited, type, ISBN) "
                     + "VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement ps = db.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // query may generate A_I key
-            ps.setString(1, doc.getName());
+            ps.setString(1, doc.getTitle());
             ps.setString(2, doc.getAuthor());
             ps.setString(3, doc.getPublisher());
             ps.setInt(4, doc.getQuantity());
@@ -67,7 +67,7 @@ public class DocumentDAO {
                     + "quantity = ?, tags = ?, visited = ?, type = ?, ISBN = ? WHERE docID = ?";
 
             PreparedStatement ps = db.prepareStatement(sql);
-            ps.setString(1, updated.getName());
+            ps.setString(1, updated.getTitle());
             ps.setString(2, updated.getAuthor());
             ps.setString(3, updated.getPublisher());
             ps.setInt(4, updated.getQuantity());
@@ -109,13 +109,13 @@ public class DocumentDAO {
                 Document doc = new Document();
                 doc.setDocID(rs.getInt("docID"));
                 doc.setISBN(rs.getString("ISBN"));
-                doc.setName(rs.getString("name"));
+                doc.setTitle(rs.getString("title"));
                 doc.setAuthor(rs.getString("author"));
                 doc.setPublisher(rs.getString("publisher"));
                 doc.setQuantity(rs.getInt("quantity"));
                 doc.setTags(rs.getString("tags"));
                 doc.setVisited(rs.getInt("visited"));
-                doc.setType(rs.getBoolean("type"));
+                doc.setThesis(rs.getBoolean("type"));
 
                 documents.add(doc);
             }
@@ -143,13 +143,13 @@ public class DocumentDAO {
                 Document doc = new Document();
                 doc.setDocID(rs.getInt("docID"));
                 doc.setISBN(rs.getString("ISBN"));
-                doc.setName(rs.getString("name"));
+                doc.setTitle(rs.getString("title"));
                 doc.setAuthor(rs.getString("author"));
                 doc.setPublisher(rs.getString("publisher"));
                 doc.setQuantity(rs.getInt("quantity"));
                 doc.setTags(rs.getString("tags"));
                 doc.setVisited(rs.getInt("visited"));
-                doc.setType(rs.getBoolean("type"));
+                doc.setThesis(rs.getBoolean("type"));
 
                 documents.add(doc);
             }
@@ -172,13 +172,13 @@ public class DocumentDAO {
                 doc = new Document();
                 doc.setDocID(rs.getInt("DocID"));
                 doc.setISBN(rs.getString("ISBN"));
-                doc.setName(rs.getString("Name"));
+                doc.setTitle(rs.getString("title"));
                 doc.setAuthor(rs.getString("Author"));
                 doc.setPublisher(rs.getString("Publisher"));
                 doc.setQuantity(rs.getInt("Quantity"));
                 doc.setTags(rs.getString("Tags"));
                 doc.setVisited(rs.getInt("Visited"));
-                doc.setType(rs.getBoolean("Type"));
+                doc.setThesis(rs.getBoolean("Type"));
             }
 
         } catch(Exception e) {

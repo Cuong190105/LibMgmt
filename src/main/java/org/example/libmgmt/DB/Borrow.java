@@ -4,10 +4,9 @@ import java.sql.Date;
 
 public class Borrow {
     private int UID, docID;
-    private Date borrowingDate, returnDate;
+    private Date borrowingDate, returnDate, dueDate;
 
-    public Borrow() {
-    }
+    public Borrow() {}
 
     public int getUID() {
         return UID;
@@ -40,4 +39,13 @@ public class Borrow {
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
 }

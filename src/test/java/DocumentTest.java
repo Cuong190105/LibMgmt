@@ -29,15 +29,19 @@ public class DocumentTest {
         String createTableSQL = """
                 CREATE TABLE IF NOT EXISTS document (
                 `DocID` int(11) PRIMARY KEY AUTO_INCREMENT,
-                `ISBN` varchar(20) DEFAULT NULL,
                 `Name` varchar(255) DEFAULT NULL,
                 `Author` varchar(255) DEFAULT NULL,
                 `Publisher` varchar(255) DEFAULT NULL,
                 `Quantity` int(11) DEFAULT NULL,
                 `Tags` varchar(255) DEFAULT NULL,
                 `Visited` int(11) DEFAULT NULL,
+                `type` tinyint(1) DEFAULT 0,
+                `ISBN` varchar(50) DEFAULT NULL,
+                `Votes` int(11) DEFAULT NULL,
+                `Score` double DEFAULT NULL,
+                `Cover` mediumblob DEFAULT NULL,
                 `Content` mediumblob DEFAULT NULL,
-                `type` tinyint(1) DEFAULT 0
+                `Description` varchar(9999) DEFAULT NULL
                 )""";
         db.prepareStatement(createTableSQL).execute();
 
@@ -108,7 +112,7 @@ public class DocumentTest {
         List<Document> returnList = docDAO.searchDocKey("Harry");
         assertEquals(2, returnList.size());
         for (Document doc: returnList) {
-            assertTrue(doc.getName().contains("Harry"), "Retrieved doc not match key word" + doc.print());
+            assertTrue(doc.getTitle().contains("Harry"), "Retrieved doc not match key word" + doc.print());
         }
 
         returnList = docDAO.searchDocKey("nonExist");
@@ -128,7 +132,7 @@ public class DocumentTest {
         int pre = Integer.MAX_VALUE;
 
         for (Document book: books) {
-            assertFalse(book.isType());
+            assertFalse(book.isThesis());
             assertTrue(book.getDocID() <= pre);
             pre = book.getDocID();
         }

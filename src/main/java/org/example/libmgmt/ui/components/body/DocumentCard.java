@@ -2,13 +2,11 @@ package org.example.libmgmt.ui.components.body;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.style.StyleCard;
@@ -22,7 +20,7 @@ public class DocumentCard {
 
     public DocumentCard(Document doc) {
 //        cover = new ImageView(new Image(doc.getCover()));
-//        title = new Label(doc.getTitle());
+//        title = new Label(doc.getName());
 //        authors = new Text(doc.getAuthor());
         try {
 //            cover = new ImageView(new Image(doc.getCover()));

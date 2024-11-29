@@ -11,12 +11,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import org.example.libmgmt.DB.Comment;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.ui.style.Style;
-
-import java.util.concurrent.Flow;
 
 import static org.example.libmgmt.control.MainControl.thisUser;
 
@@ -61,10 +60,10 @@ public class DocumentDetails {
         this.doc = doc;
         cover = new ImageView(new Image(doc.getCover()));
         title = new Label(doc.getTitle());
-        authors = new Text(doc.getAuthors());
+        authors = new Text(doc.getAuthor());
         publisher = new Text(doc.getPublisher());
         description = new Text(doc.getDescription());
-        tags = new Text(doc.getTags());
+        tags = new Text(doc.getTagsString());
         readDocument = new Button("Đọc trực tuyến");
         borrowDocument = new Button("Mượn sách");
         infoTable = new GridPane();
@@ -203,7 +202,7 @@ public class DocumentDetails {
 
         Style.styleTitle(userCriticsLabel, 24);
         userCritics.setSpacing(10);
-        if (thisUser.hasRead(doc.getDocId())) {
+        if (thisUser.hasRead(doc.getDocID())) {
             Style.styleTextArea(userComment, 500, 16,
                     "Nhập đánh giá của bạn (Tối đa 500 kí tự).");
         } else {
