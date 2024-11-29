@@ -146,6 +146,12 @@ public class DocumentDetails {
       });
     }
 
+    if (UserControl.getUser().isLibrarian()) {
+      editDocument.setOnMouseClicked(_ -> {
+        UIHandler.openDocumentEditPanel(doc);
+      });
+    }
+
     borrowDocument.setOnMouseClicked(_ -> {
       if (UserControl.getUser().isLibrarian()) {
         UIHandler.openCheckoutPage(null, doc);

@@ -28,11 +28,24 @@ public class Document {
   private int score;
 
   /**
-   * Default constructor with cover placeholder preloaded.
+   * Default constructor with fields preloaded.
    */
   public Document() {
+    docID = 0;
+    title = "";
     this.cover = new Image(Objects.requireNonNull(LibMgmt.class
         .getResourceAsStream("img/bookCoverPlaceholder.png")));
+    author = "";
+    publisher = "";
+    quantity = 0;
+    visited = 0;
+    publishYear = 0;
+    thesis = false;
+    description = "";
+    ISBN = "";
+    votes = 0;
+    score = 0;
+    tags = new ArrayList<>();
   }
 
   /**
@@ -181,11 +194,7 @@ public class Document {
   }
 
   public String getTagsString() {
-    String ans = "";
-    for (int i = 0; i < tags.size(); ++i) {
-      ans += tags.get(i) + (i + 1 != tags.size() ? ",":"");
-    }
-    return ans;
+    return String.join(", ", tags);
   }
 
   public int getVotes() {

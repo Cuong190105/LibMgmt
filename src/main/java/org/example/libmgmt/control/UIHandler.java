@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
@@ -24,11 +25,13 @@ public class UIHandler {
   private final PageDirector pageDirector;
   private final PageBuilder pageBuilder;
   private Scene scene;
+  private Stage stage;
   private Page page;
 
-  private UIHandler() {
+  private UIHandler(Stage stage) {
     this.pageDirector = new PageDirector();
     this.pageBuilder = new PageBuilder();
+    this.stage = stage;
   }
 
   /**
@@ -38,7 +41,7 @@ public class UIHandler {
    */
   public static void start(Stage stage) {
     if (ui == null) {
-      ui = new UIHandler();
+      ui = new UIHandler(stage);
       ui.pageDirector.createStartupPage(ui.pageBuilder);
       ui.page = ui.pageBuilder.build();
       ui.scene = new Scene(ui.page.getContainer(), 800, 800);
@@ -153,6 +156,27 @@ public class UIHandler {
    */
   public static void openCheckoutPage(User user, Document doc) {
     ui.pageDirector.createCheckoutPage(ui.pageBuilder, user, doc);
+    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
+    System.gc();
+  }
+
+  public static Window getStage() {
+    return ui.stage;
+  }
+
+  /**
+   * Open document edit panel.
+   *
+   * @param doc Document needs editing. Set to null to create a new document.
+   */
+  public static void openDocumentEditPanel(Document doc) {
+    ui.pageDirector.createDocumentEditPage(ui.pageBuilder, doc);
+    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
+    System.gc();
+  }
+
+  public static void openAddDocumentPanel() {
+    ui.pageDirector.createAddDocumentPage(ui.pageBuilder);
     ui.scene.setRoot(ui.pageBuilder.build().getContainer());
     System.gc();
   }

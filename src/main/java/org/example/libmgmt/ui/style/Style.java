@@ -115,11 +115,13 @@ public class Style {
    * @param w Button width.
    * @param h Button height.
    */
-  public static void styleRoundedButton(Button btn, double w, double h) {
+  public static void styleRoundedButton(Button btn, double w, double h, double textSize) {
     btn.setPrefSize(w, h);
+    btn.setFont(Font.font(FONT, textSize));
     btn.setBackground(Background.EMPTY);
     btn.setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.NONE,
         SMALL_CORNER, new BorderWidths(0))));
+    styleHoverEffect(btn);
   }
 
   /**
@@ -132,12 +134,10 @@ public class Style {
    * @param textSize Font size.
    */
   public static void styleRoundedButton(Button btn, Color c, double w, double h, double textSize) {
-    styleRoundedButton(btn, w, h);
+    styleRoundedButton(btn, w, h, textSize);
     btn.setBackground(new Background(new BackgroundFill(
         c, SMALL_CORNER, Insets.EMPTY
     )));
-    btn.setFont(Font.font(FONT, textSize));
-    styleHoverEffect(btn);
   }
 
   /**
@@ -229,7 +229,7 @@ public class Style {
    * @param img Target.
    * @param w Fit width.
    */
-  public static void styleImg(ImageView img, double w) {
+  public static void  styleImg(ImageView img, double w) {
     img.setPreserveRatio(true);
     img.setFitWidth(w);
     img.setSmooth(true);

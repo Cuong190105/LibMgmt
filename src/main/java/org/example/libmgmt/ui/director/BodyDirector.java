@@ -131,4 +131,33 @@ public class BodyDirector {
     bodyBuilder.setContent(cp.getContent());
     bodyBuilder.style();
   }
+
+  /**
+   * Creates a document edit panel.
+   *
+   * @param bodyBuilder Builder.
+   * @param doc Target.
+   */
+  public void createDocumentEditPanel(BodyBuilder bodyBuilder, Document doc) {
+    bodyBuilder.reset();
+    bodyBuilder.setType(BodyType.MAIN);
+    bodyBuilder.setTitle("Chỉnh sửa tài liệu");
+    DocumentEdit de = new DocumentEdit(doc);
+    bodyBuilder.setContent(de.getContent());
+    bodyBuilder.style();
+  }
+
+  /**
+   * Creates an add document panel.
+   *
+   * @param bodyBuilder Builder.
+   */
+  public void createAddDocumentPanel(BodyBuilder bodyBuilder) {
+    bodyBuilder.reset();
+    bodyBuilder.setType(BodyType.MAIN);
+    bodyBuilder.setTitle("Thêm tài liệu");
+    DocumentEdit de = new DocumentEdit();
+    bodyBuilder.setContent(de.getContent());
+    bodyBuilder.style();
+  }
 }

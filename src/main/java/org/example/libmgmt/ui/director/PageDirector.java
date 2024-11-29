@@ -125,4 +125,16 @@ public class PageDirector {
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
   }
+
+  public void createDocumentEditPage(PageBuilder pageBuilder, Document doc) {
+    bodyDirector.createDocumentEditPanel(bodyBuilder, doc);
+    pageBuilder.setBody(bodyBuilder.build());
+    pageBuilder.style();
+  }
+
+  public void createAddDocumentPage(PageBuilder pageBuilder) {
+    bodyDirector.createAddDocumentPanel(bodyBuilder);
+    pageBuilder.setBody(bodyBuilder.build());
+    pageBuilder.style();
+  }
 }

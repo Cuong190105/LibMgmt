@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.libmgmt.AppLogger;
 import org.example.libmgmt.DB.Document;
+import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.control.UserControl;
 import org.example.libmgmt.ui.components.body.DocumentSearchPanel;
 import org.example.libmgmt.ui.components.body.LoadingRing;
@@ -75,7 +76,7 @@ public class DocumentLibrary {
   private void setFunction() {
     if (UserControl.getUser().isLibrarian()) {
       addDocument.setOnMouseClicked(_ -> {
-//            UIHandler.switchToAddDocument();
+        UIHandler.openAddDocumentPanel();
       });
     }
   }
@@ -90,7 +91,7 @@ public class DocumentLibrary {
 
     ObjectBinding<Insets> padding = Bindings.createObjectBinding(
         () -> {
-          int paddingValue = (int) ((contentWrapper.getWidth() + 25
+          double paddingValue = ((contentWrapper.getWidth() + 20
               - 275 * numberOfNodes.get()) / 2);
           return new Insets(10, paddingValue, 0, paddingValue);
         }, contentWrapper.widthProperty()
@@ -105,7 +106,7 @@ public class DocumentLibrary {
     wrapper.setFitToWidth(true);
 
     contentWrapper.minHeightProperty().bind(wrapper.heightProperty().subtract(20));
-    contentWrapper.prefWidthProperty().bind(container.widthProperty());
+    contentWrapper.prefWidthProperty().bind(wrapper.widthProperty().subtract(50));
     contentWrapper.setAlignment(Pos.TOP_CENTER);
 
     if (addDocument != null) {

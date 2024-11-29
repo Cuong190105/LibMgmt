@@ -58,12 +58,20 @@ public class CheckoutPanel {
    * @param doc Document that member wants to borrow.
    */
   public CheckoutPanel(User user, Document doc) {
-    this.readerId = new TextField(Integer.toString(user.getUid()));
-    this.reader = new TextField(user.getName());
+    this.readerId = new TextField();
+    this.reader = new TextField();
     this.readerStatus = new TextField();
+    if (user != null) {
+      readerId.setText(Integer.toString(user.getUid()));
+      reader.setText(user.getName());
+    }
     this.documentId = new TextField(Integer.toString(doc.getDocID()));
     this.document = new TextField(doc.getTitle());
     this.dueDuration = new TextField("14 ngày kể từ khi yêu cầu được duyệt");
+    if (doc != null) {
+      documentId.setText(Integer.toString(doc.getDocID()));
+      document.setText(doc.getTitle());
+    }
     this.cover = new ImageView(doc.getCover());
     this.readerField = new GridPane();
     this.readerField.addColumn(0, readerIdLabel, readerLabel, readerStatusLabel);
