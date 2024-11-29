@@ -3,103 +3,143 @@ package org.example.libmgmt.ui.components.body;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.style.Style;
 
-public class SearchPanel {
-    private TextField searchBox;
-    private Label viewLabel;
-    private ComboBox<String> viewOption;
-    private HBox viewContainer;
-    private Label sortbyLabel;
-    private ComboBox<String> sortingOption;
-    private HBox sortbyContainer;
-    private GridPane panel;
+import java.util.Objects;
 
-    public SearchPanel() {
-        searchBox = new TextField();
-        viewLabel = new Label("Hiển thị: ");
-        viewOption = new ComboBox<>();
-        sortbyLabel = new Label("Sắp xếp theo: ");
-        sortingOption = new ComboBox<>();
-        panel = new GridPane();
-        panel.add(searchBox, 0, 0, 2, 1);
-        viewContainer = new HBox(viewLabel, viewOption);
-        sortbyContainer = new HBox(sortbyLabel, sortingOption);
-        panel.add(viewContainer, 0, 1, 1, 1);
-        panel.add(sortbyContainer, 1, 1, 1, 1);
-        style();
-    }
+/**
+ * A search panel controlling search, filtering and sorting data.
+ */
+public abstract class SearchPanel {
+  protected TextField searchBox;
+  protected ComboBox<String> viewOption;
+  protected ComboBox<String> sortingOption;
+  protected Button clearSearch;
+  private final Label viewLabel;
+  private final HBox viewContainer;
+  private final Label sortbyLabel;
+  private final HBox sortbyContainer;
+  private final GridPane panel;
 
-    public void addViewOption(String... option) {
-        viewOption.getItems().addAll(option);
-    }
+  /**
+   * Constructor.
+   */
+  public SearchPanel() {
+    searchBox = new TextField();
+    viewLabel = new Label("Hiển thị: ");
+    viewOption = new ComboBox<>();
+    sortbyLabel = new Label("Sắp xếp theo: ");
+    sortingOption = new ComboBox<>();
+    clearSearch = new Button("Xoá tìm kiếm");
+    AnchorPane searchBarWrapper = new AnchorPane(searchBox, clearSearch);
+    panel = new GridPane();
+    panel.add(searchBarWrapper, 0, 0, 2, 1);
+    viewContainer = new HBox(viewLabel, viewOption);
+    sortbyContainer = new HBox(sortbyLabel, sortingOption);
+    panel.add(viewContainer, 0, 1, 1, 1);
+    panel.add(sortbyContainer, 1, 1, 1, 1);
+    style();
+  }
 
-    public void addSortOption(String... option) {
-        sortingOption.getItems().addAll(option);
-    }
+  /**
+   * Sets function for search box, buttons, filter and sort option.
+   */
+  public abstract void setFunction();
 
-    public String getViewOption() {
-        return viewOption.getValue();
-    }
+  /**
+   * Add filter options.
+   */
+  public abstract void addViewOption();
 
-    public String getSortingOption() {
-        return sortingOption.getValue();
-    }
+  /**
+   * Add sorting option.
+   */
+  public abstract void addSortOption();
 
-    private void style() {
-        double iconSize = 24;
-        Image searchIcon = new Image(LibMgmt.class.getResourceAsStream("img/search.png"));
-        searchBox.setBackground(new Background(new BackgroundImage(
-                searchIcon,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                new BackgroundPosition(Side.LEFT, (50 - iconSize) / 2, false,
-                        Side.TOP, (50 - iconSize) / 2, false),
-                new BackgroundSize(iconSize, iconSize, false, false, false, false))
-        ));
+  public String getViewOption() {
+    return viewOption.getValue();
+  }
 
-        Style.styleTextField(searchBox, Double.MAX_VALUE, 50, 24, "Tìm kiếm");
-        searchBox.setBorder(new Border(new BorderStroke(
-                Color.GRAY, BorderStrokeStyle.SOLID,
-                Style.SMALL_CORNER, BorderWidths.DEFAULT
-        )));
-        searchBox.setPadding(new Insets(0, 0, 0, 50));
+  public String getSortingOption() {
+    return sortingOption.getValue();
+  }
 
-        Font labelFont = Font.font("Inter", 16);
-        viewLabel.setFont(labelFont);
-        sortbyLabel.setFont(labelFont);
+  private void style() {
+    double iconSize = 24;
+    Image searchIcon = new Image(Objects.requireNonNull(LibMgmt.class
+        .getResourceAsStream("img/search.png")));
+    searchBox.setBackground(new Background(new BackgroundImage(
+        searchIcon,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundRepeat.NO_REPEAT,
+        new BackgroundPosition(Side.LEFT, (50 - iconSize) / 2, false,
+            Side.TOP, (50 - iconSize) / 2, false),
+        new BackgroundSize(iconSize, iconSize, false, false, false, false))
+    ));
 
-        viewOption.setBackground(Background.EMPTY);
-        viewOption.setStyle("-fx-font: 16 Inter");
-        sortingOption.setBackground(Background.EMPTY);
-        sortingOption.setStyle("-fx-font: 16 Inter");
+    Style.styleTextField(searchBox, Double.MAX_VALUE, 50, 24, "Tìm kiếm");
+    searchBox.setBorder(new Border(new BorderStroke(
+        Color.GRAY, BorderStrokeStyle.SOLID,
+        Style.SMALL_CORNER, BorderWidths.DEFAULT
+    )));
+    searchBox.setPadding(new Insets(0, 0, 0, 50));
+    Style.styleRoundedButton(clearSearch, Style.LIGHTGREEN, 100, 30, 12);
+    AnchorPane.setLeftAnchor(searchBox, 0.0);
+    AnchorPane.setRightAnchor(searchBox, 0.0);
+    AnchorPane.setTopAnchor(searchBox, 0.0);
+    AnchorPane.setBottomAnchor(searchBox, 0.0);
 
-        viewContainer.setAlignment(Pos.CENTER_LEFT);
-        sortbyContainer.setAlignment(Pos.CENTER_LEFT);
+    AnchorPane.setRightAnchor(clearSearch, 10.0);
+    AnchorPane.setTopAnchor(clearSearch, 10.0);
+    AnchorPane.setBottomAnchor(clearSearch, 10.0);
+    Font labelFont = Font.font("Inter", 14);
+    viewLabel.setFont(labelFont);
+    sortbyLabel.setFont(labelFont);
 
-        ColumnConstraints col1 = new ColumnConstraints();
-        ColumnConstraints col2 = new ColumnConstraints();
-        col1.setPercentWidth(50);
-        col2.setPercentWidth(50);
-        panel.getColumnConstraints().addAll(col1, col2);
+    viewOption.setBackground(Background.EMPTY);
+    viewOption.setStyle("-fx-font: 14 Inter");
+    sortingOption.setBackground(Background.EMPTY);
+    sortingOption.setStyle("-fx-font: 14 Inter");
 
-        panel.setVgap(10);
-        panel.setHgap(10);
-        panel.setMaxHeight(Region.USE_PREF_SIZE);
-        panel.setPadding(new Insets(25));
-    }
+    viewContainer.setAlignment(Pos.CENTER_LEFT);
+    sortbyContainer.setAlignment(Pos.CENTER_LEFT);
 
-    public GridPane getPanel() {
-        viewOption.getSelectionModel().selectFirst();
-        sortingOption.getSelectionModel().selectFirst();
-        return panel;
-    }
+    ColumnConstraints col1 = new ColumnConstraints();
+    ColumnConstraints col2 = new ColumnConstraints();
+    col1.setPercentWidth(40);
+    col2.setPercentWidth(60);
+    panel.getColumnConstraints().addAll(col1, col2);
+
+    panel.setVgap(10);
+    panel.setHgap(10);
+    panel.setMaxHeight(Region.USE_PREF_SIZE);
+  }
+
+  public GridPane getPanel() {
+    viewOption.getSelectionModel().selectFirst();
+    sortingOption.getSelectionModel().selectFirst();
+    return panel;
+  }
 }

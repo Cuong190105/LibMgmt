@@ -28,7 +28,7 @@ public class UserTest {
 
         String createTableSQL = """
                 CREATE TABLE IF NOT EXISTS `user` (
-                `UID` int(11) PRIMARY KEY AUTO_INCREMENT,
+                `uid` int(11) PRIMARY KEY AUTO_INCREMENT,
                 `Name` varchar(255) DEFAULT NULL,
                 `Sex` varchar(10) DEFAULT NULL,
                 `DOB` date DEFAULT NULL,
@@ -51,7 +51,7 @@ public class UserTest {
     public void testAddUser() throws Exception {
         for (int i = 0; i < 2; ++i) {
             int newUID = userDAO.addUser(sampleUsers.get(i));
-            sampleUsers.get(i).setUID(newUID);
+            sampleUsers.get(i).setUid(newUID);
             assertEquals(i + 1, newUID);
         }
 
@@ -74,7 +74,7 @@ public class UserTest {
     public void testGetUser() {
         for (int i = 0; i < 2; ++i) {
             int newUID = userDAO.addUser(sampleUsers.get(i));
-            sampleUsers.get(i).setUID(newUID);
+            sampleUsers.get(i).setUid(newUID);
             assertEquals(i + 1, newUID);
         }
 
@@ -90,7 +90,7 @@ public class UserTest {
     public void testDeleteUser() {
         for (int i = 0; i < 2; ++i) {
             int newUID = userDAO.addUser(sampleUsers.get(i));
-            sampleUsers.get(i).setUID(newUID);
+            sampleUsers.get(i).setUid(newUID);
             assertEquals(i + 1, newUID);
         }
         userDAO.deleteUser(2);
@@ -109,7 +109,7 @@ public class UserTest {
     public void testUpdateDoc() {
         for (int i = 0; i < 2; ++i) {
             int newUID = userDAO.addUser(sampleUsers.get(i));
-            sampleUsers.get(i).setUID(newUID);
+            sampleUsers.get(i).setUid(newUID);
             assertEquals(i + 1, newUID);
         }
 

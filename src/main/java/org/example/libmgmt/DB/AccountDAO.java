@@ -24,7 +24,7 @@ public class AccountDAO {
         return acc;
     }
 
-    public Account getAccountFromUsername(String username) {
+    public Account getAccountFromUsername(String username) throws DatabaseConnectionException {
         Account acc = null;
         try {
             Connection db = AccountDB.getConnection();
@@ -37,7 +37,7 @@ public class AccountDAO {
             }
 
         } catch(Exception e) {
-            e.printStackTrace();
+            throw new DatabaseConnectionException("Couldn't connect to the Account database");
         }
         return acc;
     }
