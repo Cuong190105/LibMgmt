@@ -1,5 +1,3 @@
-import org.example.libmgmt.DB.Document;
-import org.example.libmgmt.DB.DocumentDAO;
 import org.example.libmgmt.DB.LibraryDB;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
