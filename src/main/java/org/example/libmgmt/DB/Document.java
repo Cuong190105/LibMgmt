@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
 import javafx.scene.image.Image;
 import org.example.libmgmt.LibMgmt;
 
@@ -15,45 +16,45 @@ import org.example.libmgmt.LibMgmt;
  */
 public class Document {
   private int docID;
-  private Image cover;
   private String title;
   private String author;
   private String publisher;
+  private int publishYear;
   private int quantity;
   private List<String> tags;
   private int visited;
-  private int publishYear;
   private boolean thesis;
-  private String description;
   private String ISBN;
   private int votes;
   private int score;
+  private Image cover;
+  private String description;
 
   /**
    * Default constructor with cover placeholder preloaded.
    */
   public Document() {
     this.cover = new Image(Objects.requireNonNull(LibMgmt.class
-        .getResourceAsStream("img/bookCoverPlaceholder.png")));
+            .getResourceAsStream("img/bookCoverPlaceholder.png")));
   }
 
   /**
    * Complete constructor.
    *
-   * @param docID Sets document ID.
-   * @param cover Sets cover.
-   * @param title Sets title.
-   * @param author Sets author.
-   * @param publisher Sets publisher.
-   * @param quantity Sets quantity.
-   * @param tags Set tags.
-   * @param visited Set visited times.
+   * @param docID       Sets document ID.
+   * @param cover       Sets cover.
+   * @param title       Sets title.
+   * @param author      Sets author.
+   * @param publisher   Sets publisher.
+   * @param quantity    Sets quantity.
+   * @param tags        Set tags.
+   * @param visited     Set visited times.
    * @param publishYear Sets publish year.
-   * @param thesis Sets document type: true for thesis, false for book
+   * @param thesis      Sets document type: true for thesis, false for book
    * @param description Sets description.
-   * @param ISBN Sets ISBN
-   * @param votes Sets votes.
-   * @param score Sets critics score.
+   * @param ISBN        Sets ISBN
+   * @param votes       Sets votes.
+   * @param score       Sets critics score.
    */
   public Document(int docID, Image cover, String title, String author, String publisher,
                   int quantity, List<String> tags, int visited, int publishYear,
@@ -63,7 +64,7 @@ public class Document {
       this.cover = cover;
     } catch (Exception e) {
       this.cover = new Image(Objects.requireNonNull(LibMgmt.class
-          .getResourceAsStream("img/bookCoverPlaceholder.png")));
+              .getResourceAsStream("img/bookCoverPlaceholder.png")));
       throw e;
     }
     this.title = title;
@@ -198,9 +199,12 @@ public class Document {
   }
 
   public String getTagsString() {
+    if (tags == null) {
+      return "";
+    }
     String ans = "";
     for (int i = 0; i < tags.size(); ++i) {
-      ans += tags.get(i) + (i + 1 != tags.size() ? ",":"");
+      ans += tags.get(i) + (i + 1 != tags.size() ? "," : "");
     }
     return ans;
   }
@@ -227,19 +231,19 @@ public class Document {
     if (obj == null || getClass() != obj.getClass()) return false;
     Document doc = (Document) obj;
     return this.docID == doc.docID &&
-        Objects.equals(this.title, doc.title) &&
-        Objects.equals(this.author, doc.author) &&
-        Objects.equals(this.publisher, doc.publisher) &&
-        this.quantity == doc.quantity &&
-        Objects.equals(this.tags, doc.tags) &&
-        this.visited == doc.visited &&
-        this.thesis == doc.thesis;
+            Objects.equals(this.title, doc.title) &&
+            Objects.equals(this.author, doc.author) &&
+            Objects.equals(this.publisher, doc.publisher) &&
+            this.quantity == doc.quantity &&
+            Objects.equals(this.tags, doc.tags) &&
+            this.visited == doc.visited &&
+            this.thesis == doc.thesis;
   }
 
   public String print() {
     return " " + docID + "  " + title + "  " + author + "  "
-        + publisher + "  " + quantity + "  " + tags + "  "
-        + visited + "  " + thesis + "\n";
+            + publisher + "  " + publishYear + " " + quantity + "  " + tags + "  "
+            + visited + "  " + thesis + " " + ISBN;
   }
 
   /**

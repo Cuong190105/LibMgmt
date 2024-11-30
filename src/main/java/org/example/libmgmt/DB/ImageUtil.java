@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ImageUtil {
   private ImageUtil() {
@@ -15,6 +17,7 @@ public class ImageUtil {
 
   /**
    * Converts a JavaFX Image to an InputStream.
+   *
    * @param image the JavaFX Image to convert.
    * @return InputStream representing the image data, or null if the image is null.
    */
@@ -30,4 +33,18 @@ public class ImageUtil {
 
     return new ByteArrayInputStream(outputStream.toByteArray());
   }
+
+  /**
+   * Download and store Image
+   * @param imageUrl https url to image from api
+   * @return Image to store in
+   */
+  public static Image downloadImage(String imageUrl) throws Exception {
+    URL url = new URL(imageUrl);
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("GET");
+    InputStream inputStream = connection.getInputStream();
+    return new Image(inputStream);
+  }
+
 }

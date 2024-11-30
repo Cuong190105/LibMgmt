@@ -3,6 +3,7 @@ module org.example.libmgmt {
     requires javafx.fxml;
   requires java.sql.rowset;
   requires javafx.swing;
+  requires com.google.gson;
 
 
   opens org.example.libmgmt to javafx.fxml;
