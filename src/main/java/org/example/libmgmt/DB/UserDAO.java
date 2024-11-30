@@ -9,10 +9,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO {
+public class UserDAO implements Extractor<User> {
   private static UserDAO instance;
-  private UserDAO(){};
 
+  private UserDAO() {
+  }
+
+  /**
+   * Singleton.
+   */
   public static UserDAO getInstance() {
     if (instance == null) {
       instance = new UserDAO();
@@ -20,7 +25,8 @@ public class UserDAO {
     return instance;
   }
 
-  public User extractUser(ResultSet rs) throws SQLException {
+  @Override
+  public User extract(ResultSet rs) throws SQLException {
     User user = new User();
     user.setUid(rs.getInt("UID"));
     user.setName(rs.getString("name"));
@@ -44,11 +50,10 @@ public class UserDAO {
       ps.setInt(1, UID);
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-        user = extractUser(rs);
-        //user.setPassword(rs.getString("password"));
+        user = extract(rs);
       }
 
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return user;
@@ -63,11 +68,10 @@ public class UserDAO {
       ps.setString(1, username);
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-        user = extractUser(rs);
-        //user.setPassword(rs.getString("password"));
+        user = extract(rs);
       }
 
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return user;
@@ -78,7 +82,7 @@ public class UserDAO {
 
     try {
       Connection db = LibraryDB.getConnection();
-      String sql = "INSERT INTO user (name, sex, DOB, address, phoneNumber, email, socialSecurityNumber, userType, userName) VALUES (?,?,?,?,?,?,?,?,?)";
+      String sql = "INSERT INTO user (name, sex, DOB, address, phoneNumber, email, ssn, isLibrarian, userName) VALUES (?,?,?,?,?,?,?,?,?)";
       PreparedStatement ps = db.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // query may generate A_I key
       ps.setString(1, user.getName());
       ps.setString(2, user.getSex());
@@ -88,27 +92,17 @@ public class UserDAO {
       ps.setString(6, user.getEmail());
       ps.setString(7, user.getSSN());
       ps.setBoolean(8, user.isLibrarian());
-      //ps.setString(2, password);
       int rowAffected = ps.executeUpdate();
 
       if (rowAffected > 0) {
         ResultSet rs = ps.getGeneratedKeys();
         if (rs.next()) {
-          // Check the column count and names // debug
-//                    ResultSetMetaData metaData = rs.getMetaData();
-//                    int columnCount = metaData.getColumnCount();
-//                    System.out.println("Column count: " + columnCount);
-//                    for (int i = 1; i <= columnCount; i++) {
-//                        System.out.println("Column " + i + ": " + metaData.getColumnName(i));
-//                    }
-          // Now retrieve the UID
           userUID = rs.getInt(1);
+          user.setUid(userUID);
         }
-//                if (rs.next()) {
-//                    userUID = rs.getInt(1);
-//                }
+
       }
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
 //        System.out.println(userUID);
@@ -120,7 +114,7 @@ public class UserDAO {
       Connection db = LibraryDB.getConnection();
       String sql = "DELETE FROM user where UID = ?";
       PreparedStatement ps = db.prepareStatement(sql);
-      ps.setInt(1,UID);
+      ps.setInt(1, UID);
       ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -131,7 +125,7 @@ public class UserDAO {
     try {
       Connection db = LibraryDB.getConnection();
       String sql = "UPDATE user SET name = ?, sex = ?, dob = ?, "
-          + "address = ?, phoneNumber = ?, email = ?, socialSecurityNumber = ?, userType = ?, userName = ? WHERE UID = ?";
+              + "address = ?, phoneNumber = ?, email = ?, ssn = ?, isLibrarian = ? WHERE UID = ?";
 
       PreparedStatement ps = db.prepareStatement(sql);
       ps.setString(1, updated.getName());
@@ -143,7 +137,7 @@ public class UserDAO {
       ps.setString(7, updated.getSSN());
       ps.setBoolean(8, updated.isLibrarian());
 
-      ps.setInt(10, updated.getUid()); // Assuming Document has a method getId() to get the document ID
+      ps.setInt(9, updated.getUid());
 
       int rowAffected = ps.executeUpdate();
 
@@ -173,9 +167,9 @@ public class UserDAO {
       ResultSet rs = ps.executeQuery();
       System.out.println((ps.toString()));
       while (rs.next()) {
-        user.add(extractUser(rs));
+        user.add(extract(rs));
       }
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return user;

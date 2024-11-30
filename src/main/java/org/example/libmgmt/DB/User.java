@@ -132,15 +132,15 @@ public class User {
     if (this == obj) return true;
     if (obj == null || getClass() != obj.getClass()) return false;
     User user = (User) obj;
-    return uid == user.uid &&
-        Objects.equals(address, user.address) &&
-        dob.equals(user.dob) &&
-        Objects.equals(email, user.email) &&
-        Objects.equals(name, user.name) &&
-        Objects.equals(sex, user.sex) &&
-        Objects.equals(phone, user.phone) &&
-        Objects.equals(SSN, user.SSN) &&
-        isLibrarian == user.isLibrarian;
+    return uid == user.uid
+            && Objects.equals(address, user.address)
+            && dob.equals(user.dob)
+            && Objects.equals(email, user.email)
+            && Objects.equals(name, user.name)
+            && Objects.equals(sex, user.sex)
+            && Objects.equals(phone, user.phone)
+            && Objects.equals(SSN, user.SSN)
+            && isLibrarian == user.isLibrarian;
   }
 
   public Image getAvatar() {
@@ -154,4 +154,10 @@ public class User {
       this.avatar = new Image(LibMgmt.class.getResourceAsStream("img/accountAction/userPlaceholder.png"));
     }
   }
+
+  public void setAvatar(Image avatar) {
+    this.avatar = avatar;
+  }
+
+
 }

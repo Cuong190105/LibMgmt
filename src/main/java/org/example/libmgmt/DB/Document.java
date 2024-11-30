@@ -2,6 +2,7 @@
 package org.example.libmgmt.DB;
 
 import java.io.InputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -168,6 +169,14 @@ public class Document {
     this.cover = cover;
   }
 
+  public void setCover(Blob cover) {
+    try {
+      this.cover = new Image(cover.getBinaryStream());
+    } catch (Exception e) {
+      this.cover = new Image(LibMgmt.class.getResourceAsStream("img/bookCoverPlaceholder.png"));
+    }
+  }
+
   public String getDescription() {
     return description;
   }
@@ -179,6 +188,13 @@ public class Document {
 
   public void setTags(List<String> tags) {
     this.tags = tags;
+  }
+
+  public void setTags(String tags) {
+    this.tags = new ArrayList<>();
+    if (tags != null && !tags.isEmpty()) {
+      Collections.addAll(this.tags, tags.split(","));
+    }
   }
 
   public String getTagsString() {
@@ -195,6 +211,14 @@ public class Document {
 
   public void setVotes(int votes) {
     this.votes = votes;
+  }
+
+  public int getScore() {
+    return score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
   }
 
   @Override

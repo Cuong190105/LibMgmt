@@ -1,5 +1,7 @@
 
 import org.example.libmgmt.DB.LibraryDB;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

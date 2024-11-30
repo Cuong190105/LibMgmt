@@ -1,36 +1,18 @@
-Nov 28, 2024 10:40:08 PM org.example.libmgmt.AppLogger log
+Nov 30, 2024 8:33:31 PM org.example.libmgmt.AppLogger log
 INFO: Search triggered.
-Nov 28, 2024 10:40:08 PM org.example.libmgmt.AppLogger log
+Nov 30, 2024 8:33:31 PM org.example.libmgmt.AppLogger log
 INFO: Triggered with false
-Nov 28, 2024 10:40:19 PM org.example.libmgmt.AppLogger log
+Nov 30, 2024 8:33:32 PM org.example.libmgmt.AppLogger log
 INFO: Search triggered.
-Nov 28, 2024 10:40:19 PM org.example.libmgmt.AppLogger log
+Nov 30, 2024 8:33:32 PM org.example.libmgmt.AppLogger log
+INFO: Triggered with false
+Nov 30, 2024 8:33:33 PM org.example.libmgmt.AppLogger log
+INFO: Search triggered.
+Nov 30, 2024 8:33:33 PM org.example.libmgmt.AppLogger log
+INFO: Triggered with false
+Nov 30, 2024 8:33:37 PM org.example.libmgmt.AppLogger log
+INFO: Search triggered.
+Nov 30, 2024 8:33:37 PM org.example.libmgmt.AppLogger log
 INFO: Triggered with true
-Nov 28, 2024 10:40:19 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with false
-Nov 28, 2024 10:40:36 PM org.example.libmgmt.AppLogger log
-INFO: Search triggered.
-Nov 28, 2024 10:40:36 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with false
-Nov 28, 2024 10:40:43 PM org.example.libmgmt.AppLogger log
-INFO: Search triggered.
-Nov 28, 2024 10:40:43 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with true
-Nov 28, 2024 10:40:43 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with false
-Nov 28, 2024 10:40:44 PM org.example.libmgmt.AppLogger log
-INFO: Search triggered.
-Nov 28, 2024 10:40:44 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with false
-Nov 28, 2024 10:40:47 PM org.example.libmgmt.AppLogger log
-INFO: Search triggered.
-Nov 28, 2024 10:40:47 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with true
-Nov 28, 2024 10:40:47 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with false
-Nov 28, 2024 10:40:48 PM org.example.libmgmt.AppLogger log
-INFO: Search triggered.
-Nov 28, 2024 10:40:48 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with true
-Nov 28, 2024 10:40:48 PM org.example.libmgmt.AppLogger log
+Nov 30, 2024 8:33:38 PM org.example.libmgmt.AppLogger log
 INFO: Triggered with false

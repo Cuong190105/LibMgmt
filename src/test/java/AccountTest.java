@@ -47,7 +47,7 @@ public class AccountTest {
         ResultSet rs = ps.executeQuery();
 
         assertTrue(rs.next(), "Account not exist");
-        ret = accDao.extractAccount(rs);
+        ret = accDao.extract(rs);
         assertEquals(test3, ret);
 //        assertEquals("1MASTER3", rs.getString("username"));
 //        assertEquals("!@#$%^&*", rs.getString("hashedPassword"));
