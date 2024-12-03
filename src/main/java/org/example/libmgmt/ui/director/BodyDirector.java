@@ -4,9 +4,18 @@ import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.ui.builder.BodyBuilder;
 import org.example.libmgmt.ui.components.body.BodyType;
+import org.example.libmgmt.ui.components.body.contentSection.BorrowHistoryPanel;
+import org.example.libmgmt.ui.components.body.contentSection.CheckoutPanel;
+import org.example.libmgmt.ui.components.body.contentSection.DocumentDetails;
+import org.example.libmgmt.ui.components.body.contentSection.DocumentEdit;
+import org.example.libmgmt.ui.components.body.contentSection.DocumentLibrary;
+import org.example.libmgmt.ui.components.body.contentSection.FeedbackPanel;
+import org.example.libmgmt.ui.components.body.contentSection.LoginForm;
+import org.example.libmgmt.ui.components.body.contentSection.MemberListView;
+import org.example.libmgmt.ui.components.body.contentSection.SignUpForm;
+import org.example.libmgmt.ui.components.body.contentSection.UserDetails;
 import org.example.libmgmt.ui.components.body.searchPanel.DocumentSearchPanel;
 import org.example.libmgmt.ui.components.body.searchPanel.MemberSearchPanel;
-import org.example.libmgmt.ui.components.body.contentSection.*;
 
 /**
  * A director instance which tells the builder to build body part.

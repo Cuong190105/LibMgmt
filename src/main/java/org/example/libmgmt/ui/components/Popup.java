@@ -13,7 +13,7 @@ import org.example.libmgmt.ui.page.Page;
 import org.example.libmgmt.ui.style.Style;
 
 /**
- * A popup
+ * A popup.
  */
 public class Popup {
   private Page page;

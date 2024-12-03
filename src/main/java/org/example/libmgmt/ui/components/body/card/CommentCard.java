@@ -7,9 +7,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.LibMgmt;
-import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.style.Style;
 
@@ -37,13 +37,13 @@ public class CommentCard {
           LibMgmt.class.getResourceAsStream("img/accountAction/userPlaceHolder.png")
       ));
     }
-    VBox avatarContainer = new VBox(avatar);
     this.name = new Label(reader.getName());
     this.commentDate = new Text(comment.getDate());
-    HBox ratingStar = Star.getStar(1, comment.getRating());
     this.comment = new Text(comment.getComment());
+    VBox avatarContainer = new VBox(avatar);
     container = new GridPane();
     container.add(avatarContainer, 0, 0, 1, 3);
+    HBox ratingStar = Star.getStar(1, comment.getRating());
     container.addColumn(1, name, commentDate, ratingStar, this.comment);
     style();
   }

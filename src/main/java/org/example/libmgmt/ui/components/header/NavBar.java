@@ -65,49 +65,49 @@ public class NavBar {
   }
 
   private void setFunction() {
-    dashboard.setOnMouseClicked(_ -> switchToDashboard());
+    dashboard.setOnMouseClicked(e -> switchToDashboard());
     dashboard.setOnKeyPressed(key -> {
       if (key.getCode().equals(KeyCode.ENTER)) {
         switchToDashboard();
       }
     });
 
-    library.setOnMouseClicked(_ -> switchToLibrary());
+    library.setOnMouseClicked(e -> switchToLibrary());
     library.setOnKeyPressed(key -> {
       if (key.getCode().equals(KeyCode.ENTER)) {
         switchToLibrary();
       }
     });
 
-    feedback.setOnMouseClicked(_ -> switchToFeedback());
+    feedback.setOnMouseClicked(e -> switchToFeedback());
     feedback.setOnKeyPressed(key -> {
       if (key.getCode().equals(KeyCode.ENTER)) {
         switchToFeedback();
       }
     });
     if (UserControl.getUser().isLibrarian()) {
-      request.setOnMouseClicked(_ -> switchToRequest());
+      request.setOnMouseClicked(e -> switchToRequest());
       request.setOnKeyPressed(key -> {
         if (key.getCode().equals(KeyCode.ENTER)) {
           switchToRequest();
         }
       });
 
-      member.setOnMouseClicked(_ -> switchToMember());
+      member.setOnMouseClicked(e -> switchToMember());
       member.setOnKeyPressed(key -> {
         if (key.getCode().equals(KeyCode.ENTER)) {
           switchToMember();
         }
       });
     } else {
-      bookshelf.setOnMouseClicked(_ -> switchToBookshelf());
+      bookshelf.setOnMouseClicked(e -> switchToBookshelf());
       bookshelf.setOnKeyPressed(key -> {
         if (key.getCode().equals(KeyCode.ENTER)) {
           switchToBookshelf();
         }
       });
 
-      docSearch.setOnMouseClicked(_ -> switchToDocSearch());
+      docSearch.setOnMouseClicked(e -> switchToDocSearch());
       docSearch.setOnKeyPressed(key -> {
         if (key.getCode().equals(KeyCode.ENTER)) {
           switchToDocSearch();
@@ -131,7 +131,7 @@ public class NavBar {
         ImageView img = new ImageView(new Image(iconStream[i]));
         img.setPreserveRatio(true);
         img.setFitHeight(25);
-        switch(i) {
+        switch (i) {
           case 0 -> dashboard.setGraphic(img);
           case 1 -> {
             if (request != null) {

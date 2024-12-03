@@ -34,15 +34,15 @@ public class AccountPanel extends QuickPanel {
   }
 
   private void setFunction() {
-    accountChange.setOnMouseClicked(_ -> {
+    accountChange.setOnMouseClicked(e -> {
       UIHandler.openAccountDetails();
     });
 
-    userinfoChange.setOnMouseClicked(_ -> {
+    userinfoChange.setOnMouseClicked(e -> {
       UIHandler.openMemberDetails(UserControl.getUser());
     });
 
-    logout.setOnMouseClicked(_ -> {
+    logout.setOnMouseClicked(e -> {
       UserControl.logout();
       UIHandler.switchToLogin();
     });
