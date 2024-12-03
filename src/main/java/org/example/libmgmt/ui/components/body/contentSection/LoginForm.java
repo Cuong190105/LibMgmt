@@ -134,8 +134,8 @@ public class LoginForm {
     Style.styleTextField(usrnField, 550, 100, 32, "Tên đăng nhập");
     Style.styleTextField(pwdField, 550, 100, 32, "Mật khẩu");
 
-    Style.styleRoundedButton(signInBtn, Style.DARKGREEN, 200, 50, 24);
-    Style.styleRoundedButton(signUpBtn, Color.TRANSPARENT, 200, 50, 24);
+    Style.styleRoundedSolidButton(signInBtn, Style.DARKGREEN, 200, 50, 24);
+    Style.styleRoundedSolidButton(signUpBtn, Color.TRANSPARENT, 200, 50, 24);
 
     container.setSpacing(25);
     container.setAlignment(Pos.CENTER);

@@ -19,7 +19,7 @@ import javafx.scene.text.TextAlignment;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.control.UserControl;
-import org.example.libmgmt.ui.components.body.Comment;
+import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.components.body.card.CommentCard;
 import org.example.libmgmt.ui.style.Style;
@@ -203,16 +203,16 @@ public class DocumentDetails {
     Style.styleWrapText(tags, 400, 16);
     Style.styleWrapText(description, 400, 16);
 
-    Style.styleRoundedButton(preview, Style.LIGHTGREEN, 200, 50, 20);
+    Style.styleRoundedSolidButton(preview, Style.LIGHTGREEN, 200, 50, 20);
     if (UserControl.getUser().isLibrarian()) {
-      Style.styleRoundedButton(editDocument, Style.YELLOW, 200, 50, 20);
-      Style.styleRoundedButton(removeDocument, Style.RED, 200, 50, 20);
-      Style.styleRoundedButton(borrowDocument, Style.DARKGREEN, 200, 50, 20);
+      Style.styleRoundedSolidButton(editDocument, Style.YELLOW, 200, 50, 20);
+      Style.styleRoundedSolidButton(removeDocument, Style.RED, 200, 50, 20);
+      Style.styleRoundedSolidButton(borrowDocument, Style.DARKGREEN, 200, 50, 20);
       Insets rowGap = new Insets(20, 0, 0, 0);
       GridPane.setMargin(removeDocument, rowGap);
       GridPane.setMargin(editDocument, rowGap);
     } else {
-      Style.styleRoundedButton(borrowDocument, Style.DARKGREEN, 200, 50, 20);
+      Style.styleRoundedSolidButton(borrowDocument, Style.DARKGREEN, 200, 50, 20);
     }
     GridPane.setMargin(preview, new Insets(30, 0, 0, 0));
     GridPane.setMargin(borrowDocument, new Insets(30, 0, 0, 0));
@@ -249,7 +249,7 @@ public class DocumentDetails {
     ratingStar.setSpacing(50);
     ratingStar.setAlignment(Pos.CENTER);
     userComment.setMaxHeight(160);
-    Style.styleRoundedButton(sendCritics, Style.LIGHTGREEN, 150, 50, 16);
+    Style.styleRoundedSolidButton(sendCritics, Style.LIGHTGREEN, 150, 50, 16);
     userCritics.setMaxWidth(Region.USE_PREF_SIZE);
     userCritics.setBackground(new Background(new BackgroundFill(
         Color.rgb(250, 250, 250), Style.BIG_CORNER, Insets.EMPTY

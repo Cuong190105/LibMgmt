@@ -115,7 +115,7 @@ public class Style {
    * @param w Button width.
    * @param h Button height.
    */
-  public static void styleRoundedButton(Button btn, double w, double h, double textSize) {
+  public static void styleRoundedSolidButton(Button btn, double w, double h, double textSize) {
     btn.setPrefSize(w, h);
     btn.setFont(Font.font(FONT, textSize));
     btn.setBackground(Background.EMPTY);
@@ -133,10 +133,19 @@ public class Style {
    * @param h Button height.
    * @param textSize Font size.
    */
-  public static void styleRoundedButton(Button btn, Color c, double w, double h, double textSize) {
-    styleRoundedButton(btn, w, h, textSize);
+  public static void styleRoundedSolidButton(Button btn, Color c,
+                                             double w, double h, double textSize) {
+    styleRoundedSolidButton(btn, w, h, textSize);
     btn.setBackground(new Background(new BackgroundFill(
         c, SMALL_CORNER, Insets.EMPTY
+    )));
+  }
+
+  public static void styleRoundedBorderButton(Button btn, Color c,
+                                              double w, double h, double textSize) {
+    styleRoundedSolidButton(btn, WHITE, w, h, textSize);
+    btn.setBorder(new Border(new BorderStroke(
+        c, BorderStrokeStyle.SOLID, SMALL_CORNER, new BorderWidths(5)
     )));
   }
 

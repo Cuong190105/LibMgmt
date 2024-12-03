@@ -170,7 +170,6 @@ public class UserDAO {
       ps.setString(1, text);
       ps.setString(2, "%" + text + "%");
       ResultSet rs = ps.executeQuery();
-      System.out.println((ps.toString()));
       while (rs.next()) {
         user.add(extractUser(rs));
       }

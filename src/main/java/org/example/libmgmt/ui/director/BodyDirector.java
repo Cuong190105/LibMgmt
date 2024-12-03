@@ -4,8 +4,8 @@ import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.ui.builder.BodyBuilder;
 import org.example.libmgmt.ui.components.body.BodyType;
-import org.example.libmgmt.ui.components.body.DocumentSearchPanel;
-import org.example.libmgmt.ui.components.body.MemberSearchPanel;
+import org.example.libmgmt.ui.components.body.searchPanel.DocumentSearchPanel;
+import org.example.libmgmt.ui.components.body.searchPanel.MemberSearchPanel;
 import org.example.libmgmt.ui.components.body.contentSection.*;
 
 /**
@@ -52,8 +52,10 @@ public class BodyDirector {
       case MAIN_DASHBOARD -> {
         bodyBuilder.setTitle("TRANG CHỦ");
       }
-      case MAIN_REQUEST -> {
-        bodyBuilder.setTitle("YÊU CẦU");
+      case MAIN_HISTORY -> {
+        bodyBuilder.setTitle("LỊCH SỬ MƯỢN SÁCH");
+        BorrowHistoryPanel bhp = new BorrowHistoryPanel();
+        bodyBuilder.setContent(bhp.getContent());
       }
       case MAIN_MEMBER -> {
         bodyBuilder.setTitle("THÀNH VIÊN");
@@ -68,6 +70,9 @@ public class BodyDirector {
         bodyBuilder.setContent(library.getContent());
       }
       case MAIN_FEEDBACK -> {
+        bodyBuilder.setTitle("PHẢN HỒI");
+        FeedbackPanel fp = new FeedbackPanel();
+        bodyBuilder.setContent(fp.getContent());
 //                bodyBuilder.setTitle("PHẢN HỒI");
 //                SearchPanel panel = new SearchPanel();
 //                panel.addViewOption("Tất cả", "Chỉ quan trọng");

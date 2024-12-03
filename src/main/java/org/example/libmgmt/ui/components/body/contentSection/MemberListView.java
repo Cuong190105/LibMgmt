@@ -1,6 +1,5 @@
 package org.example.libmgmt.ui.components.body.contentSection;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javafx.animation.FadeTransition;
@@ -22,7 +21,7 @@ import javafx.util.Duration;
 import org.example.libmgmt.AppLogger;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.ui.components.body.LoadingRing;
-import org.example.libmgmt.ui.components.body.MemberSearchPanel;
+import org.example.libmgmt.ui.components.body.searchPanel.MemberSearchPanel;
 import org.example.libmgmt.ui.components.body.ResultPageSwitch;
 import org.example.libmgmt.ui.components.body.card.MemberCard;
 import org.example.libmgmt.ui.style.Style;
@@ -108,7 +107,7 @@ public class MemberListView {
     AnchorPane.setLeftAnchor(wrapper, 0.0);
     AnchorPane.setRightAnchor(wrapper, 0.0);
 
-    Style.styleRoundedButton(addMember, Style.LIGHTGREEN, 250, 50, 20);
+    Style.styleRoundedSolidButton(addMember, Style.LIGHTGREEN, 250, 50, 20);
   }
 
   /**

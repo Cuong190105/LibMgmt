@@ -1,19 +1,54 @@
 package org.example.libmgmt.ui.builder;
 
-import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import org.example.libmgmt.ui.components.body.Body;
 import org.example.libmgmt.ui.components.body.BodyType;
 
+/**
+ * Body builder interface.
+ */
 public interface BodyBuilderInterface {
-    void setType(BodyType bodyType);
-    void setTitle(String sectionTitle);
-    void setSubsection(HBox subsectionList);
-    void setSearchPanel(GridPane searchPanel);
-    void setContent(Region content);
+  /**
+   * Set body type.
+   *
+   * @param bodyType Body type.
+   */
+  void setType(BodyType bodyType);
 
-    Body build();
+  /**
+   * Set body title.
+   *
+   * @param sectionTitle Title.
+   */
+  void setTitle(String sectionTitle);
+
+  /**
+   * Set subsection list.
+   *
+   * @param subsectionList Subsection list.
+   */
+  void setSubsection(HBox subsectionList);
+
+  /**
+   * Set search panel.
+   *
+   * @param searchPanel Search panel.
+   */
+  void setSearchPanel(GridPane searchPanel);
+
+  /**
+   * Set body content.
+   *
+   * @param content Body content
+   */
+  void setContent(Region content);
+
+  /**
+   * Get completed body after build.
+   *
+   * @return Body.
+   */
+  Body build();
 }

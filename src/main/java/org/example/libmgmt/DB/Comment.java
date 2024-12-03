@@ -1,6 +1,4 @@
-package org.example.libmgmt.ui.components.body;
-
-import org.example.libmgmt.DB.Document;
+package org.example.libmgmt.DB;
 
 public class Comment {
   private long userId;

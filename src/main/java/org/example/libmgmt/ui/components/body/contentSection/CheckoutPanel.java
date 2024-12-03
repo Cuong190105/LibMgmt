@@ -119,8 +119,8 @@ public class CheckoutPanel {
     back.setBorder(new Border(new BorderStroke(
         Style.DARKGREEN, BorderStrokeStyle.SOLID, Style.SMALL_CORNER, BorderWidths.DEFAULT
     )));
-    Style.styleRoundedButton(back, Style.WHITE, 200, 40, 16);
-    Style.styleRoundedButton(submit, Style.LIGHTGREEN, 200, 40, 16);
+    Style.styleRoundedSolidButton(back, Style.WHITE, 200, 40, 16);
+    Style.styleRoundedSolidButton(submit, Style.LIGHTGREEN, 200, 40, 16);
     ObjectBinding<Insets> padding = Bindings.createObjectBinding(() -> {
       int val;
       if (wrapper.getWidth() > 1500) {

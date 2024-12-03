@@ -203,7 +203,7 @@ public class NavBar {
   private void switchToRequest() {
     activeBtn.xProperty().unbind();
     activeBtn.xProperty().bind(request.layoutXProperty());
-    UIHandler.switchToSection(BodyType.MAIN_REQUEST);
+    UIHandler.switchToSection(BodyType.MAIN_HISTORY);
   }
 
   private void switchToBookshelf() {

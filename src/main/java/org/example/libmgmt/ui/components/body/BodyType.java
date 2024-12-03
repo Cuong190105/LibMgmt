@@ -7,5 +7,5 @@ public enum BodyType {
     MAIN_REQUEST,
     MAIN_FEEDBACK,
     MAIN_MEMBER,
-    MAIN_LIBRARY,
+    MAIN_LIBRARY, MAIN_HISTORY,
 }

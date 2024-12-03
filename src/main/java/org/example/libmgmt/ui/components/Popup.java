@@ -50,7 +50,7 @@ public class Popup {
    */
   public void addOkBtn() {
     Button okBtn = new Button("OK");
-    Style.styleRoundedButton(okBtn, 250, 50, 16);
+    Style.styleRoundedSolidButton(okBtn, 250, 50, 16);
     HBox.setHgrow(okBtn, Priority.ALWAYS);
     btnList.getChildren().add(okBtn);
     okBtn.setOnMouseClicked(_ -> {
@@ -63,7 +63,7 @@ public class Popup {
    */
   public void addCancelBtn() {
     Button cancelBtn = new Button("HỦY");
-    Style.styleRoundedButton(cancelBtn, 250, 50, 16);
+    Style.styleRoundedSolidButton(cancelBtn, 250, 50, 16);
     HBox.setHgrow(cancelBtn, Priority.ALWAYS);
     btnList.getChildren().add(cancelBtn);
     cancelBtn.setOnMouseClicked(_ -> {
@@ -73,7 +73,7 @@ public class Popup {
 
   public void addCustomBtn(String text, Color color, Callable<Void> func) {
     Button btn = new Button(text);
-    Style.styleRoundedButton(btn, 250, 50, 16);
+    Style.styleRoundedSolidButton(btn, 250, 50, 16);
     btn.getBackground().getFills().get(0).getFill();
     HBox.setHgrow(btn, Priority.ALWAYS);
     btnList.getChildren().add(btn);

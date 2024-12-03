@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.LibMgmt;
-import org.example.libmgmt.ui.components.body.Comment;
+import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.style.Style;
 

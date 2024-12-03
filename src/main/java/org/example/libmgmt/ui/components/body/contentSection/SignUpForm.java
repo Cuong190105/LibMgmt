@@ -275,7 +275,7 @@ public class SignUpForm {
 
     StyleForm.styleComboBox(genderField, 550, 50, 24, "");
 
-    Style.styleRoundedButton(signUpBtn, 200, 50, 16);
+    Style.styleRoundedSolidButton(signUpBtn, 200, 50, 16);
     signUpBtn.setBackground(new Background(new BackgroundFill(Style.DARKGREEN,
         Style.SMALL_CORNER, Insets.EMPTY)));
     signUpBtn.setFont(labelFont);

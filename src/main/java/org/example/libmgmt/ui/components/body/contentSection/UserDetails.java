@@ -4,17 +4,20 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.libmgmt.DB.User;
@@ -47,9 +50,12 @@ public class UserDetails {
   private final TextField ssn;
   private final TextField email;
   private final Button saveChanges;
-  private final GridPane container;
+  private final GridPane infoTable;
+  private final FlowPane mainContent;
   private final VBox potraitWrapper;
   private final HBox userIdWrapper;
+  private final VBox container;
+  private final ScrollPane wrapper;
 
   /**
    * Create a page to display user's info.
@@ -68,13 +74,15 @@ public class UserDetails {
     ssn = new TextField(user.getSSN());
     email = new TextField(user.getEmail());
     saveChanges = new Button("Lưu chỉnh sửa");
-    container = new GridPane();
+    infoTable = new GridPane();
     potrait = new ImageView(user.getAvatar());
     potraitWrapper = new VBox(potrait, photoNotice);
-    container.addColumn(0, userIdLabel, nameLabel, dobLabel, genderLabel, addressLabel,
+    infoTable.addColumn(0, userIdLabel, nameLabel, dobLabel, genderLabel, addressLabel,
         phoneNumberLabel, ssnLabel, emailLabel, saveChanges);
-    container.addColumn(1, userIdWrapper, name, dob.getContent(), gender, address, phoneNumber, ssn, email);
-    container.add(potraitWrapper, 2, 0, 1, 8);
+    infoTable.addColumn(1, userIdWrapper, name, dob.getContent(), gender, address, phoneNumber, ssn, email);
+    mainContent = new FlowPane(infoTable, potraitWrapper);
+    container = new VBox(mainContent, saveChanges);
+    wrapper = new ScrollPane(container);
     setFunction();
     style();
   }
@@ -89,13 +97,13 @@ public class UserDetails {
           );
       copyUserId.setText("Đã sao chép");
       copyUserId.setMouseTransparent(true);
-      Style.styleRoundedButton(copyUserId, Style.DARKGREEN, 150, 50, 16);
+      Style.styleRoundedSolidButton(copyUserId, Style.DARKGREEN, 150, 50, 16);
       Timeline t = new Timeline(new KeyFrame(
           Duration.millis(2000),
           e -> {
             copyUserId.setMouseTransparent(false);
             copyUserId.setText("Sao chép");
-            Style.styleRoundedButton(copyUserId, Style.LIGHTGREEN, 150, 50, 16);
+            Style.styleRoundedSolidButton(copyUserId, Style.LIGHTGREEN, 150, 50, 16);
           }
       ));
       t.play();
@@ -128,23 +136,43 @@ public class UserDetails {
     Style.styleTextField(phoneNumber, 500, 50, 16, "");
     Style.styleTextField(ssn, 500, 50, 16, "");
     StyleForm.styleComboBox(gender, 500, 50, 16, "");
-    Style.styleRoundedButton(copyUserId, Style.LIGHTGREEN, 150, 50, 16);
-    Style.styleRoundedButton(saveChanges, Style.LIGHTGREEN, 150, 50, 16);
+    Style.styleRoundedSolidButton(copyUserId, Style.LIGHTGREEN, 150, 50, 16);
+    Style.styleRoundedSolidButton(saveChanges, Style.LIGHTGREEN, 150, 50, 16);
 
-    ColumnConstraints labelCol = new ColumnConstraints(150);
-    ColumnConstraints fieldCol = new ColumnConstraints(550);
-    ColumnConstraints potraitCol = new ColumnConstraints();
-    potraitCol.setHgrow(Priority.ALWAYS);
-    container.getColumnConstraints().addAll(labelCol, fieldCol, potraitCol);
+    container.prefWidthProperty().bind(wrapper.widthProperty().subtract(50));
+    ObjectBinding<Insets> padding = Bindings.createObjectBinding(() -> {
+      double val;
+      if (infoTable.getWidth() == 0) {
+        if (container.getWidth() > 1200) {
+          val = (container.getWidth() - 1200) / 2;
+        } else {
+          val = (container.getWidth() - 650) / 2;
+        }
+      } else {
+        if (container.getWidth() > infoTable.getWidth() + potraitWrapper.getWidth() + 150) {
+          val = (container.getWidth() - infoTable.getWidth()
+              - potraitWrapper.getWidth() - 150) / 2;
+        } else {
+          val = (container.getWidth() - infoTable.getWidth()) / 2;
+        }
+      }
+      val = Math.max(0, val);
+      return new Insets(0, val, 0 , val);
+    }, wrapper.widthProperty());
+    mainContent.paddingProperty().bind(padding);
+    infoTable.setVgap(10);
+    infoTable.setHgap(50);
+    mainContent.setHgap(100);
+    mainContent.setVgap(20);
     Style.setDebugBorder(potraitWrapper);
     potraitWrapper.setAlignment(Pos.CENTER);
     potraitWrapper.setSpacing(10);
-    container.setVgap(10);
-    container.setHgap(20);
+    container.setAlignment(Pos.CENTER);
+    container.setSpacing(50);
   }
 
-  public GridPane getContent() {
-    return container;
+  public ScrollPane getContent() {
+    return wrapper;
   }
 }
 

@@ -1,4 +1,4 @@
-package org.example.libmgmt.ui.components.body;
+package org.example.libmgmt.ui.components.body.searchPanel;
 
 import java.util.List;
 import javafx.application.Platform;
@@ -8,50 +8,55 @@ import javafx.concurrent.Task;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.example.libmgmt.AppLogger;
-import org.example.libmgmt.DB.Document;
-import org.example.libmgmt.DB.DocumentDAO;
-import org.example.libmgmt.control.UserControl;
-import org.example.libmgmt.ui.components.body.contentSection.DocumentLibrary;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
+import org.example.libmgmt.ui.components.body.contentSection.MemberListView;
 
 /**
- * Search panel for document gallery.
+ * Search panel for member gallery.
  */
-public class DocumentSearchPanel extends SearchPanel {
+public class MemberSearchPanel extends SearchPanel {
   public static final int VIEW_ALL = 0;
-  public static final int VIEW_BOOK = 1;
-  public static final int VIEW_THESIS = 2;
+  public static final int VIEW_READER = 1;
+  public static final int VIEW_LIBRARIAN = 2;
   public static final int SORTBY_ID = 0;
   public static final int SORTBY_NAME = 1;
-  public static final int SORTBY_PUBLISHYEAR = 2;
   public static final int SORT_LARGEST_FIRST = 4;
+  private final SearchService searchService = new SearchService();
   private int currentViewOption;
   private int currentSortOption;
-  private final DocumentLibrary library;
-  private final Service<Void> searchService = new SearchService();
   private String currentKeyword;
+  private final MemberListView member;
 
   /**
    * Constructor.
    *
-   * @param library Target library gallery.
+   * @param member Target member gallery
    */
-  public DocumentSearchPanel(DocumentLibrary library) {
-    this.library = library;
+  public MemberSearchPanel(MemberListView member) {
+    this.member = member;
     currentKeyword = "";
+    currentSortOption = SORTBY_ID;
+    currentViewOption = VIEW_ALL;
     addViewOption();
     addSortOption();
     setFunction();
   }
 
+  private void searchMember() {
+    member.toggleLoadingRing(true);
+    searchService.restart();
+  }
+
   @Override
   public void setFunction() {
     clearSearch.setVisible(false);
-    searchDocument();
+    searchMember();
 
     clearSearch.setOnMouseClicked(_ -> {
       searchBox.setText("");
       currentKeyword = "";
-      searchDocument();
+      searchMember();
       clearSearch.setVisible(false);
       searchBox.requestFocus();
     });
@@ -62,13 +67,13 @@ public class DocumentSearchPanel extends SearchPanel {
       }
       currentKeyword = searchBox.getText();
       clearSearch.setVisible(true);
-      searchDocument();
+      searchMember();
     });
 
     viewOption.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
       if (viewOption.isFocused()) {
         currentViewOption = newVal.intValue();
-        searchDocument();
+        searchMember();
       }
     });
 
@@ -76,53 +81,44 @@ public class DocumentSearchPanel extends SearchPanel {
       if (sortingOption.isFocused()) {
         int selection = newVal.intValue();
         currentSortOption = selection / 2 + (selection % 2) * SORT_LARGEST_FIRST;
-        searchDocument();
+        searchMember();
       }
     });
-  }
-
-  private void searchDocument() {
-    AppLogger.log("Search triggered.");
-    if (currentKeyword.isEmpty() && !UserControl.getUser().isLibrarian()) {
-      library.loadSearchResults(0, null, 0, 0);
-      library.showSearchResults();
-      return;
-    }
-    library.toggleLoadingRing(true);
-    searchService.restart();
   }
 
   @Override
   public void addViewOption() {
     viewOption.setItems(FXCollections.observableArrayList(
-        "Tất cả",   "Sách", "Luận án"
+        "Tất cả", "Người đọc", "Thủ thư"
     ));
+    viewOption.getSelectionModel().selectFirst();
   }
 
   @Override
   public void addSortOption() {
     sortingOption.getItems().addAll(
         "Mã số - Tăng dần", "Mã số - Giảm dần",
-        "Tên - A đến Z", "Tên - Z đến A",
-        "Năm xuất bản - Cũ nhất", "Năm xuât bản - Mới nhất"
+        "Tên - A đến Z", "Tên - Z đến A"
     );
+    sortingOption.getSelectionModel().selectFirst();
   }
 
   private class SearchService extends Service<Void> {
+
     @Override
     protected Task<Void> createTask() {
-      return new Task<Void>() {
+      return new Task<>() {
         @Override
-        protected Void call() throws Exception {
+        protected Void call() {
           try {
-            List<Document> result = DocumentDAO.getInstance()
-                .searchDocKey(currentKeyword);
-            library.loadSearchResults(1, result, currentViewOption, currentSortOption);
+            List<User> result = UserDAO.getInstance()
+                .searchUser(currentKeyword, currentViewOption, currentSortOption);
+            member.loadSearchResults(1, result);
           } catch (Exception e) {
             AppLogger.log(e);
-            library.loadSearchResults(-1, null, 0, 0);
+            member.loadSearchResults(-1, null);
           }
-          Platform.runLater(library::showSearchResults);
+          Platform.runLater(() -> member.showSearchResults());
           return null;
         }
       };

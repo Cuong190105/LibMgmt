@@ -39,4 +39,9 @@ public class UserControl {
   public static Account getAccount() {
     return account;
   }
+
+  public static void logout() {
+    user = null;
+    account = null;
+  }
 }

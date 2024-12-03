@@ -1,0 +1,14 @@
+.table-view,
+.table-view:focused {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-background-color: #D3EE98;
+    -fx-border-color: #72BF78 #72BF78 #72BF78 transparent;
+}

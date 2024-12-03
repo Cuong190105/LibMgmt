@@ -52,8 +52,8 @@ public class AppLogger {
    *
    * @param msg Custon message that need logging.
    */
-  public static void log(String msg) {
-    LOGGER.log(Level.INFO, msg);
+  public static void log(Class c, String msg) {
+    LOGGER.log(Level.INFO, c.getName() + ": " + msg);
   }
 
   /**

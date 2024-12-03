@@ -1,4 +1,4 @@
-package org.example.libmgmt.ui.components.body;
+package org.example.libmgmt.ui.components.body.searchPanel;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -105,7 +105,7 @@ public abstract class SearchPanel {
         Style.SMALL_CORNER, BorderWidths.DEFAULT
     )));
     searchBox.setPadding(new Insets(0, 0, 0, 50));
-    Style.styleRoundedButton(clearSearch, Style.LIGHTGREEN, 100, 30, 12);
+    Style.styleRoundedSolidButton(clearSearch, Style.LIGHTGREEN, 100, 30, 12);
     AnchorPane.setLeftAnchor(searchBox, 0.0);
     AnchorPane.setRightAnchor(searchBox, 0.0);
     AnchorPane.setTopAnchor(searchBox, 0.0);

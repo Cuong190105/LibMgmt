@@ -18,7 +18,7 @@ public class StyleNavBar {
    * @param btn Target.
    */
   public static void styleButton(Button btn) {
-    Style.styleRoundedButton(btn, BTN_MAX_WIDTH, BTN_HEIGHT, 16);
+    Style.styleRoundedSolidButton(btn, BTN_MAX_WIDTH, BTN_HEIGHT, 16);
     Style.styleHoverEffect(btn);
     HBox.setHgrow(btn, Priority.ALWAYS);
   }

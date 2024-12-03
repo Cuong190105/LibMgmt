@@ -194,6 +194,10 @@ public class DocumentEdit {
       }
       UIHandler.openDocDetail(doc);
     });
+
+    container.setOnMouseClicked(_ -> {
+      System.out.println(wrapper.getWidth() + " " + container.getWidth() + " " + mainContent.getPadding().toString());
+    });
   }
 
   private void style() {
@@ -218,8 +222,8 @@ public class DocumentEdit {
     Style.styleTextField(description, 500, 50, 16, "");
     Style.styleTextField(isbn, 500, 50, 16, "");
 
-    Style.styleRoundedButton(docSelectBtn, Style.LIGHTGREEN, 150, 50, 16);
-    Style.styleRoundedButton(coverSelectBtn, Style.LIGHTGREEN, 150, 50, 16);
+    Style.styleRoundedSolidButton(docSelectBtn, Style.LIGHTGREEN, 150, 50, 16);
+    Style.styleRoundedSolidButton(coverSelectBtn, Style.LIGHTGREEN, 150, 50, 16);
     Style.styleWrapText(docFileName, 300, 16);
     StyleForm.styleWarning(warningText);
     Style.styleImg(docCover, 400);
@@ -230,21 +234,28 @@ public class DocumentEdit {
     infoTable.setVgap(10);
     mainContent.setHgap(100);
     mainContent.setVgap(20);
-    mainContent.prefWidthProperty().bind(wrapper.widthProperty().subtract(50));
+    container.prefWidthProperty().bind(wrapper.widthProperty().subtract(50));
     ObjectBinding<Insets> padding = Bindings.createObjectBinding(() -> {
       double val;
-      if (coverGroup.getWidth() + infoTable.getWidth() + 100 < mainContent.getWidth()) {
-        val = (mainContent.getWidth() - coverGroup.getWidth() - infoTable.getWidth() - 100) / 2;
+      if (coverGroup.getWidth() == 0) {
+        if (wrapper.getWidth() > 1200) {
+          val = (wrapper.getWidth() - 1200) / 2;
+        } else {
+          val = (wrapper.getWidth() - 650) / 2;
+        }
       } else {
-        val = (mainContent.getWidth() - infoTable.getWidth()) / 2;
+        if (coverGroup.getWidth() + infoTable.getWidth() + 150 < wrapper.getWidth()) {
+          val = (wrapper.getWidth() - coverGroup.getWidth() - infoTable.getWidth() - 150) / 2;
+        } else {
+          val = (wrapper.getWidth() - infoTable.getWidth() - 50) / 2;
+        }
       }
       val = Math.max(val, 0);
       return new Insets(0, val, 0, val);
-    }, mainContent.widthProperty());
+    }, wrapper.widthProperty());
     mainContent.paddingProperty().bind(padding);
-
-    Style.styleRoundedButton(cancel, 200, 50, 16);
-    Style.styleRoundedButton(save, Style.LIGHTGREEN, 200, 50, 16);
+    Style.styleRoundedSolidButton(cancel, 200, 50, 16);
+    Style.styleRoundedSolidButton(save, Style.LIGHTGREEN, 200, 50, 16);
     btnGroup.setSpacing(50);
     btnGroup.setAlignment(Pos.CENTER);
     container.setSpacing(50);

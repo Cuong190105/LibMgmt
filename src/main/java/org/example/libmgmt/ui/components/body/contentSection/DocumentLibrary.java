@@ -22,10 +22,10 @@ import org.example.libmgmt.AppLogger;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.control.UserControl;
-import org.example.libmgmt.ui.components.body.DocumentSearchPanel;
 import org.example.libmgmt.ui.components.body.LoadingRing;
 import org.example.libmgmt.ui.components.body.ResultPageSwitch;
 import org.example.libmgmt.ui.components.body.card.DocumentCard;
+import org.example.libmgmt.ui.components.body.searchPanel.DocumentSearchPanel;
 import org.example.libmgmt.ui.style.Style;
 
 /**
@@ -33,13 +33,13 @@ import org.example.libmgmt.ui.style.Style;
  */
 public class DocumentLibrary {
   private int loadStatus;
-  private static final Label getStarted = new Label(
+  private final Label getStarted = new Label(
       "Tìm kiếm tài liệu bạn cần bằng tên, mã số, hoặc ISBN."
   );
-  private static final Label noResult = new Label(
+  private final Label noResult = new Label(
       "Không có kết quả."
   );
-  private static final Label error = new Label(
+  private final Label error = new Label(
       "Có lỗi xảy ra. Vui lòng thử lại sau"
   );
   private List<Document> results;
@@ -125,7 +125,7 @@ public class DocumentLibrary {
     AnchorPane.setRightAnchor(wrapper, 0.0);
 
     if (UserControl.getUser().isLibrarian()) {
-      Style.styleRoundedButton(addDocument, Style.LIGHTGREEN, 250, 50, 20);
+      Style.styleRoundedSolidButton(addDocument, Style.LIGHTGREEN, 250, 50, 20);
     }
   }
 
@@ -232,7 +232,6 @@ public class DocumentLibrary {
    * @param show Shows/Hides animation.
    */
   public void toggleLoadingRing(boolean show) {
-    AppLogger.log("Triggered with " + show);
     FadeTransition fadeOut = new FadeTransition(Duration.millis(100), container);
     FadeTransition fadeIn = new FadeTransition(Duration.millis(100), container);
     fadeOut.setOnFinished(_ -> {

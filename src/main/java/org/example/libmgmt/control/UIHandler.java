@@ -1,6 +1,8 @@
 package org.example.libmgmt.control;
 
 import java.util.Objects;
+import java.util.Stack;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
@@ -14,6 +16,8 @@ import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.components.body.BodyType;
+import org.example.libmgmt.ui.components.body.contentSection.AccountInfoPanel;
+import org.example.libmgmt.ui.components.header.AccountPanel;
 import org.example.libmgmt.ui.director.PageDirector;
 import org.example.libmgmt.ui.page.Page;
 
@@ -24,11 +28,12 @@ public class UIHandler {
   private static UIHandler ui;
   private final PageDirector pageDirector;
   private final PageBuilder pageBuilder;
+  private final Stage stage;
+  private final Stack<Page> pageStack;
   private Scene scene;
-  private Stage stage;
-  private Page page;
 
   private UIHandler(Stage stage) {
+    this.pageStack = new Stack<>();
     this.pageDirector = new PageDirector();
     this.pageBuilder = new PageBuilder();
     this.stage = stage;
@@ -43,9 +48,9 @@ public class UIHandler {
     if (ui == null) {
       ui = new UIHandler(stage);
       ui.pageDirector.createStartupPage(ui.pageBuilder);
-      ui.page = ui.pageBuilder.build();
-      ui.scene = new Scene(ui.page.getContainer(), 800, 800);
-      setVpartition(ui.page.getContainer(), 1);
+      ui.pageStack.push(ui.pageBuilder.build());
+      ui.scene = new Scene(ui.pageStack.peek().getContainer(), 800, 800);
+      setVpartition(ui.pageStack.peek().getContainer(), 1);
       stage.setScene(ui.scene);
       ui.scene.getStylesheets()
           .add(Objects.requireNonNull(LibMgmt.class.getResource("control.css"))
@@ -64,7 +69,6 @@ public class UIHandler {
    */
   public static void switchToSignUp() {
     Animation.transitionToSignup(ui.pageDirector, ui.pageBuilder, ui.scene);
-    System.gc();
   }
 
   /**
@@ -73,7 +77,7 @@ public class UIHandler {
    * @param popup Custom popup displayed.
    */
   public static void addPopup(Popup popup) {
-    ui.page.addPopUp(popup);
+    ui.pageStack.peek().addPopUp(popup);
   }
 
   /**
@@ -81,7 +85,6 @@ public class UIHandler {
    */
   public static void switchToLogin() {
     Animation.transitionToLogin(ui.pageDirector, ui.pageBuilder, ui.scene);
-    System.gc();
   }
 
   /**
@@ -98,9 +101,10 @@ public class UIHandler {
    * Changes current scene to main page.
    */
   public static void gotoMain() {
+    ui.pageStack.clear();
     ui.pageDirector.createMainPage(ui.pageBuilder);
-    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
-    System.gc();
+    ui.pageStack.push(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
   }
 
   /**
@@ -109,9 +113,10 @@ public class UIHandler {
    * @param bodyType Section to move to.
    */
   public static void switchToSection(BodyType bodyType) {
+    ui.pageStack.clear();
     ui.pageDirector.createSectionPanel(ui.pageBuilder, bodyType);
-    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
-    System.gc();
+    ui.pageStack.push(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
   }
 
   /**
@@ -121,8 +126,8 @@ public class UIHandler {
    */
   public static void openDocDetail(Document doc) {
     ui.pageDirector.createDocumentDetailPage(ui.pageBuilder, doc);
-    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
-    System.gc();
+    ui.pageStack.push(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
   }
 
   /**
@@ -132,15 +137,15 @@ public class UIHandler {
    */
   public static void openMemberDetails(User member) {
     ui.pageDirector.createMemberDetailPage(ui.pageBuilder, member);
-    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
-    System.gc();
+    ui.pageStack.push(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
   }
 
   /**
    * Displaying account action panel.
    */
   public static void showAccountAction() {
-
+    ui.pageStack.peek().addQuickPanel(new AccountPanel());
   }
 
   /**
@@ -151,13 +156,14 @@ public class UIHandler {
 
   /**
    * Open a page to display checkout info.
+   *
    * @param user Borrower
    * @param doc Checkout document.
    */
   public static void openCheckoutPage(User user, Document doc) {
     ui.pageDirector.createCheckoutPage(ui.pageBuilder, user, doc);
-    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
-    System.gc();
+    ui.pageStack.push(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
   }
 
   public static Window getStage() {
@@ -171,13 +177,29 @@ public class UIHandler {
    */
   public static void openDocumentEditPanel(Document doc) {
     ui.pageDirector.createDocumentEditPage(ui.pageBuilder, doc);
-    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
-    System.gc();
+    ui.pageStack.push(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
   }
 
+  /**
+   * Open add document panel.
+   */
   public static void openAddDocumentPanel() {
     ui.pageDirector.createAddDocumentPage(ui.pageBuilder);
-    ui.scene.setRoot(ui.pageBuilder.build().getContainer());
-    System.gc();
+    ui.pageStack.push(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+  }
+
+  /**
+   * Open account detail panel.
+   */
+  public static void openAccountDetails() {
+  }
+
+  /**
+   * Open account quick panel.
+   */
+  public static void openAccountPanel() {
+    ui.pageStack.peek().addQuickPanel(new AccountPanel());
   }
 }
