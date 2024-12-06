@@ -99,7 +99,7 @@ public abstract class SearchPanel {
         new BackgroundSize(iconSize, iconSize, false, false, false, false))
     ));
 
-    Style.styleTextField(searchBox, Double.MAX_VALUE, 50, 24, "Tìm kiếm");
+    Style.styleTextField(searchBox, Double.MAX_VALUE, 50, 24, true, "Tìm kiếm");
     searchBox.setBorder(new Border(new BorderStroke(
         Color.GRAY, BorderStrokeStyle.SOLID,
         Style.SMALL_CORNER, BorderWidths.DEFAULT

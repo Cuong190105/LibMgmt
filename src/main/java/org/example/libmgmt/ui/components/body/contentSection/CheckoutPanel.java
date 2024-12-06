@@ -108,12 +108,12 @@ public class CheckoutPanel {
     Style.styleTitle(dueDurationLabel, 16);
     Style.styleTitle(coverLabel, 16);
     GridPane.setValignment(coverLabel, VPos.TOP);
-    Style.styleTextField(readerId, 500, 50, 16, "");
-    Style.styleTextField(reader, 500, 50, 16, "");
-    Style.styleTextField(readerStatus, 500, 50, 16, "");
-    Style.styleTextField(documentId, 500, 50, 16, "");
-    Style.styleTextField(document, 500, 50, 16, "");
-    Style.styleTextField(dueDuration, 500, 50, 16, "");
+    Style.styleTextField(readerId, 500, 50, 16, false, "");
+    Style.styleTextField(reader, 500, 50, 16, false, "");
+    Style.styleTextField(readerStatus, 500, 50, 16, false, "");
+    Style.styleTextField(documentId, 500, 50, 16, false, "");
+    Style.styleTextField(document, 500, 50, 16, false, "");
+    Style.styleTextField(dueDuration, 500, 50, 16, false, "");
     Style.styleImg(cover, 400);
 
     back.setBorder(new Border(new BorderStroke(

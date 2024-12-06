@@ -27,6 +27,8 @@ public class AppLogger {
       System.out.println("Log file not null");
       return;
     }
+    java.util.logging.Logger.getLogger(
+        "org.apache").setLevel(java.util.logging.Level.SEVERE);
     try {
       logFile = new FileHandler("./activities.log");
       SimpleFormatter formatter = new SimpleFormatter();

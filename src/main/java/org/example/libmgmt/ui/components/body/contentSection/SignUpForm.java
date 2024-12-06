@@ -259,10 +259,10 @@ public class SignUpForm {
   }
 
   private void styleForm() {
-    Style.styleTextField(nameField, 550, 50, 16, "");
-    Style.styleTextField(usrnField, 550, 50, 16, "");
-    Style.styleTextField(pwdField, 550, 50, 16, "");
-    Style.styleTextField(retypePwdField, 550, 50, 16, "");
+    Style.styleTextField(nameField, 550, 50, 16, false, "");
+    Style.styleTextField(usrnField, 550, 50, 16, false, "");
+    Style.styleTextField(pwdField, 550, 50, 16, false, "");
+    Style.styleTextField(retypePwdField, 550, 50, 16, false, "");
     birthdate.style(550);
 
     Font labelFont = Font.font("Inter", FontWeight.BOLD, 20);

@@ -4,10 +4,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import org.example.libmgmt.ui.components.Popup;
+import org.example.libmgmt.ui.components.body.Body;
 import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.components.header.QuickPanel;
-import org.example.libmgmt.ui.components.body.Body;
 
+/**
+ * A page.
+ */
 public class Page {
   private final PageType pageType;
   private final Header header;
@@ -16,6 +19,14 @@ public class Page {
   private AnchorPane wrapper;
   private boolean overlayOn;
 
+  /**
+   * Constructor.
+   *
+   * @param pageType Page type
+   * @param header Header;
+   * @param body Body;
+   * @param container Container;
+   */
   public Page(PageType pageType, Header header, Body body, BorderPane container) {
     this.pageType = pageType;
     this.header = header;
@@ -41,15 +52,30 @@ public class Page {
     return body;
   }
 
+  /**
+   * Adds a popup to thís page.
+   *
+   * @param p Popup
+   */
   public void addPopUp(Popup p) {
     wrapper.getChildren().add(p.getPopup());
     p.linkToPage(this);
   }
 
+  /**
+   * Close a displayed popup.
+   *
+   * @param p Target.
+   */
   public void closePopUp(Popup p) {
     wrapper.getChildren().remove(p);
   }
 
+  /**
+   * Adds a quick panel(Notification, Account settings).
+   *
+   * @param qp Panel.
+   */
   public void addQuickPanel(QuickPanel qp) {
     if (overlayOn) {
       removeQuickPanel();
@@ -62,15 +88,18 @@ public class Page {
     if (wrapper.getChildren().size() > 1) {
       overlayOn = true;
     }
-    wrapper.setOnMouseClicked(_ -> {
+    wrapper.setOnMouseClicked(e -> {
       removeQuickPanel();
     });
   }
 
+  /**
+   * Remove a panel.
+   */
   public void removeQuickPanel() {
     if (wrapper.getChildren().size() > 1) {
       wrapper.getChildren().removeLast();
-      wrapper.setOnMouseClicked(_ -> {});
+      wrapper.setOnMouseClicked(e -> {});
       overlayOn = false;
     }
   }

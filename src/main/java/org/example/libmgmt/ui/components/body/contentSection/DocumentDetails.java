@@ -1,6 +1,7 @@
 package org.example.libmgmt.ui.components.body.contentSection;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -128,7 +129,7 @@ public class DocumentDetails {
 //            }
 //        }
     for (Node p : ratingStar.getChildren()) {
-      p.setOnMouseClicked(_ -> {
+      p.setOnMouseClicked(e -> {
         boolean fill = true;
         for (Node q : ratingStar.getChildren()) {
           if (fill) {
@@ -147,12 +148,16 @@ public class DocumentDetails {
     }
 
     if (UserControl.getUser().isLibrarian()) {
-      editDocument.setOnMouseClicked(_ -> {
+      editDocument.setOnMouseClicked(e -> {
         UIHandler.openDocumentEditPanel(doc);
       });
     }
 
-    borrowDocument.setOnMouseClicked(_ -> {
+    preview.setOnMouseClicked(e -> {
+      UIHandler.openDocumentReader(doc);
+    });
+
+    borrowDocument.setOnMouseClicked(e -> {
       if (UserControl.getUser().isLibrarian()) {
         UIHandler.openCheckoutPage(null, doc);
       } else {
@@ -163,12 +168,12 @@ public class DocumentDetails {
     userComment.setTextFormatter(new TextFormatter<String>(change ->
         change.getControlNewText().length() <= 500 ? change : null));
 
-    sendCritics.setOnMouseClicked(_ -> {
+    sendCritics.setOnMouseClicked(e -> {
       String comment = userComment.getText();
 //            Comment.sendComment(User.getUser(), doc.getDocId(), rating, comment);
     });
 
-    loadMoreComments.setOnMouseClicked(_ -> {
+    loadMoreComments.setOnMouseClicked(e -> {
       //
     });
   }
@@ -202,10 +207,19 @@ public class DocumentDetails {
     Style.styleWrapText(publisher, 400, 16);
     Style.styleWrapText(tags, 400, 16);
     Style.styleWrapText(description, 400, 16);
+    DoubleBinding maxWidth = Bindings.createDoubleBinding(() -> {
+      if (container.getWidth() > 1200) {
+        return container.getWidth() - 600;
+      } else {
+        return 550.0;
+      }
+    }, container.widthProperty());
+    title.prefWidthProperty().bind(maxWidth);
+    title.setWrapText(true);
 
-    Style.styleRoundedSolidButton(preview, Style.LIGHTGREEN, 200, 50, 20);
+    Style.styleRoundedBorderButton(preview, Style.DARKGREEN, 200, 50, 20);
     if (UserControl.getUser().isLibrarian()) {
-      Style.styleRoundedSolidButton(editDocument, Style.YELLOW, 200, 50, 20);
+      Style.styleRoundedBorderButton(editDocument, Style.DARKGREEN, 200, 50, 20);
       Style.styleRoundedSolidButton(removeDocument, Style.RED, 200, 50, 20);
       Style.styleRoundedSolidButton(borrowDocument, Style.DARKGREEN, 200, 50, 20);
       Insets rowGap = new Insets(20, 0, 0, 0);
@@ -273,7 +287,7 @@ public class DocumentDetails {
     summaryAndUserCritics.setVgap(50);
     Style.styleTitle(commentsLabel,24);
     comments.setSpacing(20);
-    VBox.setMargin(comments, new Insets(0, 50, 0, 50));
+    VBox.setMargin(comments, new Insets(0, 0, 0, 50));
     container.setSpacing(20);
     wrapper.setFitToWidth(true);
   }

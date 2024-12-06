@@ -9,7 +9,9 @@ import javafx.scene.layout.BorderPane;
 import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.components.header.AccountAction;
 import org.example.libmgmt.ui.components.header.Header;
+import org.example.libmgmt.ui.components.header.HeaderController;
 import org.example.libmgmt.ui.components.header.NavBar;
+import org.example.libmgmt.ui.components.header.PDFController;
 import org.example.libmgmt.ui.page.PageType;
 
 /**
@@ -18,7 +20,7 @@ import org.example.libmgmt.ui.page.PageType;
 public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
   private PageType pageType;
   private static ImageView logo;
-  private NavBar navBar;
+  private HeaderController controller;
   private AccountAction accountAction;
   private BorderPane container;
 
@@ -33,7 +35,7 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
   @Override
   public void reset() {
     pageType = null;
-    navBar = null;
+    controller = null;
     accountAction = null;
     container = new BorderPane();
   }
@@ -58,11 +60,13 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
   }
 
   @Override
-  public void setControl() {
-    this.navBar = new NavBar();
-    this.accountAction = new AccountAction();
-    this.container.setCenter(this.navBar.getLayout());
-    this.container.setCenter(this.accountAction.getLayout());
+  public void setControl(HeaderController headerController) {
+    this.controller = headerController;
+    container.setCenter(controller.getLayout());
+    if (pageType == PageType.MAIN_PAGE) {
+      this.accountAction = new AccountAction();
+      container.setRight(accountAction.getLayout());
+    }
   }
 
   @Override
@@ -90,14 +94,12 @@ public class HeaderBuilder implements HeaderBuilderInterface, GeneralBuilder {
           container.setLeft(logo);
         }
         BorderPane.setAlignment(accountAction.getLayout(), Pos.CENTER_RIGHT);
-        container.setCenter(navBar.getLayout());
-        container.setRight(accountAction.getLayout());
       }
     }
   }
 
   @Override
   public Header build() {
-    return new Header(logo, navBar, accountAction, container);
+    return new Header(logo, controller, accountAction, container);
   }
 }

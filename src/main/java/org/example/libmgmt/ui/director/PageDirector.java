@@ -1,11 +1,14 @@
 package org.example.libmgmt.ui.director;
 
+import javafx.scene.Parent;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.ui.builder.BodyBuilder;
 import org.example.libmgmt.ui.builder.HeaderBuilder;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.body.BodyType;
+import org.example.libmgmt.ui.components.body.contentSection.PDFViewer;
+import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.page.PageType;
 
 /**
@@ -134,6 +137,17 @@ public class PageDirector {
 
   public void createAddDocumentPage(PageBuilder pageBuilder) {
     bodyDirector.createAddDocumentPanel(bodyBuilder);
+    pageBuilder.setBody(bodyBuilder.build());
+    pageBuilder.style();
+  }
+
+  public void createPdfViewer(PageBuilder pageBuilder, Document doc) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.PDF_VIEWER);
+    PDFViewer viewer = new PDFViewer(doc);
+    bodyDirector.createPdfViewer(bodyBuilder, viewer);
+    headerDirector.createPdfController(headerBuilder, viewer);
+    pageBuilder.setHeader(headerBuilder.build());
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
   }

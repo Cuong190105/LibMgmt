@@ -138,9 +138,9 @@ public class DateGroup {
    * @param size Max width.
    */
   public void style(double size) {
-    Style.styleTextField(dayField, size, 50, 16, "Ngày");
+    Style.styleTextField(dayField, size, 50, 16, false, "Ngày");
     StyleForm.styleComboBox(monthField, size, 50, 16, "Tháng");
-    Style.styleTextField(yearField, size, 50, 16, "Năm");
+    Style.styleTextField(yearField, size, 50, 16, false, "Năm");
 
     ColumnConstraints c0 = new ColumnConstraints();
     ColumnConstraints c1 = new ColumnConstraints();

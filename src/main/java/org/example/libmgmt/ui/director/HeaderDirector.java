@@ -1,6 +1,9 @@
 package org.example.libmgmt.ui.director;
 
 import org.example.libmgmt.ui.builder.HeaderBuilder;
+import org.example.libmgmt.ui.components.body.contentSection.PDFViewer;
+import org.example.libmgmt.ui.components.header.NavBar;
+import org.example.libmgmt.ui.components.header.PDFController;
 import org.example.libmgmt.ui.page.PageType;
 
 /**
@@ -37,7 +40,16 @@ public class HeaderDirector {
   public void createMainPageHeader(HeaderBuilder headerBuilder) {
     headerBuilder.reset();
     headerBuilder.setType(PageType.MAIN_PAGE);
-    headerBuilder.setControl();
+    NavBar nb = new NavBar();
+    headerBuilder.setControl(nb);
+    headerBuilder.style();
+  }
+
+  public void createPdfController(HeaderBuilder headerBuilder, PDFViewer viewer) {
+    headerBuilder.reset();
+    headerBuilder.setType(PageType.PDF_VIEWER);
+    PDFController pc = new PDFController(viewer);
+    headerBuilder.setControl(pc);
     headerBuilder.style();
   }
 }

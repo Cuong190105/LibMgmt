@@ -73,17 +73,18 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
 
   @Override
   public void style() {
-    Style.styleTitle(sectionTitle, 40);
-
     content.getStylesheets().add(LibMgmt.class.getResource("viewport.css").toExternalForm());
     VBox.setVgrow(content, Priority.ALWAYS);
 
     container.setSpacing(20);
-    container.setPadding(new Insets(25));
+    if (bodyType != BodyType.PDF_VIEWER) {
+      Style.styleTitle(sectionTitle, 40);
 
-    Style.styleShadowBorder(container);
-    BackgroundFill bgF = new BackgroundFill(Color.WHITE, Style.BIG_CORNER, Insets.EMPTY);
-    container.setBackground(new Background(bgF));
+      container.setPadding(new Insets(25));
+      Style.styleShadowBorder(container);
+      BackgroundFill bgF = new BackgroundFill(Color.WHITE, Style.BIG_CORNER, Insets.EMPTY);
+      container.setBackground(new Background(bgF));
+    }
     switch (bodyType) {
       case AUTHENTICATION -> {
         content.setMaxWidth(Region.USE_PREF_SIZE);
@@ -95,6 +96,9 @@ public class BodyBuilder implements BodyBuilderInterface, GeneralBuilder {
         content.prefWidthProperty().bind(container.widthProperty());
         container.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         container.setAlignment(Pos.TOP_LEFT);
+      }
+      case PDF_VIEWER -> {
+        sectionTitle.setManaged(false);
       }
     }
   }

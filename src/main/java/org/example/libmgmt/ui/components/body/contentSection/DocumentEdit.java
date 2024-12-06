@@ -212,15 +212,15 @@ public class DocumentEdit {
     Style.styleTitle(isbnLabel, 16);
     Style.styleTitle(docContentLabel, 16);
 
-    Style.styleTextField(docId, 500, 50, 16, "");
-    Style.styleTextField(docTitle, 500, 50, 16, "");
-    Style.styleTextField(author, 500, 50, 16, "");
-    Style.styleTextField(publisher, 500, 50, 16, "");
-    Style.styleTextField(publishYear, 500, 50, 16, "");
+    Style.styleTextField(docId, 500, 50, 16, false,  "");
+    Style.styleTextField(docTitle, 500, 50, 16, false,  "");
+    Style.styleTextField(author, 500, 50, 16, false,  "");
+    Style.styleTextField(publisher, 500, 50, 16, false,  "");
+    Style.styleTextField(publishYear, 500, 50, 16, false,  "");
     StyleForm.styleComboBox(type, 500, 50, 16, "");
-    Style.styleTextField(tags, 500, 50, 16, "");
-    Style.styleTextField(description, 500, 50, 16, "");
-    Style.styleTextField(isbn, 500, 50, 16, "");
+    Style.styleTextField(tags, 500, 50, 16, false,  "");
+    Style.styleTextField(description, 500, 50, 16, false,  "");
+    Style.styleTextField(isbn, 500, 50, 16, false,  "");
 
     Style.styleRoundedSolidButton(docSelectBtn, Style.LIGHTGREEN, 150, 50, 16);
     Style.styleRoundedSolidButton(coverSelectBtn, Style.LIGHTGREEN, 150, 50, 16);

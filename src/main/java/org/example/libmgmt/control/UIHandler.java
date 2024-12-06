@@ -5,8 +5,10 @@ import java.util.Stack;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -62,6 +64,7 @@ public class UIHandler {
       ));
       t.play();
     }
+    openDocumentReader(new Document());
   }
 
   /**
@@ -201,5 +204,23 @@ public class UIHandler {
    */
   public static void openAccountPanel() {
     ui.pageStack.peek().addQuickPanel(new AccountPanel());
+  }
+
+  public static void openDocumentReader(Document doc) {
+    Stage reader = new Stage();
+    reader.setTitle("Trình đọc PDF LibMa - " + doc.getTitle());
+    reader.initModality(Modality.NONE);
+    PageBuilder temp = new PageBuilder();
+    ui.pageDirector.createPdfViewer(temp, doc);
+    Scene readerScene = new Scene(temp.build().getContainer(), 800, 800);
+    reader.setScene(readerScene);
+    reader.setMinWidth(800);
+    reader.setMinHeight(800);
+    reader.show();
+  }
+
+  public static void backToLastPage() {
+    ui.pageStack.pop();
+    ui.scene.setRoot(ui.pageStack.peek().getContainer());
   }
 }

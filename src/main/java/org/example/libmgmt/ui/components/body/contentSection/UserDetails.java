@@ -128,32 +128,32 @@ public class UserDetails {
     userId.setMouseTransparent(true);
     userId.setFocusTraversable(false);
     userIdWrapper.setSpacing(50);
-    Style.styleTextField(userId, 250, 50, 16, "");
-    Style.styleTextField(name, 500, 50, 16, "");
-    Style.styleTextField(address, 500, 50, 16, "");
+    Style.styleTextField(userId, 250, 50, 16, false, "");
+    Style.styleTextField(name, 500, 50, 16, false, "");
+    Style.styleTextField(address, 500, 50, 16, false, "");
     dob.style(500);
-    Style.styleTextField(email, 500, 50, 16, "");
-    Style.styleTextField(phoneNumber, 500, 50, 16, "");
-    Style.styleTextField(ssn, 500, 50, 16, "");
+    Style.styleTextField(email, 500, 50, 16, false, "");
+    Style.styleTextField(phoneNumber, 500, 50, 16, false, "");
+    Style.styleTextField(ssn, 500, 50, 16, false, "");
     StyleForm.styleComboBox(gender, 500, 50, 16, "");
     Style.styleRoundedSolidButton(copyUserId, Style.LIGHTGREEN, 150, 50, 16);
     Style.styleRoundedSolidButton(saveChanges, Style.LIGHTGREEN, 150, 50, 16);
 
-    container.prefWidthProperty().bind(wrapper.widthProperty().subtract(50));
+    container.prefWidthProperty().bind(wrapper.widthProperty().subtract(30));
     ObjectBinding<Insets> padding = Bindings.createObjectBinding(() -> {
       double val;
       if (infoTable.getWidth() == 0) {
-        if (container.getWidth() > 1200) {
-          val = (container.getWidth() - 1200) / 2;
+        if (wrapper.getWidth() > 1200) {
+          val = (wrapper.getWidth() - 1200) / 2;
         } else {
-          val = (container.getWidth() - 650) / 2;
+          val = (wrapper.getWidth() - 650) / 2;
         }
       } else {
-        if (container.getWidth() > infoTable.getWidth() + potraitWrapper.getWidth() + 150) {
-          val = (container.getWidth() - infoTable.getWidth()
+        if (wrapper.getWidth() > infoTable.getWidth() + potraitWrapper.getWidth() + 150) {
+          val = (wrapper.getWidth() - infoTable.getWidth()
               - potraitWrapper.getWidth() - 150) / 2;
         } else {
-          val = (container.getWidth() - infoTable.getWidth()) / 2;
+          val = (wrapper.getWidth() - infoTable.getWidth()) / 2;
         }
       }
       val = Math.max(0, val);
@@ -164,7 +164,6 @@ public class UserDetails {
     infoTable.setHgap(50);
     mainContent.setHgap(100);
     mainContent.setVgap(20);
-    Style.setDebugBorder(potraitWrapper);
     potraitWrapper.setAlignment(Pos.CENTER);
     potraitWrapper.setSpacing(10);
     container.setAlignment(Pos.CENTER);

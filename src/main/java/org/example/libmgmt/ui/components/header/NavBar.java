@@ -25,7 +25,7 @@ import org.example.libmgmt.ui.style.StyleNavBar;
 /**
  * A navigation bar instance.
  */
-public class NavBar {
+public class NavBar implements HeaderController {
   private final Button dashboard;
   private Button request;
   private Button member;
@@ -64,7 +64,8 @@ public class NavBar {
     setFunction();
   }
 
-  private void setFunction() {
+  @Override
+  public void setFunction() {
     dashboard.setOnMouseClicked(e -> switchToDashboard());
     dashboard.setOnKeyPressed(key -> {
       if (key.getCode().equals(KeyCode.ENTER)) {
@@ -162,7 +163,8 @@ public class NavBar {
     }
   }
 
-  private void style() {
+  @Override
+  public void style() {
     StyleNavBar.styleButton(dashboard);
     StyleNavBar.styleButton(feedback);
     StyleNavBar.styleButton(library);
@@ -236,6 +238,7 @@ public class NavBar {
     UIHandler.switchToSection(BodyType.MAIN_FEEDBACK);
   }
 
+  @Override
   public StackPane getLayout() {
     return container;
   }

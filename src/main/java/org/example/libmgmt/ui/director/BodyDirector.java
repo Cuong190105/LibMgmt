@@ -12,6 +12,7 @@ import org.example.libmgmt.ui.components.body.contentSection.DocumentLibrary;
 import org.example.libmgmt.ui.components.body.contentSection.FeedbackPanel;
 import org.example.libmgmt.ui.components.body.contentSection.LoginForm;
 import org.example.libmgmt.ui.components.body.contentSection.MemberListView;
+import org.example.libmgmt.ui.components.body.contentSection.PDFViewer;
 import org.example.libmgmt.ui.components.body.contentSection.SignUpForm;
 import org.example.libmgmt.ui.components.body.contentSection.UserDetails;
 import org.example.libmgmt.ui.components.body.searchPanel.DocumentSearchPanel;
@@ -172,6 +173,13 @@ public class BodyDirector {
     bodyBuilder.setTitle("Thêm tài liệu");
     DocumentEdit de = new DocumentEdit();
     bodyBuilder.setContent(de.getContent());
+    bodyBuilder.style();
+  }
+
+  public void createPdfViewer(BodyBuilder bodyBuilder, PDFViewer viewer) {
+    bodyBuilder.reset();
+    bodyBuilder.setType(BodyType.PDF_VIEWER);
+    bodyBuilder.setContent(viewer.getContent());
     bodyBuilder.style();
   }
 }

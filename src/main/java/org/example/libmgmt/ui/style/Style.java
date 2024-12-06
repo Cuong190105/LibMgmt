@@ -30,7 +30,7 @@ public class Style {
   public static final String FONT = "Inter";
   public static final CornerRadii BIG_CORNER = new CornerRadii(25);
   public static final CornerRadii SMALL_CORNER = new CornerRadii(15);
-  public static final CornerRadii TINY_CORNER = new CornerRadii(3);
+  public static final CornerRadii TINY_CORNER = new CornerRadii(5);
   public static final Color DARKGREEN = Color.rgb(114, 191, 120);
   public static final Color LIGHTGREEN = Color.rgb(211, 238, 152);
   public static final Color YELLOW = Color.rgb(254, 255, 159);
@@ -48,6 +48,9 @@ public class Style {
   public static final Background DARKOVERLAY = new Background(new BackgroundFill(
       Color.rgb(0, 0, 0, 0.1), Style.SMALL_CORNER, Insets.EMPTY
   ));
+  public static final Background DARKOVERLAY_TINY = new Background(new BackgroundFill(
+      Color.rgb(0, 0, 0, 0.1), Style.TINY_CORNER, Insets.EMPTY
+  ));
   public static final ColorAdjust DARKEN = new ColorAdjust();
   public static final DropShadow shadowBorder = new DropShadow(5, Color.BLACK);
   public static final Color RED = Color.rgb(244, 77, 97);
@@ -62,12 +65,14 @@ public class Style {
    * @param prompt Prompt/Placeholder text.
    */
   public static void styleTextField(TextField tf, double w, double h,
-                                    double size, String prompt) {
+                                    double size, boolean disablePadding, String prompt) {
     tf.setMaxWidth(w);
     tf.setPrefWidth(w);
     tf.setMinHeight(h);
     tf.setFont(Font.font(FONT, size));
-    tf.setPadding(TEXTBOX_INSETS);
+    if (!disablePadding) {
+      tf.setPadding(TEXTBOX_INSETS);
+    }
     if (prompt != null) {
       tf.setPromptText(prompt);
       tf.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);");
@@ -116,11 +121,16 @@ public class Style {
    * @param h Button height.
    */
   public static void styleRoundedSolidButton(Button btn, double w, double h, double textSize) {
+    if (w >= 50) {
+      btn.setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.NONE,
+          SMALL_CORNER, new BorderWidths(0))));
+    } else {
+      btn.setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.NONE,
+          TINY_CORNER, new BorderWidths(0))));
+    }
     btn.setPrefSize(w, h);
     btn.setFont(Font.font(FONT, textSize));
     btn.setBackground(Background.EMPTY);
-    btn.setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.NONE,
-        SMALL_CORNER, new BorderWidths(0))));
     styleHoverEffect(btn);
   }
 
@@ -156,12 +166,16 @@ public class Style {
     DARKEN.setBrightness(-0.1);
     region.setOnMouseEntered(_ -> {
       if (region.getBackground() == Background.EMPTY) {
-        region.setBackground(DARKOVERLAY);
+        if (region.getWidth() < 50) {
+          region.setBackground(DARKOVERLAY_TINY);
+        } else {
+          region.setBackground(DARKOVERLAY);
+        }
       }
       region.setEffect(DARKEN);
     });
     region.setOnMouseExited(_ -> {
-      if (region.getBackground() == DARKOVERLAY) {
+      if (region.getBackground() == DARKOVERLAY || region.getBackground() == DARKOVERLAY_TINY) {
         region.setBackground(Background.EMPTY);
       }
       region.setEffect(null);
