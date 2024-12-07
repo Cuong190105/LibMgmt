@@ -146,7 +146,7 @@ public class UserDAO implements Extractor<User> {
     }
   }
 
-  public List<User> searchUser(String text, int filter, int sort) {
+  public List<User> searchUser(String text, int filter, int sort) throws DatabaseConnectionException{
     List<User> user = new ArrayList<>();
     try {
       Connection db = LibraryDB.getConnection();

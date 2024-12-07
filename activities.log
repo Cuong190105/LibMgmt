@@ -1,18 +1,10 @@
-Nov 30, 2024 8:33:31 PM org.example.libmgmt.AppLogger log
+Dec 03, 2024 12:49:50 AM org.example.libmgmt.AppLogger log
 INFO: Search triggered.
-Nov 30, 2024 8:33:31 PM org.example.libmgmt.AppLogger log
+Dec 03, 2024 12:49:50 AM org.example.libmgmt.AppLogger log
 INFO: Triggered with false
-Nov 30, 2024 8:33:32 PM org.example.libmgmt.AppLogger log
+Dec 03, 2024 12:50:18 AM org.example.libmgmt.AppLogger log
 INFO: Search triggered.
-Nov 30, 2024 8:33:32 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with false
-Nov 30, 2024 8:33:33 PM org.example.libmgmt.AppLogger log
-INFO: Search triggered.
-Nov 30, 2024 8:33:33 PM org.example.libmgmt.AppLogger log
-INFO: Triggered with false
-Nov 30, 2024 8:33:37 PM org.example.libmgmt.AppLogger log
-INFO: Search triggered.
-Nov 30, 2024 8:33:37 PM org.example.libmgmt.AppLogger log
+Dec 03, 2024 12:50:18 AM org.example.libmgmt.AppLogger log
 INFO: Triggered with true
-Nov 30, 2024 8:33:38 PM org.example.libmgmt.AppLogger log
+Dec 03, 2024 12:50:19 AM org.example.libmgmt.AppLogger log
 INFO: Triggered with false

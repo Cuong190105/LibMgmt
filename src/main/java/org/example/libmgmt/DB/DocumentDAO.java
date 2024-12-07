@@ -4,6 +4,7 @@ package org.example.libmgmt.DB;
 import javafx.scene.image.Image;
 
 import javax.sql.rowset.serial.SerialBlob;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -229,5 +230,22 @@ public class DocumentDAO implements Extractor<Document> {
       e.printStackTrace();
     }
     return doc;
+  }
+
+  public Blob getContent(int id) {
+    Blob content = null;
+    try {
+      Connection db = LibraryDB.getConnection();
+      String sql = "SELECT * FROM documentContent WHERE DocID = ?";
+      PreparedStatement ps = db.prepareStatement(sql);
+      ps.setInt(1, id);
+      ResultSet rs = ps.executeQuery();
+      if (rs.next()) {
+        content = rs.getBlob("content");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return content;
   }
 }

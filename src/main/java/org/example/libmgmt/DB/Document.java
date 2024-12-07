@@ -29,7 +29,8 @@ public class Document {
   private int score;
   private Image cover;
   private String description;
-
+  private Blob content;
+ 
   /**
    * Default constructor with cover placeholder preloaded.
    */
@@ -240,6 +241,9 @@ public class Document {
             this.thesis == doc.thesis;
   }
 
+  /**
+   * for debugging purpose.
+   */
   public String print() {
     return " " + docID + "  " + title + "  " + author + "  "
             + publisher + "  " + publishYear + " " + quantity + "  " + tags + "  "
