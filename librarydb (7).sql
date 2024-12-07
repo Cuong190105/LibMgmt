@@ -138,7 +138,7 @@ ALTER TABLE `document`
 -- Indexes for table `documentcontent`
 --
 ALTER TABLE `documentcontent`
-  ADD KEY `docID` (`docID`) USING BTREE;
+  ADD KEY `docID` (`docID`);
 
 --
 -- Indexes for table `user`

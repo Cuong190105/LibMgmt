@@ -146,6 +146,8 @@ public class SignUpForm {
     signUpBtn.setText("Đang đăng ký...");
     int status = validateInfo();
     if (status == 0) {
+
+
       Popup p = new Popup("Đăng ký thành công!",
           "Bấm OK để quay lại đăng nhập.");
       p.addOkBtn();

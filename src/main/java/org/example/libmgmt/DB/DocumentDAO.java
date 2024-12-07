@@ -1,9 +1,6 @@
 
 package org.example.libmgmt.DB;
 
-import javafx.scene.image.Image;
-
-import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -226,6 +223,23 @@ public class DocumentDAO implements Extractor<Document> {
         doc = extract(rs);
       }
 
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return doc;
+  }
+
+  public Document getDocFromISBN(String isbn) {
+    Document doc = null;
+    try {
+      Connection db = LibraryDB.getConnection();
+      String sql = "SELECT * FROM document WHERE isbn = ?";
+      PreparedStatement ps = db.prepareStatement(sql);
+      ps.setString(1, isbn);
+      ResultSet rs = ps.executeQuery();
+      if (rs.next()) {
+        doc = extract(rs);
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
