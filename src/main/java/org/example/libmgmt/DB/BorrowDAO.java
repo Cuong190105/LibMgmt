@@ -50,7 +50,7 @@ public class BorrowDAO {
     try {
       Connection db = LibraryDB.getConnection();
       String sql = "INSERT INTO borrow (UID, docID, borrowingDate, dueDate, returnDate) VALUES (?, ?, ?, ?, ?)";
-      PreparedStatement ps = db.prepareStatement(sql); // query may generate A_I key
+      PreparedStatement ps = db.prepareStatement(sql);
       ps.setInt(1, br.getUID());
       ps.setInt(2, br.getDocID());
       ps.setDate(3, br.getBorrowingDate());

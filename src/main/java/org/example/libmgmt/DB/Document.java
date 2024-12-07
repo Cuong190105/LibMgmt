@@ -30,7 +30,7 @@ public class Document {
   private Image cover;
   private String description;
   private Blob content;
- 
+
   /**
    * Default constructor with cover placeholder preloaded.
    */

@@ -232,6 +232,19 @@ public class DocumentDAO implements Extractor<Document> {
     return doc;
   }
 
+  public void uploadContent(int id, Blob content) {
+    try {
+      Connection db = LibraryDB.getConnection();
+      String sql = "INSERT INTO documentContent (docId, content) VALUES (?, ?)";
+      PreparedStatement ps = db.prepareStatement(sql);
+      ps.setInt(1, id);
+      ps.setBlob(2, content);
+      ps.executeUpdate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   public Blob getContent(int id) {
     Blob content = null;
     try {
