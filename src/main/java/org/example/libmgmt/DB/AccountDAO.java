@@ -6,8 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountDAO implements Extractor<Account> {
+  /**
+   * Singleton, only one instance at a time.
+   */
   private static AccountDAO instance;
 
+  /**
+   * prevent Constructor.
+   */
   private AccountDAO() {
   }
 
@@ -47,6 +53,7 @@ public class AccountDAO implements Extractor<Account> {
     return acc;
   }
 
+  // *Note: generate UID first before addAccount
   public void addAccount(Account account) {
     try {
       Connection db = AccountDB.getConnection();
@@ -57,12 +64,12 @@ public class AccountDAO implements Extractor<Account> {
       ps.setString(3, account.getPassword());
 
       ps.executeUpdate();
-
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
+  //need to rehash check with stored pwd on db before changing
   public void changePassword(Account account) {
     try {
       Connection db = AccountDB.getConnection();

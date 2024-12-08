@@ -4,6 +4,7 @@ module org.example.libmgmt {
   requires java.sql.rowset;
   requires javafx.swing;
   requires com.google.gson;
+  requires jbcrypt;
 
 
   opens org.example.libmgmt to javafx.fxml;

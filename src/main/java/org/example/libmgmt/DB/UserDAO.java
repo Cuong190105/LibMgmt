@@ -82,7 +82,7 @@ public class UserDAO implements Extractor<User> {
 
     try {
       Connection db = LibraryDB.getConnection();
-      String sql = "INSERT INTO user (name, sex, DOB, address, phoneNumber, email, ssn, isLibrarian, userName) VALUES (?,?,?,?,?,?,?,?,?)";
+      String sql = "INSERT INTO user (name, sex, DOB, address, phoneNumber, email, ssn, isLibrarian) VALUES (?,?,?,?,?,?,?,?)";
       PreparedStatement ps = db.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // query may generate A_I key
       ps.setString(1, user.getName());
       ps.setString(2, user.getSex());

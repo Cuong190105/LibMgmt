@@ -24,7 +24,8 @@ public class UserControl {
     if (acc == null) {
       return USERNAME_NOT_EXISTS;
     }
-    if (acc.getPassword().compareTo(password) != 0) {
+
+    if (!PasswordUtil.checkPassword(password, acc.getPassword())) {
       return PASSWORD_NOT_MATCHES;
     }
     user = UserDAO.getInstance().getUserFromUID(acc.getUID());

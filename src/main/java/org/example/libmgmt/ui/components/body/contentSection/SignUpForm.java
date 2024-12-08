@@ -18,12 +18,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.example.libmgmt.DB.Account;
+import org.example.libmgmt.DB.AccountDAO;
+import org.example.libmgmt.DB.PasswordUtil;
+import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.control.Validator;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.components.body.DateGroup;
 import org.example.libmgmt.ui.style.Style;
 import org.example.libmgmt.ui.style.StyleForm;
+
+import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * A panel for sign up form.
@@ -146,8 +154,7 @@ public class SignUpForm {
     signUpBtn.setText("Đang đăng ký...");
     int status = validateInfo();
     if (status == 0) {
-
-
+      addUserToDB();
       Popup p = new Popup("Đăng ký thành công!",
           "Bấm OK để quay lại đăng nhập.");
       p.addOkBtn();
@@ -303,5 +310,35 @@ public class SignUpForm {
 
   public VBox getForm() {
     return container;
+  }
+
+  /**
+   * reminder: setPassword(hash(pwd))
+   */
+  public void addUserToDB() {
+    User user = new User();
+    user.setName(nameField.getText());
+    user.setSex(genderField.getValue());
+    user.setDob(toDateType(birthdate.getYear(),
+            birthdate.getMonth().substring(6), birthdate.getDay()));
+    UserDAO userDAO = UserDAO.getInstance();
+    user.setUid(userDAO.addUser(user));
+
+    AccountDAO accountDAO = AccountDAO.getInstance();
+    Account account = new Account();
+    account.setUsername(usrnField.getText());
+    account.setPassword(PasswordUtil.hashPassword(pwdField.getText()));
+    account.setUID(user.getUid());
+    accountDAO.addAccount(account);
+
+  }
+
+  private static Date toDateType(String year, String month, String day) {
+    // Ensure the month is 1-based (January = 1, December = 12)
+    int y = Integer.parseInt(year);
+    int m = Integer.parseInt(month);
+    int d = Integer.parseInt(day);
+    LocalDate localDate = LocalDate.of(y, m, d);
+    return Date.valueOf(localDate);
   }
 }

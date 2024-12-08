@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * return Object T from ResultSet.
+ * return full Object T from sql.ResultSet.
  * @param <T> target Object.
  */
 public interface Extractor<T> {
