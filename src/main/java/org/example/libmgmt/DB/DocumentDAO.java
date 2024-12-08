@@ -1,5 +1,13 @@
 package org.example.libmgmt.DB;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,23 +72,30 @@ public class DocumentDAO {
   public void updateDocument(Document updated) {
     try {
       Connection db = LibraryDB.getConnection();
-      String sql = "UPDATE document SET name = ?, author = ?, publisher = ?, "
-          + "quantity = ?, tags = ?, visited = ?, type = ?, ISBN = ? WHERE docID = ?";
+      String sql = "UPDATE document SET name = ?, author = ?, publisher = ?, description = ?,"
+          + "quantity = ?, tags = ?, visited = ?, type = ?, ISBN = ?, Cover = ? WHERE docID = ?";
 
       PreparedStatement ps = db.prepareStatement(sql);
       ps.setString(1, updated.getTitle());
       ps.setString(2, updated.getAuthor());
       ps.setString(3, updated.getPublisher());
-      ps.setInt(4, updated.getQuantity());
-      ps.setString(5, updated.getTagsString());
-      ps.setInt(6, updated.getVisited());
-      ps.setBoolean(7, updated.isThesis());
-      ps.setString(8, updated.getISBN());
+      ps.setString(4, updated.getDescription());
+      ps.setInt(5, updated.getQuantity());
+      ps.setString(6, updated.getTagsString());
+      ps.setInt(7, updated.getVisited());
+      ps.setBoolean(8, updated.isThesis());
+      ps.setString(9, updated.getISBN());
 
-      ps.setInt(9, updated.getDocID()); // Assuming Document has a method getId() to get the document ID
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      ImageIO.write(SwingFXUtils.fromFXImage(updated.getCover(), null), "png", os);
+      InputStream fis = new ByteArrayInputStream(os.toByteArray());
+
+      ps.setBlob(10, fis); // Assuming Document has a method getId() to get the document ID
+      ps.setInt(11, updated.getDocID()); // Assuming Document has a method getId() to get the document ID
 
       int rowAffected = ps.executeUpdate();
       if (rowAffected > 0) {
+        System.out.println(rowAffected);
         System.out.println("Document updated successfully.");
       } else {
         System.out.println("No document found with the provided ID.");
@@ -89,6 +104,7 @@ public class DocumentDAO {
       e.printStackTrace();
     }
   }
+
 
   public List<Document> searchDocKey(String keyword) throws Exception {
     List<Document> documents = new ArrayList<>();
@@ -116,6 +132,10 @@ public class DocumentDAO {
       String tags = rs.getString("tags");
       doc.setTags(Arrays.asList(tags.split(", ")));
       doc.setVisited(rs.getInt("visited"));
+      Blob cover = rs.getBlob("cover");
+      if (cover != null) {
+        doc.setCover(new Image(cover.getBinaryStream()));
+      }
       doc.setThesis(rs.getBoolean("type"));
 
       documents.add(doc);
@@ -178,6 +198,10 @@ public class DocumentDAO {
         doc.setTags(Arrays.asList(tags.split(", ")));
         doc.setVisited(rs.getInt("Visited"));
         doc.setThesis(rs.getBoolean("Type"));
+        Blob cover = rs.getBlob("Cover");
+        if (cover != null) {
+          doc.setCover(new Image(cover.getBinaryStream()));
+        }
       }
 
     } catch(Exception e) {

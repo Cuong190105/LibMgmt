@@ -1,14 +1,23 @@
 package org.example.libmgmt.ui.components;
 
 import java.util.concurrent.Callable;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.example.libmgmt.ui.page.Page;
 import org.example.libmgmt.ui.style.Style;
 
@@ -21,6 +30,8 @@ public class Popup {
   private final Text body;
   private TextField response;
   private final HBox btnList;
+  private VBox container;
+  private StackPane wrapper;
 
   /**
    * Creates a popup.
@@ -33,6 +44,29 @@ public class Popup {
     this.body = new Text(body);
     btnList = new HBox();
     btnList.setSpacing(10);
+    container = new VBox(this.title, this.body, this.btnList);
+    wrapper = new StackPane(container);
+    style();
+  }
+
+  private void style() {
+    Style.styleTitle(title, 32);
+    Style.styleWrapText(body, 400, 20);
+    btnList.setSpacing(20);
+    container.setBackground(new Background(new BackgroundFill(
+        Style.WHITE, Style.BIG_CORNER, Insets.EMPTY
+    )));
+    container.setAlignment(Pos.CENTER);
+    btnList.setAlignment(Pos.CENTER);
+    body.setTextAlignment(TextAlignment.CENTER);
+    VBox.setMargin(title, new Insets(25, 25, 50, 25));
+    VBox.setMargin(btnList, new Insets(20));
+    Style.styleShadowBorder(container);
+    container.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+    AnchorPane.setTopAnchor(wrapper, 0.0);
+    AnchorPane.setLeftAnchor(wrapper, 0.0);
+    AnchorPane.setRightAnchor(wrapper, 0.0);
+    AnchorPane.setBottomAnchor(wrapper, 0.0);
   }
 
   /**
@@ -50,7 +84,7 @@ public class Popup {
    */
   public void addOkBtn() {
     Button okBtn = new Button("OK");
-    Style.styleRoundedSolidButton(okBtn, 250, 50, 16);
+    Style.styleRoundedSolidButton(okBtn, Style.LIGHTGREEN, 250, 50, 16);
     HBox.setHgrow(okBtn, Priority.ALWAYS);
     btnList.getChildren().add(okBtn);
     okBtn.setOnMouseClicked(_ -> {
@@ -87,10 +121,8 @@ public class Popup {
     });
   }
 
-  public VBox getPopup() {
-    VBox container = new VBox(title, body, btnList);
-    container.setPrefSize(400, 300);
-    return container;
+  public StackPane getPopup() {
+    return wrapper;
   }
 
   public void linkToPage(Page page) {

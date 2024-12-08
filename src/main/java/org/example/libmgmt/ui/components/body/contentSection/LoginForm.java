@@ -3,6 +3,7 @@ package org.example.libmgmt.ui.components.body.contentSection;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -22,7 +23,7 @@ import org.example.libmgmt.ui.style.StyleForm;
 /**
  * Creates a login form panel.
  */
-public class LoginForm {
+public class LoginForm extends Content {
   private TextField usrnField;
   private PasswordField pwdField;
   private Text warning;
@@ -34,14 +35,17 @@ public class LoginForm {
    * Constructor.
    */
   public LoginForm() {
+    super(false);
     initializeElements();
     setFunction();
     styleForm();
+    signInBtn.setDisable(false);
   }
 
   private void initializeElements() {
-    usrnField = new TextField();
+    usrnField = new TextField("librarian");
     pwdField = new PasswordField();
+    pwdField.setText("librarian");
     warning = new Text();
     signInBtn = new Button("Đăng nhập");
     signUpBtn = new Button("Tạo tài khoản");
@@ -121,8 +125,8 @@ public class LoginForm {
       }
     });
 
-    signInBtn.setOnMousePressed(_ -> loginHandler());
-    signUpBtn.setOnMousePressed(_ -> UIHandler.switchToSignUp());
+    signInBtn.setOnMousePressed(e -> loginHandler());
+    signUpBtn.setOnMousePressed(e -> UIHandler.switchToSignUp());
   }
 
   private void styleForm() {
@@ -134,7 +138,7 @@ public class LoginForm {
     Style.styleTextField(usrnField, 550, 100, 32, false, "Tên đăng nhập");
     Style.styleTextField(pwdField, 550, 100, 32, false, "Mật khẩu");
 
-    Style.styleRoundedSolidButton(signInBtn, Style.DARKGREEN, 200, 50, 24);
+    Style.styleRoundedSolidButton(signInBtn, Style.DARKGREEN, 300, 50, 24);
     Style.styleRoundedSolidButton(signUpBtn, Color.TRANSPARENT, 200, 50, 24);
 
     container.setSpacing(25);
@@ -142,7 +146,8 @@ public class LoginForm {
     container.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
   }
 
-  public VBox getLoginForm() {
+  @Override
+  public VBox getContent() {
     return container;
   }
 }

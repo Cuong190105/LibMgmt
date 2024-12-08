@@ -4,9 +4,11 @@ import java.util.Comparator;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.ObjectBinding;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -31,7 +33,7 @@ import org.example.libmgmt.ui.style.Style;
 /**
  * Creates a gallery view to show document list and search results.
  */
-public class DocumentLibrary {
+public class DocumentLibrary extends Content implements UpdatableContent {
   private int loadStatus;
   private final Label getStarted = new Label(
       "Tìm kiếm tài liệu bạn cần bằng tên, mã số, hoặc ISBN."
@@ -56,6 +58,7 @@ public class DocumentLibrary {
    * Constructor.
    */
   public DocumentLibrary() {
+    super(true);
     loadStatus = 0;
     page = 0;
     container = new AnchorPane();
@@ -222,6 +225,7 @@ public class DocumentLibrary {
     }
   }
 
+  @Override
   public AnchorPane getContent() {
     return container;
   }
@@ -264,5 +268,25 @@ public class DocumentLibrary {
     fadeIn.setToValue(1);
     SequentialTransition t = new SequentialTransition(fadeOut, fadeIn);
     t.play();
+  }
+
+  @Override
+  public void update() {
+    double wrapperHeight = wrapper.getVvalue();
+    toggleLoadingRing(true);
+    Task<Void> update = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        for (Document doc : results) {
+          doc.updateDocument();
+        }
+        Platform.runLater(() -> {
+          showSearchResults();
+          wrapper.setVvalue(wrapperHeight > 1 ? 1 : wrapperHeight);
+        });
+        return null;
+      }
+    };
+    new Thread(update).start();
   }
 }

@@ -1,10 +1,11 @@
 module org.example.libmgmt {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.sql;
   requires jdk.httpserver;
   requires javafx.swing;
   requires org.apache.pdfbox;
+  requires com.google.gson;
+  requires java.sql;
 
 
   opens org.example.libmgmt to javafx.fxml;

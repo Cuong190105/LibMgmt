@@ -10,8 +10,6 @@ import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.components.header.AccountAction;
 import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.components.header.HeaderController;
-import org.example.libmgmt.ui.components.header.NavBar;
-import org.example.libmgmt.ui.components.header.PDFController;
 import org.example.libmgmt.ui.page.PageType;
 
 /**

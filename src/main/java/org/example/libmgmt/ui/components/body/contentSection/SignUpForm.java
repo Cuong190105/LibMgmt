@@ -2,6 +2,7 @@ package org.example.libmgmt.ui.components.body.contentSection;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -28,7 +29,7 @@ import org.example.libmgmt.ui.style.StyleForm;
 /**
  * A panel for sign up form.
  */
-public class SignUpForm {
+public class SignUpForm extends Content {
   private Label nameLabel;
   private Label usrnLabel;
   private Label pwdLabel;
@@ -56,6 +57,7 @@ public class SignUpForm {
    * Constructor.
    */
   public SignUpForm() {
+    super(false);
     initializeElements();
     setFunction();
     styleForm();
@@ -299,7 +301,8 @@ public class SignUpForm {
     container.setMaxWidth(Region.USE_PREF_SIZE);
   }
 
-  public VBox getForm() {
+  @Override
+  public VBox getContent() {
     return container;
   }
 }

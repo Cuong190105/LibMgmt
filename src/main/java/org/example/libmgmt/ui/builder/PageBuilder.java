@@ -1,6 +1,7 @@
 package org.example.libmgmt.ui.builder;
 
 import javafx.geometry.Insets;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -14,7 +15,6 @@ import org.example.libmgmt.ui.components.body.Body;
 import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.page.Page;
 import org.example.libmgmt.ui.page.PageType;
-import org.example.libmgmt.ui.style.Style;
 
 /**
  * A page builder which construct each part of a page.
@@ -24,6 +24,7 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
   private Header header;
   private Body body;
   private BorderPane container;
+  private AnchorPane wrapper;
 
   /**
    * Constructor.
@@ -35,9 +36,12 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
   @Override
   public void reset() {
     type = null;
-    header = null;
-    body = null;
     container = new BorderPane();
+    wrapper = new AnchorPane(container);
+    AnchorPane.setTopAnchor(container, 0.0);
+    AnchorPane.setLeftAnchor(container, 0.0);
+    AnchorPane.setRightAnchor(container, 0.0);
+    AnchorPane.setBottomAnchor(container, 0.0);
   }
 
   @Override
@@ -91,7 +95,7 @@ public class PageBuilder implements PageBuilderInterface, GeneralBuilder {
 
   @Override
   public Page build() {
-    return new Page(type, header, body, container);
+    return new Page(type, header, body, container, wrapper);
   }
 
   public PageType getCurrentPageType() {

@@ -1,6 +1,5 @@
 package org.example.libmgmt.ui.director;
 
-import javafx.scene.Parent;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.ui.builder.BodyBuilder;
@@ -8,7 +7,6 @@ import org.example.libmgmt.ui.builder.HeaderBuilder;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.body.BodyType;
 import org.example.libmgmt.ui.components.body.contentSection.PDFViewer;
-import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.page.PageType;
 
 /**
@@ -77,12 +75,8 @@ public class PageDirector {
    * @param pageBuilder Builder
    */
   public void createMainPage(PageBuilder pageBuilder) {
-    pageBuilder.reset();
-    pageBuilder.setType(PageType.MAIN_PAGE);
     headerDirector.createMainPageHeader(headerBuilder);
-    pageBuilder.setHeader(headerBuilder.build());
     createSectionPanel(pageBuilder, BodyType.MAIN_DASHBOARD);
-    pageBuilder.style();
   }
 
   /**
@@ -91,6 +85,9 @@ public class PageDirector {
    * @param pageBuilder Builder
    */
   public void createSectionPanel(PageBuilder pageBuilder, BodyType bodyType) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
     bodyDirector.createMainPagePanel(bodyBuilder, bodyType);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
@@ -102,6 +99,9 @@ public class PageDirector {
    * @param pageBuilder Builder
    */
   public void createDocumentDetailPage(PageBuilder pageBuilder, Document doc) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
     bodyDirector.createDocumentDetailPanel(bodyBuilder, doc);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
@@ -113,6 +113,9 @@ public class PageDirector {
    * @param pageBuilder Builder
    */
   public void createMemberDetailPage(PageBuilder pageBuilder, User member) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
     bodyDirector.createMemberDetailPanel(bodyBuilder, member);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
@@ -124,18 +127,27 @@ public class PageDirector {
    * @param pageBuilder Builder
    */
   public void createCheckoutPage(PageBuilder pageBuilder, User user, Document doc) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
     bodyDirector.createCheckoutPanel(bodyBuilder, user, doc);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
   }
 
   public void createDocumentEditPage(PageBuilder pageBuilder, Document doc) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
     bodyDirector.createDocumentEditPanel(bodyBuilder, doc);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
   }
 
   public void createAddDocumentPage(PageBuilder pageBuilder) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
     bodyDirector.createAddDocumentPanel(bodyBuilder);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
@@ -148,6 +160,24 @@ public class PageDirector {
     bodyDirector.createPdfViewer(bodyBuilder, viewer);
     headerDirector.createPdfController(headerBuilder, viewer);
     pageBuilder.setHeader(headerBuilder.build());
+    pageBuilder.setBody(bodyBuilder.build());
+    pageBuilder.style();
+  }
+
+  public void createAddMemberPage(PageBuilder pageBuilder) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
+    bodyDirector.createAddMemberPanel(bodyBuilder);
+    pageBuilder.setBody(bodyBuilder.build());
+    pageBuilder.style();
+  }
+
+  public void createChangeAccountInfo(PageBuilder pageBuilder) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
+    bodyDirector.createChangePwdPanel(bodyBuilder);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
   }

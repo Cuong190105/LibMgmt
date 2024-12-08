@@ -128,29 +128,55 @@ public class User {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
     User user = (User) obj;
-    return uid == user.uid &&
-        Objects.equals(address, user.address) &&
-        dob.equals(user.dob) &&
-        Objects.equals(email, user.email) &&
-        Objects.equals(name, user.name) &&
-        Objects.equals(sex, user.sex) &&
-        Objects.equals(phone, user.phone) &&
-        Objects.equals(SSN, user.SSN) &&
-        isLibrarian == user.isLibrarian;
+    return uid == user.uid
+        && Objects.equals(address, user.address)
+        && dob.equals(user.dob)
+        && Objects.equals(email, user.email)
+        && Objects.equals(name, user.name)
+        && Objects.equals(sex, user.sex)
+        && Objects.equals(phone, user.phone)
+        && Objects.equals(SSN, user.SSN)
+        && isLibrarian == user.isLibrarian;
   }
 
   public Image getAvatar() {
     return avatar;
   }
 
+  /**
+   * Set user avatar.
+   *
+   * @param avatar Avatar.
+   */
   public void setAvatar(Blob avatar) {
     try {
       this.avatar = new Image(avatar.getBinaryStream());
     } catch (Exception e) {
-      this.avatar = new Image(LibMgmt.class.getResourceAsStream("img/accountAction/userPlaceholder.png"));
+      this.avatar = new Image(
+          LibMgmt.class.getResourceAsStream("img/accountAction/userPlaceholder.png"));
     }
+  }
+
+  /**
+   * Update member info after changing.
+   */
+  public void updateMember() {
+    User updated = UserDAO.getInstance().getUserFromUID(this.uid);
+    this.uid = updated.uid;
+    this.address = updated.address;
+    this.dob = updated.dob;
+    this.email = updated.email;
+    this.name = updated.name;
+    this.sex = updated.sex;
+    this.phone = updated.phone;
+    this.SSN = updated.SSN;
+    this.isLibrarian = updated.isLibrarian;
   }
 }

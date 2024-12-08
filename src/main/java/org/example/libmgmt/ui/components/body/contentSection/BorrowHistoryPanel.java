@@ -22,7 +22,7 @@ import org.example.libmgmt.ui.style.Style;
 /**
  * A panel for displaying user's requests.
  */
-public class BorrowHistoryPanel {
+public class BorrowHistoryPanel extends Content {
   private final Label error = new Label("Có lỗi xày ra! Vui lòng thử lại sau.");
   private final Label noResult = new Label("Không có kết quả");
   private final AnchorPane container;
@@ -36,6 +36,7 @@ public class BorrowHistoryPanel {
    * Constructor.
    */
   public BorrowHistoryPanel() {
+    super(false);
     borrowTable = new TableView<>();
     TableColumn<Borrow, String> borrowerId = new TableColumn<>("Mã người mượn");
     TableColumn<Borrow, String> docId = new TableColumn<>("Mã tài liệu");

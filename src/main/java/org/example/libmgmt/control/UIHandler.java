@@ -1,11 +1,11 @@
 package org.example.libmgmt.control;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Stack;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
@@ -18,7 +18,6 @@ import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.builder.PageBuilder;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.components.body.BodyType;
-import org.example.libmgmt.ui.components.body.contentSection.AccountInfoPanel;
 import org.example.libmgmt.ui.components.header.AccountPanel;
 import org.example.libmgmt.ui.director.PageDirector;
 import org.example.libmgmt.ui.page.Page;
@@ -31,11 +30,11 @@ public class UIHandler {
   private final PageDirector pageDirector;
   private final PageBuilder pageBuilder;
   private final Stage stage;
-  private final Stack<Page> pageStack;
+  private final List<Page> pageStack;
   private Scene scene;
 
   private UIHandler(Stage stage) {
-    this.pageStack = new Stack<>();
+    this.pageStack = new ArrayList<>();
     this.pageDirector = new PageDirector();
     this.pageBuilder = new PageBuilder();
     this.stage = stage;
@@ -50,9 +49,10 @@ public class UIHandler {
     if (ui == null) {
       ui = new UIHandler(stage);
       ui.pageDirector.createStartupPage(ui.pageBuilder);
-      ui.pageStack.push(ui.pageBuilder.build());
-      ui.scene = new Scene(ui.pageStack.peek().getContainer(), 800, 800);
-      setVpartition(ui.pageStack.peek().getContainer(), 1);
+      Page p = ui.pageBuilder.build();
+      ui.pageStack.add(p);
+      ui.scene = new Scene(ui.pageStack.getLast().getContainer(), 800, 800);
+      setVpartition(ui.pageStack.getLast().getContainer(), 1);
       stage.setScene(ui.scene);
       ui.scene.getStylesheets()
           .add(Objects.requireNonNull(LibMgmt.class.getResource("control.css"))
@@ -64,7 +64,6 @@ public class UIHandler {
       ));
       t.play();
     }
-    openDocumentReader(new Document());
   }
 
   /**
@@ -80,7 +79,7 @@ public class UIHandler {
    * @param popup Custom popup displayed.
    */
   public static void addPopup(Popup popup) {
-    ui.pageStack.peek().addPopUp(popup);
+    ui.pageStack.getLast().addPopUp(popup);
   }
 
   /**
@@ -106,8 +105,8 @@ public class UIHandler {
   public static void gotoMain() {
     ui.pageStack.clear();
     ui.pageDirector.createMainPage(ui.pageBuilder);
-    ui.pageStack.push(ui.pageBuilder.build());
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   /**
@@ -118,8 +117,8 @@ public class UIHandler {
   public static void switchToSection(BodyType bodyType) {
     ui.pageStack.clear();
     ui.pageDirector.createSectionPanel(ui.pageBuilder, bodyType);
-    ui.pageStack.push(ui.pageBuilder.build());
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   /**
@@ -128,9 +127,10 @@ public class UIHandler {
    * @param doc Document needed displaying info.
    */
   public static void openDocDetail(Document doc) {
+    Page p = ui.pageStack.getLast();
     ui.pageDirector.createDocumentDetailPage(ui.pageBuilder, doc);
-    ui.pageStack.push(ui.pageBuilder.build());
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   /**
@@ -140,15 +140,15 @@ public class UIHandler {
    */
   public static void openMemberDetails(User member) {
     ui.pageDirector.createMemberDetailPage(ui.pageBuilder, member);
-    ui.pageStack.push(ui.pageBuilder.build());
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   /**
    * Displaying account action panel.
    */
   public static void showAccountAction() {
-    ui.pageStack.peek().addQuickPanel(new AccountPanel());
+    ui.pageStack.getLast().addQuickPanel(new AccountPanel());
   }
 
   /**
@@ -165,8 +165,8 @@ public class UIHandler {
    */
   public static void openCheckoutPage(User user, Document doc) {
     ui.pageDirector.createCheckoutPage(ui.pageBuilder, user, doc);
-    ui.pageStack.push(ui.pageBuilder.build());
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   public static Window getStage() {
@@ -180,8 +180,8 @@ public class UIHandler {
    */
   public static void openDocumentEditPanel(Document doc) {
     ui.pageDirector.createDocumentEditPage(ui.pageBuilder, doc);
-    ui.pageStack.push(ui.pageBuilder.build());
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   /**
@@ -189,38 +189,52 @@ public class UIHandler {
    */
   public static void openAddDocumentPanel() {
     ui.pageDirector.createAddDocumentPage(ui.pageBuilder);
-    ui.pageStack.push(ui.pageBuilder.build());
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   /**
    * Open account detail panel.
    */
   public static void openAccountDetails() {
+    ui.pageStack.clear();
+    ui.pageDirector.createChangeAccountInfo(ui.pageBuilder);
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 
   /**
    * Open account quick panel.
    */
   public static void openAccountPanel() {
-    ui.pageStack.peek().addQuickPanel(new AccountPanel());
+    ui.pageStack.getLast().addQuickPanel(new AccountPanel());
   }
 
   public static void openDocumentReader(Document doc) {
     Stage reader = new Stage();
     reader.setTitle("Trình đọc PDF LibMa - " + doc.getTitle());
     reader.initModality(Modality.NONE);
-    PageBuilder temp = new PageBuilder();
-    ui.pageDirector.createPdfViewer(temp, doc);
-    Scene readerScene = new Scene(temp.build().getContainer(), 800, 800);
+    PageBuilder tempBuilder = new PageBuilder();
+    PageDirector tempDirector = new PageDirector();
+    tempDirector.createPdfViewer(tempBuilder, doc);
+    Scene readerScene = new Scene(tempBuilder.build().getContainer(), 800, 800);
     reader.setScene(readerScene);
     reader.setMinWidth(800);
     reader.setMinHeight(800);
     reader.show();
   }
 
+  public static void openAddMember() {
+    ui.pageDirector.createAddMemberPage(ui.pageBuilder);
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
+  }
+
   public static void backToLastPage() {
-    ui.pageStack.pop();
-    ui.scene.setRoot(ui.pageStack.peek().getContainer());
+    ui.pageStack.removeLast();
+    Page p = ui.pageStack.getLast();
+    p.restoreHeader();
+    p.updateContent();
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 }

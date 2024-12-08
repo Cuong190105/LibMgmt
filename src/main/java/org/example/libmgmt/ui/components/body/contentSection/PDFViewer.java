@@ -36,7 +36,7 @@ import org.example.libmgmt.ui.style.Style;
 /**
  * Create a page to view PDF file.
  */
-public class PDFViewer {
+public class PDFViewer extends Content {
   private final VBox docContainer;
   private final ScrollPane wrapper;
   private PDDocument docFile;
@@ -59,6 +59,7 @@ public class PDFViewer {
    * @param doc The document displayed.
    */
   public PDFViewer(Document doc) {
+    super(false);
     docContainer = new VBox();
     bookmarkList = new VBox(bookmarkLabel, noBookmark);
     bookmarkWrapper = new ScrollPane(bookmarkList);

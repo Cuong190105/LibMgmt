@@ -27,7 +27,7 @@ import org.example.libmgmt.ui.style.Style;
 /**
  * Creates checkout panel.
  */
-public class CheckoutPanel {
+public class CheckoutPanel extends Content {
   private static final Label readerIdLabel = new Label("Mã số người mượn: ");
   private static final Label readerLabel = new Label("Tên người mượn: ");
   private static final Label readerStatusLabel = new Label("Tình trạng người mượn: ");
@@ -58,6 +58,7 @@ public class CheckoutPanel {
    * @param doc Document that member wants to borrow.
    */
   public CheckoutPanel(User user, Document doc) {
+    super(false);
     this.readerId = new TextField();
     this.reader = new TextField();
     this.readerStatus = new TextField();
@@ -153,6 +154,7 @@ public class CheckoutPanel {
     container.setSpacing(20);
   }
 
+  @Override
   public ScrollPane getContent() {
     return wrapper;
   }

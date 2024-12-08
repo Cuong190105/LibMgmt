@@ -5,9 +5,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -19,7 +17,7 @@ import org.example.libmgmt.ui.components.body.card.FeedbackCard;
 /**
  * A panel to display user feedbacks.
  */
-public class FeedbackPanel {
+public class FeedbackPanel extends Content {
   private final Label error = new Label("Có lỗi xảy ra. Vui lòng thử lại sau.");
   private final Label noResult = new Label("Không có kết quả.");
   private Label displayResult;
@@ -34,6 +32,7 @@ public class FeedbackPanel {
    * Constructor.
    */
   public FeedbackPanel() {
+    super(false);
     container = new VBox();
     wrapper = new ScrollPane(container);
     setFunction();

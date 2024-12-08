@@ -12,15 +12,21 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.control.UserControl;
-import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.components.body.card.CommentCard;
 import org.example.libmgmt.ui.style.Style;
@@ -28,7 +34,7 @@ import org.example.libmgmt.ui.style.Style;
 /**
  * A panel displaying document info.
  */
-public class DocumentDetails {
+public class DocumentDetails extends Content {
   private final Label authorsLabel = new Label("Tác giả");
   private final Label publisherLabel = new Label("Nhà xuất bản");
   private final Label descriptionLabel = new Label("Mô tả");
@@ -72,6 +78,7 @@ public class DocumentDetails {
    * Creates a new document.
    */
   public DocumentDetails(Document doc) {
+    super(false);
     this.doc = doc;
     cover = new ImageView(doc.getCover());
     title = new Label(doc.getTitle());
@@ -197,7 +204,7 @@ public class DocumentDetails {
   }
 
   private void style() {
-    cover.setSmooth(true);
+    Style.styleImg(cover, 400);
     Style.styleTitle(title, 36);
     Style.styleTitle(authorsLabel, 16);
     Style.styleTitle(publisherLabel, 16);
@@ -251,13 +258,13 @@ public class DocumentDetails {
     Style.styleTitle(userCriticsLabel, 24);
     userCritics.setSpacing(10);
     if (/*thisUser.hasRead(doc.getDocId())*/true) {
-      Style.styleTextArea(userComment, 500, 16,
+      Style.styleTextArea(userComment, 500, 200, 16,
           "Nhập đánh giá của bạn (Tối đa 500 kí tự).");
     } else {
       userComment.setDisable(true);
       ratingStar.setDisable(true);
       sendCritics.setDisable(true);
-      Style.styleTextArea(userComment, 500, 16,
+      Style.styleTextArea(userComment, 500, 200, 16,
           "Hãy mượn và đọc ít nhất một lần trước khi đánh giá tài liệu!");
     }
     ratingStar.setSpacing(50);

@@ -5,6 +5,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import org.example.libmgmt.ui.components.body.Body;
 import org.example.libmgmt.ui.components.body.BodyType;
+import org.example.libmgmt.ui.components.body.contentSection.Content;
 
 /**
  * Body builder interface.
@@ -22,7 +23,7 @@ public interface BodyBuilderInterface {
    *
    * @param sectionTitle Title.
    */
-  void setTitle(String sectionTitle);
+  void setTitle(String sectionTitle, boolean isSubPage);
 
   /**
    * Set subsection list.
@@ -43,7 +44,7 @@ public interface BodyBuilderInterface {
    *
    * @param content Body content
    */
-  void setContent(Region content);
+  void setContent(Content content);
 
   /**
    * Get completed body after build.

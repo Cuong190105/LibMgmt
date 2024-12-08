@@ -21,6 +21,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.example.libmgmt.LibMgmt;
+
+import java.util.Objects;
 
 /**
  * General styling method for common elements.
@@ -239,9 +242,12 @@ public class Style {
    * @param size Font size.
    * @param prompt Prompt/placeholder text.
    */
-  public static void styleTextArea(TextArea text, double w, double size, String prompt) {
+  public static void styleTextArea(TextArea text, double w, double h, double size, String prompt) {
+    text.getStylesheets().add(Objects.requireNonNull(
+        LibMgmt.class.getResource("textarea.css")).toExternalForm());
     text.setFont(Font.font(FONT, size));
     text.setWrapText(true);
+    text.setPrefHeight(h);
     text.setPrefWidth(w);
     text.setPromptText(prompt);
   }
@@ -255,6 +261,7 @@ public class Style {
   public static void  styleImg(ImageView img, double w) {
     img.setPreserveRatio(true);
     img.setFitWidth(w);
+    img.setFitHeight(w);
     img.setSmooth(true);
   }
 }

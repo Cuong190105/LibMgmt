@@ -4,14 +4,17 @@ import java.util.Comparator;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.ObjectBinding;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -19,7 +22,9 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.libmgmt.AppLogger;
+import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
+import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.ui.components.body.LoadingRing;
 import org.example.libmgmt.ui.components.body.searchPanel.MemberSearchPanel;
 import org.example.libmgmt.ui.components.body.ResultPageSwitch;
@@ -29,7 +34,7 @@ import org.example.libmgmt.ui.style.Style;
 /**
  * A Gallery view displaying member list and member search result.
  */
-public class MemberListView {
+public class MemberListView extends Content implements UpdatableContent {
   private int loadStatus;
   private static final Label noResult = new Label(
       "Không có kết quả."
@@ -51,6 +56,7 @@ public class MemberListView {
    * Creates panel.
    */
   public MemberListView() {
+    super(true);
     loadStatus = 0;
     container = new AnchorPane();
     resultList = new TilePane();
@@ -64,8 +70,10 @@ public class MemberListView {
   }
 
   private void setFunction() {
-    addMember.setOnMouseClicked(_ -> {
-//            UIHandler.switchToAddUser();
+    addMember.setOnMouseClicked(e -> {
+      if (e.getButton() == MouseButton.PRIMARY) {
+        UIHandler.openAddMember();
+      }
     });
   }
 
@@ -240,5 +248,25 @@ public class MemberListView {
     fadeIn.setToValue(1);
     SequentialTransition t = new SequentialTransition(fadeOut, fadeIn);
     t.play();
+  }
+
+  @Override
+  public void update() {
+    double wrapperHeight = wrapper.getVvalue();
+    toggleLoadingRing(true);
+    Task<Void> update = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        for (User member : results) {
+          member.updateMember();
+        }
+        Platform.runLater(() -> {
+          showSearchResults();
+          wrapper.setVvalue(wrapperHeight > 1 ? 1 : wrapperHeight);
+        });
+        return null;
+      }
+    };
+    new Thread(update).start();
   }
 }

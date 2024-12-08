@@ -28,7 +28,7 @@ import org.example.libmgmt.ui.style.StyleForm;
 /**
  * A panel displaying a specific user info.
  */
-public class UserDetails {
+public class UserDetails extends Content {
   private static final Label nameLabel = new Label("Tên:");
   private static final Label userIdLabel = new Label("Mã người dùng:");
   private static final Label dobLabel = new Label("Ngày sinh:");
@@ -39,7 +39,6 @@ public class UserDetails {
   private static final Label emailLabel = new Label("Email:");
   private static final Label photoNotice = new Label("Vui lòng đến "
       + "thư viện để thay đổi ảnh chân dung");
-  private final Button copyUserId;
   private final ImageView potrait;
   private final TextField name;
   private final TextField userId;
@@ -53,7 +52,6 @@ public class UserDetails {
   private final GridPane infoTable;
   private final FlowPane mainContent;
   private final VBox potraitWrapper;
-  private final HBox userIdWrapper;
   private final VBox container;
   private final ScrollPane wrapper;
 
@@ -62,9 +60,8 @@ public class UserDetails {
    * @param user User needs showing info.
    */
   public UserDetails(User user) {
+    super(false);
     userId = new TextField(Integer.toString(user.getUid()));
-    copyUserId = new Button("Sao chép");
-    userIdWrapper = new HBox(userId, copyUserId);
     name = new TextField(user.getName());
     dob = new DateGroup(user.getDob().toString());
     gender = new ComboBox<>(FXCollections.observableArrayList("Nam", "Nữ", "Khác"));
@@ -79,7 +76,7 @@ public class UserDetails {
     potraitWrapper = new VBox(potrait, photoNotice);
     infoTable.addColumn(0, userIdLabel, nameLabel, dobLabel, genderLabel, addressLabel,
         phoneNumberLabel, ssnLabel, emailLabel, saveChanges);
-    infoTable.addColumn(1, userIdWrapper, name, dob.getContent(), gender, address, phoneNumber, ssn, email);
+    infoTable.addColumn(1, userId, name, dob.getContent(), gender, address, phoneNumber, ssn, email);
     mainContent = new FlowPane(infoTable, potraitWrapper);
     container = new VBox(mainContent, saveChanges);
     wrapper = new ScrollPane(container);
@@ -88,26 +85,7 @@ public class UserDetails {
   }
 
   private void setFunction() {
-    copyUserId.setOnMouseClicked(_ -> {
-      Toolkit.getDefaultToolkit()
-          .getSystemClipboard()
-          .setContents(
-              new StringSelection(userId.getText()),
-              null
-          );
-      copyUserId.setText("Đã sao chép");
-      copyUserId.setMouseTransparent(true);
-      Style.styleRoundedSolidButton(copyUserId, Style.DARKGREEN, 150, 50, 16);
-      Timeline t = new Timeline(new KeyFrame(
-          Duration.millis(2000),
-          e -> {
-            copyUserId.setMouseTransparent(false);
-            copyUserId.setText("Sao chép");
-            Style.styleRoundedSolidButton(copyUserId, Style.LIGHTGREEN, 150, 50, 16);
-          }
-      ));
-      t.play();
-    });
+    userId.setEditable(false);
     saveChanges.setOnMouseClicked(_ -> {
 
     });
@@ -125,10 +103,7 @@ public class UserDetails {
     Style.styleTitle(ssnLabel, 16);
     Style.styleTitle(photoNotice, 16);
 
-    userId.setMouseTransparent(true);
-    userId.setFocusTraversable(false);
-    userIdWrapper.setSpacing(50);
-    Style.styleTextField(userId, 250, 50, 16, false, "");
+    Style.styleTextField(userId, 500, 50, 16, false, "");
     Style.styleTextField(name, 500, 50, 16, false, "");
     Style.styleTextField(address, 500, 50, 16, false, "");
     dob.style(500);
@@ -136,7 +111,6 @@ public class UserDetails {
     Style.styleTextField(phoneNumber, 500, 50, 16, false, "");
     Style.styleTextField(ssn, 500, 50, 16, false, "");
     StyleForm.styleComboBox(gender, 500, 50, 16, "");
-    Style.styleRoundedSolidButton(copyUserId, Style.LIGHTGREEN, 150, 50, 16);
     Style.styleRoundedSolidButton(saveChanges, Style.LIGHTGREEN, 150, 50, 16);
 
     container.prefWidthProperty().bind(wrapper.widthProperty().subtract(30));
@@ -144,7 +118,7 @@ public class UserDetails {
       double val;
       if (infoTable.getWidth() == 0) {
         if (wrapper.getWidth() > 1200) {
-          val = (wrapper.getWidth() - 1200) / 2;
+          val = (wrapper.getWidth() - 1250) / 2;
         } else {
           val = (wrapper.getWidth() - 650) / 2;
         }
@@ -157,7 +131,7 @@ public class UserDetails {
         }
       }
       val = Math.max(0, val);
-      return new Insets(0, val, 0 , val);
+      return new Insets(0, val, 0, val);
     }, wrapper.widthProperty());
     mainContent.paddingProperty().bind(padding);
     infoTable.setVgap(10);

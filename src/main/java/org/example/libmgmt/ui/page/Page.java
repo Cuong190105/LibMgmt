@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.components.body.Body;
+import org.example.libmgmt.ui.components.body.contentSection.UpdatableContent;
 import org.example.libmgmt.ui.components.header.Header;
 import org.example.libmgmt.ui.components.header.QuickPanel;
 
@@ -27,17 +28,13 @@ public class Page {
    * @param body Body;
    * @param container Container;
    */
-  public Page(PageType pageType, Header header, Body body, BorderPane container) {
+  public Page(PageType pageType, Header header, Body body, BorderPane container, AnchorPane wrapper) {
     this.pageType = pageType;
     this.header = header;
     this.body = body;
     this.container = container;
     this.overlayOn = false;
-    wrapper = new AnchorPane(container);
-    AnchorPane.setTopAnchor(container, 0.0);
-    AnchorPane.setLeftAnchor(container, 0.0);
-    AnchorPane.setRightAnchor(container, 0.0);
-    AnchorPane.setBottomAnchor(container, 0.0);
+    this.wrapper = wrapper;
   }
 
   public PageType getPageType() {
@@ -68,7 +65,8 @@ public class Page {
    * @param p Target.
    */
   public void closePopUp(Popup p) {
-    wrapper.getChildren().remove(p);
+    System.out.println("tr");
+    wrapper.getChildren().remove(p.getPopup());
   }
 
   /**
@@ -106,5 +104,15 @@ public class Page {
 
   public AnchorPane getContainer() {
     return wrapper;
+  }
+
+  public void restoreHeader() {
+    container.setTop(header.getContainer());
+  }
+
+  public void updateContent() {
+    if (body.getContent().isUpdatable()) {
+      ((UpdatableContent) body.getContent()).update();
+    }
   }
 }
