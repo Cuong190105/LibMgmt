@@ -53,6 +53,24 @@ public class AccountDAO implements Extractor<Account> {
     return acc;
   }
 
+  public Account getAccountFromUID(int uid) {
+    Account acc = null;
+    try {
+      Connection db = AccountDB.getConnection();
+      String sql = "SELECT * FROM account WHERE UID = ?";
+      PreparedStatement ps = db.prepareStatement(sql);
+      ps.setInt(1, uid);
+      ResultSet rs = ps.executeQuery();
+      if (rs.next()) {
+        acc = extract(rs);
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return acc;
+  }
+
   // *Note: generate UID first before addAccount
   public void addAccount(Account account) {
     try {
