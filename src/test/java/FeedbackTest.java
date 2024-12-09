@@ -38,8 +38,8 @@ public class FeedbackTest {
     db.prepareStatement(createTableSQL).execute();
 
     // Clear table data and reset AUTO_INCREMENT to 1
-    db.prepareStatement("TRUNCATE TABLE document").execute();
-    db.prepareStatement("ALTER TABLE document AUTO_INCREMENT = 1").execute();
+    db.prepareStatement("TRUNCATE TABLE feedback").execute();
+    db.prepareStatement("ALTER TABLE feedback AUTO_INCREMENT = 1").execute();
   }
 
   @Test

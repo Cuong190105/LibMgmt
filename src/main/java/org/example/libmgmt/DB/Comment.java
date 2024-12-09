@@ -24,6 +24,14 @@ public class Comment {
     comment = "SDFGHJKL";
   }
 
+  public Comment(int UID, int docID, Date date, int rating, String comment) {
+    this.UID = UID;
+    this.docID = docID;
+    this.date = date;
+    this.rating = rating;
+    this.comment = comment;
+  }
+
   public int getDocID() {
     return docID;
   }

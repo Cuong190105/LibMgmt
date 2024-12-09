@@ -9,6 +9,14 @@ public class Borrow {
   public Borrow() {
   }
 
+  public Borrow(int UID, int docID, Date borrowingDate, Date returnDate, Date dueDate) {
+    this.UID = UID;
+    this.docID = docID;
+    this.borrowingDate = borrowingDate;
+    this.returnDate = returnDate;
+    this.dueDate = dueDate;
+  }
+
   public int getUID() {
     return UID;
   }
