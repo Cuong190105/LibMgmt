@@ -1,6 +1,9 @@
 
 package org.example.libmgmt.DB;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -276,4 +279,19 @@ public class DocumentDAO implements Extractor<Document> {
     }
     return content;
   }
+
+  // Method to update document content
+  public void updateContent(int id, Blob newContent) {
+    try {
+      Connection db = LibraryDB.getConnection();
+      String sql = "UPDATE documentContent SET content = ? WHERE docID = ?";
+      PreparedStatement ps = db.prepareStatement(sql);
+      ps.setBlob(1, newContent);
+      ps.setInt(2, id);
+      ps.executeUpdate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
 }

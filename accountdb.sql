@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2024 at 12:13 PM
+-- Generation Time: Dec 09, 2024 at 10:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,33 @@ CREATE TABLE `account` (
   `HashedPassword` varchar(255) NOT NULL,
   `UID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`Username`, `HashedPassword`, `UID`) VALUES
+('anhtuan', 'password2', 2),
+('baotran', 'password16', 16),
+('dinhquang', 'password8', 8),
+('duongkhoa', 'password18', 18),
+('hoangnam', 'password10', 10),
+('khanhvan', 'password20', 20),
+('kimanh', 'password3', 3),
+('kingaloo', 'lollypop', 1),
+('lehuynh', 'password19', 19),
+('librarian', 'librarian', 21),
+('minhhoang', 'password4', 4),
+('ngochuy', 'password12', 12),
+('nhathao', 'password17', 17),
+('phuongthao', 'password13', 13),
+('thanhha', 'password11', 11),
+('thibich', 'password5', 5),
+('thuylinh', 'password9', 9),
+('trongtuan', 'password14', 14),
+('tuyetmai', 'password7', 7),
+('vanhieu', 'password6', 6),
+('yenngoc', 'password15', 15);
 
 --
 -- Indexes for dumped tables
