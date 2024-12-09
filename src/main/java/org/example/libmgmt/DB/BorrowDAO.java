@@ -92,7 +92,7 @@ public class BorrowDAO implements Extractor<Borrow> {
   public void deleteBorrow(String column, int value) {
     try {
       Connection db = LibraryDB.getConnection();
-      String sql = "DELETE FROM borrow where" + column + " = ?";
+      String sql = "DELETE FROM borrow WHERE " + column + " = ?";
       PreparedStatement ps = db.prepareStatement(sql);
       ps.setInt(1, value);
       ps.executeUpdate();

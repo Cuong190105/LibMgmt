@@ -73,7 +73,7 @@ public class CommentDAO implements Extractor<Comment> {
   public void deleteComment(String column, int value) {
     try {
       Connection db = LibraryDB.getConnection();
-      String sql = "DELETE FROM comment WHERE" + column + " = ?";
+      String sql = "DELETE FROM comment WHERE " + column + " = ?";
       PreparedStatement ps = db.prepareStatement(sql);
       ps.setInt(1, value);
       ps.executeUpdate();

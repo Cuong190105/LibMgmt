@@ -72,7 +72,7 @@ public class FeedbackDAO implements Extractor<Feedback> {
   public void deleteFeedback(String column, int value) {
     try {
       Connection db = LibraryDB.getConnection();
-      String sql = "DELETE FROM feedback WHERE" + column + " = ?";
+      String sql = "DELETE FROM feedback WHERE " + column + " = ?";
       PreparedStatement ps = db.prepareStatement(sql);
       ps.setInt(1, value);
       ps.executeUpdate();

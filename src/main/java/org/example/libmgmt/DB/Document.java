@@ -37,6 +37,7 @@ public class Document {
   public Document() {
     this.cover = new Image(Objects.requireNonNull(LibMgmt.class
             .getResourceAsStream("img/bookCoverPlaceholder.png")));
+    tags = new ArrayList<>();
   }
 
   /**
@@ -269,5 +270,14 @@ public class Document {
 
   public int getNumberOfCopies() {
     return 0;
+  }
+
+  // Constructor for tests
+  public Document(String title, String author, String publisher, int quantity) {
+    this.title = title;
+    this.author = author;
+    this.publisher = publisher;
+    this.quantity = quantity;
+    this.tags = new ArrayList<>();
   }
 }

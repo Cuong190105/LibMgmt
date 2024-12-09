@@ -197,7 +197,7 @@ public class DocumentDAO implements Extractor<Document> {
       ps.setString(2, keyword);
       ps.setString(3, keyword);
       if (type != 2) {
-        ps.setInt(3, type); // Specify whether to filter by thesis or normal book
+        ps.setInt(4, type); // Specify whether to filter by thesis or normal book
       }
       ResultSet rs = ps.executeQuery();
 
