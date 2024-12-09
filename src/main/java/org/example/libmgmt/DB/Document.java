@@ -82,6 +82,23 @@ public class Document {
     this.score = score;
   }
 
+  public void updateDocument() {
+    Document updated = DocumentDAO.getInstance().getDocFromID(this.docID);
+    this.title = updated.title;
+    this.author = updated.author;
+    this.publisher = updated.publisher;
+    this.quantity = updated.quantity;
+    this.tags = updated.tags;
+    this.visited = updated.visited;
+    this.publishYear = updated.publishYear;
+    this.thesis = updated.thesis;
+    this.description = updated.description;
+    this.ISBN = updated.ISBN;
+    this.votes = updated.votes;
+    this.score = updated.score;
+    this.cover = updated.cover;
+  }
+
   public void setTitle(String title) {
     this.title = title;
   }
@@ -200,14 +217,7 @@ public class Document {
   }
 
   public String getTagsString() {
-    if (tags == null) {
-      return "";
-    }
-    String ans = "";
-    for (int i = 0; i < tags.size(); ++i) {
-      ans += tags.get(i) + (i + 1 != tags.size() ? "," : "");
-    }
-    return ans;
+    return String.join(", ", tags);
   }
 
   public int getVotes() {
@@ -255,5 +265,9 @@ public class Document {
    */
   public double getRating() {
     return score * 1.0 / votes;
+  }
+
+  public int getNumberOfCopies() {
+    return 0;
   }
 }

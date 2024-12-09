@@ -4,6 +4,7 @@ package org.example.libmgmt.DB;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.Objects;
+
 import javafx.scene.image.Image;
 import org.example.libmgmt.LibMgmt;
 
@@ -27,20 +28,20 @@ public class User {
    */
   public User() {
     this.avatar = new Image(Objects.requireNonNull(LibMgmt.class
-        .getResourceAsStream("img/accountAction/userPlaceholder.png")));
+            .getResourceAsStream("img/accountAction/userPlaceholder.png")));
   }
 
   /**
    * Create a complete user.
    *
-   * @param uid UserID of this user.
-   * @param address Address of this user.
-   * @param dob Date of birth of this user.
-   * @param email Email of this user.
-   * @param name Name of this user.
-   * @param sex Gender of this user.
-   * @param phone Phone number of this user.
-   * @param SSN Social Security Number of this user.
+   * @param uid         UserID of this user.
+   * @param address     Address of this user.
+   * @param dob         Date of birth of this user.
+   * @param email       Email of this user.
+   * @param name        Name of this user.
+   * @param sex         Gender of this user.
+   * @param phone       Phone number of this user.
+   * @param SSN         Social Security Number of this user.
    * @param isLibrarian User type of this user.
    */
   public User(int uid, String address, Date dob, String email, String name, String sex, String phone, String SSN, boolean isLibrarian) {
@@ -147,6 +148,11 @@ public class User {
     return avatar;
   }
 
+  /**
+   * Set user avatar.
+   *
+   * @param avatar Avatar.
+   */
   public void setAvatar(Blob avatar) {
     try {
       this.avatar = new Image(avatar.getBinaryStream());
@@ -159,5 +165,19 @@ public class User {
     this.avatar = avatar;
   }
 
-
+  /**
+   * Update member info after changing.
+   */
+  public void updateMember() {
+    User updated = UserDAO.getInstance().getUserFromUID(this.uid);
+    this.uid = updated.uid;
+    this.address = updated.address;
+    this.dob = updated.dob;
+    this.email = updated.email;
+    this.name = updated.name;
+    this.sex = updated.sex;
+    this.phone = updated.phone;
+    this.SSN = updated.SSN;
+    this.isLibrarian = updated.isLibrarian;
+  }
 }

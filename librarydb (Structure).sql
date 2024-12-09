@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2024 at 12:12 PM
+-- Generation Time: Dec 09, 2024 at 09:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `librarydb`
 --
+
 CREATE DATABASE IF NOT EXISTS `testdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE DATABASE IF NOT EXISTS `librarydb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `librarydb`;
@@ -93,6 +94,21 @@ CREATE TABLE `documentcontent` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `feedback`
+--
+
+DROP TABLE IF EXISTS `feedback`;
+CREATE TABLE `feedback` (
+  `number` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
+  `sender` varchar(255) DEFAULT NULL,
+  `content` varchar(9999) DEFAULT NULL,
+  `important` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -141,6 +157,12 @@ ALTER TABLE `documentcontent`
   ADD KEY `docID` (`docID`);
 
 --
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`number`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -155,6 +177,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `document`
   MODIFY `DocID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`

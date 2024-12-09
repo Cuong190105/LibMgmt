@@ -3,10 +3,11 @@ package org.example.libmgmt.DB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BorrowDAO {
+public class BorrowDAO implements Extractor<Borrow> {
   private static BorrowDAO instance;
 
   private BorrowDAO() {
@@ -17,6 +18,36 @@ public class BorrowDAO {
       instance = new BorrowDAO();
     }
     return instance;
+  }
+
+  @Override
+  public Borrow extract(ResultSet rs) throws SQLException {
+    Borrow br = new Borrow();
+    br.setUID(rs.getInt("UID"));
+    br.setDocID(rs.getInt("docID"));
+    br.setBorrowingDate(rs.getDate("borrowingDate"));
+    br.setDueDate(rs.getDate("dueDate"));
+    br.setReturnDate(rs.getDate("returnDate"));
+    return br;
+  }
+
+  public List<Borrow> allBorrow() {
+    List<Borrow> borrowList = new ArrayList<>();
+
+    try {
+      Connection db = LibraryDB.getConnection();
+      String sql = "SELECT * FROM borrow ORDER BY borrowingDate DESC";
+      PreparedStatement ps = db.prepareStatement(sql);
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+        Borrow br = extract(rs);
+        borrowList.add(br);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return borrowList;
   }
 
   public List<Borrow> borrowHistory(int UID) {
@@ -31,13 +62,7 @@ public class BorrowDAO {
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
-        Borrow br = new Borrow();
-        br.setUID(UID);
-        br.setDocID(rs.getInt("docID"));
-        br.setBorrowingDate(rs.getDate("borrowingDate"));
-        br.setDueDate(rs.getDate("dueDate"));
-        br.setReturnDate(rs.getDate("returnDate"));
-
+        Borrow br = extract(rs);
         borrowList.add(br);
       }
     } catch (Exception e) {

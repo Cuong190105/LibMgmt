@@ -188,15 +188,16 @@ public class DocumentDAO implements Extractor<Document> {
       String orderBy = (order == 1 ? "DESC" : "ASC");
       String optionalThesis = (type == 2 ? "" : "AND thesis = ?");
       // Prepare SQL query
-      String sql = "SELECT * FROM document WHERE (title LIKE ? OR author LIKE ?) " + optionalThesis
+      String sql = "SELECT * FROM document WHERE (title LIKE ? OR author LIKE ? OR tags LIKE ?) " + optionalThesis
               + " ORDER BY " + sortBy[filter] + " " + orderBy;
 
       PreparedStatement ps = db.prepareStatement(sql);
       keyword = "%" + keyword + "%"; // Wrap keyword with '%' for partial match
       ps.setString(1, keyword);
-      ps.setString(2, keyword); // Specify whether to filter by thesis or normal book
+      ps.setString(2, keyword);
+      ps.setString(3, keyword);
       if (type != 2) {
-        ps.setInt(3, type);
+        ps.setInt(3, type); // Specify whether to filter by thesis or normal book
       }
       ResultSet rs = ps.executeQuery();
 

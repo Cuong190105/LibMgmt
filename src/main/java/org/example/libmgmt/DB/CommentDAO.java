@@ -63,7 +63,6 @@ public class CommentDAO implements Extractor<Comment> {
       ps.setString(3, cmt.getComment());
       ps.setInt(4, cmt.getRating());
       ps.setDate(5, Date.valueOf(cmt.getDate()));
-
       ps.executeUpdate();
 
     } catch (Exception e) {

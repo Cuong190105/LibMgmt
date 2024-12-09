@@ -105,7 +105,6 @@ public class UserDAO implements Extractor<User> {
     } catch (Exception e) {
       e.printStackTrace();
     }
-//        System.out.println(userUID);
     return userUID;
   }
 

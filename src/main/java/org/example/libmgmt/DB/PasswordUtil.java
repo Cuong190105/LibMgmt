@@ -43,6 +43,6 @@ public class PasswordUtil {
 
     acc.setPassword(newPwd);
     accountDAO.changePassword(acc);
-    System.out.println("mat khau moi da duoc dat ");
+    System.out.println("Mat khau moi da duoc dat ");
   }
 }
