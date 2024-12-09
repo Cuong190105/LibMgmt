@@ -95,14 +95,14 @@ public class DocumentDAO implements Extractor<Document> {
   public void updateDocument(Document updated) {
     try {
       Connection db = LibraryDB.getConnection();
-      String sql = "UPDATE document SET title = ?, author = ?, publisher = ?, publisherYear = ?, quantity = ?, "
+      String sql = "UPDATE document SET title = ?, author = ?, publisher = ?, publishYear = ?, quantity = ?, "
           + "tags = ?, visited = ?, thesis = ?, ISBN = ?, votes = ?, score = ?, cover = ?, description = ? WHERE docID = ?";
 
       PreparedStatement ps = db.prepareStatement(sql);
       ps.setString(1, updated.getTitle());
       ps.setString(2, updated.getAuthor());
       ps.setString(3, updated.getPublisher());
-      ps.setInt (4, updated.getPublishYear());
+      ps.setInt(4, updated.getPublishYear());
       ps.setInt(5, updated.getQuantity());
       ps.setString(6, updated.getTagsString());
       ps.setInt(7, updated.getVisited());
