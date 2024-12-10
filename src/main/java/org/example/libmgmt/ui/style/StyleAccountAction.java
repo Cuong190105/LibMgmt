@@ -12,8 +12,12 @@ public class StyleAccountAction {
             Style.DARKGREEN, CornerRadii.EMPTY, Insets.EMPTY
     ));
 
-    public static void styleButton(Button btn) {
-        Style.styleCircleButton(btn, SIZE, BG);
+    public static void styleButton(Button btn, boolean hasBackground) {
+        if (hasBackground) {
+            Style.styleCircleButton(btn, SIZE);
+        } else {
+            Style.styleCircleButton(btn, SIZE, BG);
+        }
         Style.styleHoverEffect(btn);
     }
 }

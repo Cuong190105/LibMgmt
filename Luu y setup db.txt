@@ -1,0 +1,10 @@
+Thay đổi config DB để chạy setup DB thành công:
+MySQL my.ini:
+max_allowed_packet = 10240M
+
+Apache PHP php.ini:
+max_execution_time = 600
+max_input_time = 600
+memory_limit = 10240M
+post_max_size = 10240M
+
