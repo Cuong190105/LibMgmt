@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import org.example.libmgmt.DB.Account;
 import org.example.libmgmt.DB.AccountDAO;
 import org.example.libmgmt.DB.DatabaseConnectionException;
+import org.example.libmgmt.DB.User;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.control.Validator;
 import org.example.libmgmt.ui.components.Popup;
@@ -138,7 +139,6 @@ public class AccountInfoPanel extends Content {
       Task<Void> validate = new Task<Void>() {
         @Override
         protected Void call() throws Exception {
-          Thread.sleep(1000);
           int status = 0;
           status |= Validator.isValidPassword(pwd.getText()) ? 0 : 2;
           if (isEditSession) {
@@ -157,10 +157,8 @@ public class AccountInfoPanel extends Content {
             acc.setPassword(retypePwd.getText());
             if (isEditSession) {
               AccountDAO.getInstance().changePassword(acc);
-
             } else {
               acc.setUsername(username.getText());
-              AccountDAO.getInstance().addAccount(acc);
             }
           }
           int finalStatus = status;
@@ -170,6 +168,8 @@ public class AccountInfoPanel extends Content {
                 Popup p = new Popup("Thành công", "Đổi mật khẩu thành công.");
                 p.addOkBtn();
                 UIHandler.addPopup(p);
+              } else {
+                UIHandler.openNewMemberDetails(acc);
               }
             }
             if ((finalStatus & 1) == 1) {

@@ -292,6 +292,7 @@ public class DocumentEdit extends Content {
       doc.setDescription(description.getText());
       doc.setISBN(isbn.getText());
       doc.setCover(docCover.getImage());
+      doc.setQuantity(Integer.parseInt(numberOfCopies.getText()));
       Task<Void> saveChanges = new Task<Void>() {
         @Override
         protected Void call() throws Exception {

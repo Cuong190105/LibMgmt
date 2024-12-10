@@ -8,7 +8,7 @@ public class AccountDB {
   private static boolean isTesting;
 
   public static Connection getConnection() throws Exception {
-    if (db == null) {
+    if (db == null || db.isClosed()) {
       Class.forName("com.mysql.cj.jdbc.Driver");
       String dbName = (isTesting) ? "testdb" : "accountdb";
       db = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, "root", "");

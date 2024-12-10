@@ -12,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
+import org.example.libmgmt.DB.Account;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.LibMgmt;
@@ -235,6 +236,18 @@ public class UIHandler {
     Page p = ui.pageStack.getLast();
     p.restoreHeader();
     p.updateContent();
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
+  }
+
+  public static void openNewMemberDetails(Account acc) {
+    ui.pageDirector.createNewMemberDetailPage(ui.pageBuilder, acc);
+    ui.pageStack.add(ui.pageBuilder.build());
+    ui.scene.setRoot(ui.pageStack.getLast().getContainer());
+  }
+
+  public static void openReturnDocument() {
+    ui.pageDirector.createReturnDocumentPage(ui.pageBuilder);
+    ui.pageStack.add(ui.pageBuilder.build());
     ui.scene.setRoot(ui.pageStack.getLast().getContainer());
   }
 }

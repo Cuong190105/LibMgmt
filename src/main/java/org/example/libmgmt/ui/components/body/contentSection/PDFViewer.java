@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.HashSet;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -30,6 +32,7 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.example.libmgmt.DB.Document;
+import org.example.libmgmt.DB.DocumentDAO;
 import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.style.Style;
 
@@ -51,7 +54,7 @@ public class PDFViewer extends Content {
   private final Image delImg;
   private final Label bookmarkLabel = new Label("DẤU TRANG");
   private final Text noBookmark = new Text("Chưa có dấu trang.\n"
-      + "Thêm dấu trang bằng nút \"Dấu trang\" trên thanh công cụ.");
+          + "Thêm dấu trang bằng nút \"Dấu trang\" trên thanh công cụ.");
 
   /**
    * Constructor.
@@ -68,7 +71,7 @@ public class PDFViewer extends Content {
     bookmarks = new HashSet<>();
     scaling = 1;
     delImg = new Image(
-        LibMgmt.class.getResourceAsStream("img/pdfcontroller/delete.png"));
+            LibMgmt.class.getResourceAsStream("img/pdfcontroller/delete.png"));
     Task<Void> loadDocument = new Task<Void>() {
       @Override
       protected Void call() throws Exception {
@@ -80,6 +83,10 @@ public class PDFViewer extends Content {
 //           Load content from server using InputStream, or buffer byte[].
 //          InputStream docStream;
 //          docFile = Loader.loadPDF(docStream);
+          DocumentDAO documentDAO = DocumentDAO.getInstance();
+          Blob content = documentDAO.getContent(doc.getDocID());
+          byte[] btt = blobToByteArray(content);
+          docFile = Loader.loadPDF(btt);
           PDFRenderer renderer = new PDFRenderer(docFile);
           for (int i = 0; i < docFile.getNumberOfPages(); i++) {
             BufferedImage page = renderer.renderImage(i);
@@ -237,7 +244,7 @@ public class PDFViewer extends Content {
     } else {
       for (int i = 1; i < bookmarkList.getChildren().size(); i++) {
         String t = ((Text) (
-            (HBox) bookmarkList.getChildren().get(i)).getChildren().getFirst()
+                (HBox) bookmarkList.getChildren().get(i)).getChildren().getFirst()
         ).getText();
         int end = t.indexOf(" ", 6);
         int page = Integer.parseInt(t.substring(6, end != -1 ? end : t.length()));
@@ -264,5 +271,14 @@ public class PDFViewer extends Content {
   public void toggleBookmarkList() {
     bookmarkWrapper.setManaged(!bookmarkWrapper.isVisible());
     bookmarkWrapper.setVisible(!bookmarkWrapper.isVisible());
+  }
+
+  public static byte[] blobToByteArray(Blob blob) throws IOException, SQLException {
+    byte[] buffer = new byte[(int) blob.length()]; // Create buffer to hold the content of the Blob
+    InputStream inputStream = blob.getBinaryStream(); // Get the input stream of the Blob
+    inputStream.read(buffer); // Read the content into the buffer
+    inputStream.close(); // Close the InputStream
+
+    return buffer; // Return the byte array containing the content of the Blob
   }
 }

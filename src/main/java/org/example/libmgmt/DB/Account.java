@@ -46,8 +46,8 @@ public class Account {
     if (obj == null || getClass() != obj.getClass()) return false;
     Account acc = (Account) obj;
     return this.UID == acc.UID
-        && Objects.equals(this.username, acc.username)
-        && Objects.equals(this.password, acc.password);
+            && Objects.equals(this.username, acc.username)
+            && Objects.equals(this.password, acc.password);
   }
 
 }

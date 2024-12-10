@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
 import org.example.libmgmt.LibMgmt;
 import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.style.Style;
@@ -29,7 +30,7 @@ public class CommentCard {
    * @param comment Comment object.
    */
   public CommentCard(Comment comment) {
-    User reader = new User();
+    User reader = UserDAO.getInstance().getUserFromUID(comment.getUID());
     try {
       this.avatar = new ImageView(reader.getAvatar());
     } catch (Exception e) {

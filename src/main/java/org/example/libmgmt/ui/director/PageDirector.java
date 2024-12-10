@@ -1,5 +1,6 @@
 package org.example.libmgmt.ui.director;
 
+import org.example.libmgmt.DB.Account;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.ui.builder.BodyBuilder;
@@ -178,6 +179,24 @@ public class PageDirector {
     pageBuilder.setType(PageType.MAIN_PAGE);
     pageBuilder.setHeader(headerBuilder.build());
     bodyDirector.createChangePwdPanel(bodyBuilder);
+    pageBuilder.setBody(bodyBuilder.build());
+    pageBuilder.style();
+  }
+
+  public void createNewMemberDetailPage(PageBuilder pageBuilder, Account acc) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
+    bodyDirector.createNewMemberDetailPanel(bodyBuilder, acc);
+    pageBuilder.setBody(bodyBuilder.build());
+    pageBuilder.style();
+  }
+
+  public void createReturnDocumentPage(PageBuilder pageBuilder) {
+    pageBuilder.reset();
+    pageBuilder.setType(PageType.MAIN_PAGE);
+    pageBuilder.setHeader(headerBuilder.build());
+    bodyDirector.createReturnDocmentPanel(bodyBuilder);
     pageBuilder.setBody(bodyBuilder.build());
     pageBuilder.style();
   }

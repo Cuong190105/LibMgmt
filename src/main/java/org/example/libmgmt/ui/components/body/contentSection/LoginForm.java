@@ -49,7 +49,7 @@ public class LoginForm extends Content {
     warning = new Text();
     signInBtn = new Button("Đăng nhập");
     signUpBtn = new Button("Tạo tài khoản");
-    container = new VBox(usrnField, pwdField, warning, signInBtn, signUpBtn);
+    container = new VBox(usrnField, pwdField, warning, signInBtn);
   }
 
   private void loginHandler() {

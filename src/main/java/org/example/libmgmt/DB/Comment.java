@@ -1,33 +1,44 @@
 package org.example.libmgmt.DB;
 
+import java.sql.Date;
+import java.util.List;
+
 public class Comment {
-  private long userId;
-  private long docId;
-  private String date;
+  private int UID;
+  private int docID;
+  private Date date;
   private int rating;
   private String comment;
 
-  public static Comment[] getComments(Document doc, int commentsLoaded) {
-    Comment[] cmtList = new Comment[20];
-    for (int i = 0; i < 20; i++) {
-      cmtList[i] = new Comment();
-    }
-    return cmtList;
+  public static List<Comment> getComments(Document doc) {
+    return CommentDAO.getInstance().comments(doc.getDocID());
   }
 
   public Comment() {
-    userId = 123456789;
-    date = "12/09/2024";
+    UID = 123456789;
+    date = Date.valueOf("2024-09-12");
     rating = 4;
     comment = "SDFGHJKL";
   }
 
-  public long getUserId() {
-    return userId;
+  public Comment(int UID, int docID, Date date, int rating, String comment) {
+    this.UID = UID;
+    this.docID = docID;
+    this.date = date;
+    this.rating = rating;
+    this.comment = comment;
+  }
+
+  public int getDocID() {
+    return docID;
+  }
+
+  public int getUID() {
+    return UID;
   }
 
   public String getDate() {
-    return date;
+    return date.toString();
   }
 
   public int getRating() {
@@ -36,5 +47,25 @@ public class Comment {
 
   public String getComment() {
     return comment;
+  }
+
+  public void setUID(int UID) {
+    this.UID = UID;
+  }
+
+  public void setDocID(int docID) {
+    this.docID = docID;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public void setRating(int rating) {
+    this.rating = rating;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
   }
 }

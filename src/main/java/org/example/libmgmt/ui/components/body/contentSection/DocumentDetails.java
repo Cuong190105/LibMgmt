@@ -5,6 +5,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
@@ -25,11 +27,15 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.example.libmgmt.DB.Comment;
 import org.example.libmgmt.DB.Document;
+import org.example.libmgmt.DB.DocumentDAO;
 import org.example.libmgmt.control.UIHandler;
 import org.example.libmgmt.control.UserControl;
+import org.example.libmgmt.ui.components.Popup;
 import org.example.libmgmt.ui.components.body.Star;
 import org.example.libmgmt.ui.components.body.card.CommentCard;
 import org.example.libmgmt.ui.style.Style;
+
+import java.util.List;
 
 /**
  * A panel displaying document info.
@@ -115,7 +121,7 @@ public class DocumentDetails extends Content {
   }
 
   private void loadComment() {
-    Comment[] commentList = Comment.getComments(doc, commentsLoaded);
+    List<Comment> commentList = Comment.getComments(doc);
     for (Comment c : commentList) {
       CommentCard cmt = new CommentCard(c);
       comments.getChildren().add(cmt.getCard());
@@ -165,10 +171,30 @@ public class DocumentDetails extends Content {
     });
 
     borrowDocument.setOnMouseClicked(e -> {
-      if (UserControl.getUser().isLibrarian()) {
-        UIHandler.openCheckoutPage(null, doc);
+      if (!doc.canBorrow()) {
+        Popup p = new Popup("Không thể mượn tài liệu", "Số lượng tài liệu đã hết.");
+        p.addOkBtn();
+        UIHandler.addPopup(p);
       } else {
-        UIHandler.openCheckoutPage(UserControl.getUser(), doc);
+        if (UserControl.getUser().isLibrarian()) {
+          UIHandler.openCheckoutPage(null, doc);
+        } else {
+          UIHandler.openCheckoutPage(UserControl.getUser(), doc);
+        }
+      }
+    });
+
+    removeDocument.setOnMouseClicked(e -> {
+      if (e.getButton() == MouseButton.PRIMARY) {
+        Popup p = new Popup("CẢNH BÁO", "Bạn có chắc chắn muốn xóa sách này?" +
+            " Thao tác này không thể hoàn tác.");
+        p.addCancelBtn();
+        p.addCustomBtn("Xóa", Style.RED, () -> {
+          DocumentDAO.getInstance().deleteDocument(doc.getDocID());
+          UIHandler.backToLastPage();
+          return null;
+        });
+        UIHandler.addPopup(p);
       }
     });
 
@@ -214,13 +240,15 @@ public class DocumentDetails extends Content {
     Style.styleWrapText(publisher, 400, 16);
     Style.styleWrapText(tags, 400, 16);
     Style.styleWrapText(description, 400, 16);
+    GridPane.setValignment(descriptionLabel, VPos.TOP);
     DoubleBinding maxWidth = Bindings.createDoubleBinding(() -> {
-      if (container.getWidth() > 1200) {
-        return container.getWidth() - 600;
+      if (wrapper.getWidth() > 1200) {
+        return wrapper.getWidth() - 600;
       } else {
-        return 550.0;
+        return wrapper.getWidth() - 100;
       }
-    }, container.widthProperty());
+    }, wrapper.widthProperty());
+    description.wrappingWidthProperty().bind(maxWidth.subtract(250));
     title.prefWidthProperty().bind(maxWidth);
     title.setWrapText(true);
 
@@ -240,8 +268,8 @@ public class DocumentDetails extends Content {
     detailContainer.setPadding(new Insets(0,0,0,50));
     detailContainer.setHgap(100);
     detailContainer.setVgap(50);
-    infoTable.setHgap(50);
     infoTable.setVgap(5);
+    infoTable.setHgap(50);
 
     title.setPadding(new Insets(0, 0, 20, 0));
     Style.styleTitle(ratingSectionTitle, 28);

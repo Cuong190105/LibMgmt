@@ -1,6 +1,6 @@
 module org.example.libmgmt {
-    requires javafx.controls;
-    requires javafx.fxml;
+  requires javafx.controls;
+  requires javafx.fxml;
   requires jdk.httpserver;
   requires javafx.swing;
   requires org.apache.pdfbox;

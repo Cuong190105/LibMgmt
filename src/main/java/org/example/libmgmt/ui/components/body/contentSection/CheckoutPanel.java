@@ -20,8 +20,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import org.example.libmgmt.DB.Borrow;
+import org.example.libmgmt.DB.BorrowDAO;
 import org.example.libmgmt.DB.Document;
+import org.example.libmgmt.DB.DocumentDAO;
 import org.example.libmgmt.DB.User;
+import org.example.libmgmt.DB.UserDAO;
+import org.example.libmgmt.control.UIHandler;
+import org.example.libmgmt.ui.components.Popup;
+import org.example.libmgmt.ui.components.body.BodyType;
 import org.example.libmgmt.ui.style.Style;
 
 /**
@@ -91,16 +98,71 @@ public class CheckoutPanel extends Content {
   }
 
   private void setFunction() {
+    readerId.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+      if (!newValue) {
+        if (readerId.getText().isEmpty()) {
+          return;
+        }
+        User u = UserDAO.getInstance().getUserFromUID(Integer.parseInt(readerId.getText()));
+        if (u == null) {
+          reader.setText("KHÔNG TÌM THẤY NGƯỜI ĐỌC VỚI ID NÀY");
+        } else {
+          reader.setText(u.getName());
+        }
+      }
+    }));
+    readerId.textProperty().addListener((obs, oldVal, newVal) -> {
+      String mod = "";
+      for (int i = 0; i < newVal.length(); i++) {
+        if ('0' <= newVal.charAt(i) && newVal.charAt(i) <= '9') {
+          mod += newVal.charAt(i);
+        }
+      }
+      readerId.setText(mod);
+    });
+    documentId.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+      if (!newValue) {
+        if (documentId.getText().isEmpty()) {
+          return;
+        }
+        Document d = DocumentDAO.getInstance().getDocFromID(Integer.parseInt(documentId.getText()));
+        if (d == null) {
+          document.setText("KHÔNG TÌM THẤY TÀI LIỆU VỚI ID NÀY");
+        } else {
+          document.setText(d.getTitle());
+        }
+      }
+    }));
+    documentId.textProperty().addListener((obs, oldVal, newVal) -> {
+      String mod = "";
+      for (int i = 0; i < newVal.length(); i++) {
+        if ('0' <= newVal.charAt(i) && newVal.charAt(i) <= '9') {
+          mod += newVal.charAt(i);
+        }
+      }
+      documentId.setText(mod);
+    });
     back.setOnMouseClicked(_ -> {
-      System.out.println("back");
+      UIHandler.backToLastPage();
     });
 
     submit.setOnMouseClicked(_ -> {
-      System.out.println("submit");
+      BorrowDAO.getInstance().addBorrow(new Borrow(Integer.parseInt(readerId.getText()),
+          Integer.parseInt(documentId.getText())));
+      Popup p = new Popup("Thành công", "Đã mượn tài liệu");
+      p.addCustomBtn("OK", Style.LIGHTGREEN, () -> {
+        UIHandler.switchToSection(BodyType.MAIN_LIBRARY);
+        return null;
+      });
+      UIHandler.addPopup(p);
     });
   }
 
   private void style() {
+    reader.setEditable(false);
+    readerStatus.setEditable(false);
+    document.setEditable(false);
+    dueDuration.setEditable(false);
     Style.styleTitle(readerIdLabel, 16);
     Style.styleTitle(readerLabel, 16);
     Style.styleTitle(readerStatusLabel, 16);

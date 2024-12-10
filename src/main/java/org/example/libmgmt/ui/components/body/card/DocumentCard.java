@@ -51,7 +51,6 @@ public class DocumentCard {
   private void style() {
     Style.styleImg(cover, 200);
     container.setSpacing(10);
-
     StyleCard.styleCard(container, 250, 400);
     container.setAlignment(Pos.TOP_CENTER);
     StyleCard.styleTitle(title, 230);

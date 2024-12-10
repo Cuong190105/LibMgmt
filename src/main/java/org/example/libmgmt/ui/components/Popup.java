@@ -107,8 +107,7 @@ public class Popup {
 
   public void addCustomBtn(String text, Color color, Callable<Void> func) {
     Button btn = new Button(text);
-    Style.styleRoundedSolidButton(btn, 250, 50, 16);
-    btn.getBackground().getFills().get(0).getFill();
+    Style.styleRoundedSolidButton(btn, color,250, 50, 16);
     HBox.setHgrow(btn, Priority.ALWAYS);
     btnList.getChildren().add(btn);
     btn.setOnMouseClicked(_ -> {

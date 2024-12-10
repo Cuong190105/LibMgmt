@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import org.example.libmgmt.control.Validator;
 import org.example.libmgmt.ui.style.Style;
 import org.example.libmgmt.ui.style.StyleForm;
 
@@ -108,7 +109,15 @@ public class DateGroup {
   }
 
   public String getMonth() {
-    return monthField.getValue();
+    String mth = monthField.getValue();
+    if (mth == null) {
+      return "";
+    }
+    mth = mth.substring(mth.indexOf(" ") + 1);
+    if (mth.length() < 2) {
+      mth = "0" + mth;
+    }
+    return mth;
   }
 
   public String getYear() {
@@ -157,5 +166,9 @@ public class DateGroup {
 
   public GridPane getContent() {
     return dateContainer;
+  }
+
+  public boolean validateDate() {
+    return Validator.isValidDate(getDay(), getMonth(), getYear());
   }
 }

@@ -1,8 +1,10 @@
+
 package org.example.libmgmt.DB;
 
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.Objects;
+
 import javafx.scene.image.Image;
 import org.example.libmgmt.LibMgmt;
 
@@ -26,20 +28,20 @@ public class User {
    */
   public User() {
     this.avatar = new Image(Objects.requireNonNull(LibMgmt.class
-        .getResourceAsStream("img/accountAction/userPlaceholder.png")));
+            .getResourceAsStream("img/accountAction/userPlaceholder.png")));
   }
 
   /**
    * Create a complete user.
    *
-   * @param uid UserID of this user.
-   * @param address Address of this user.
-   * @param dob Date of birth of this user.
-   * @param email Email of this user.
-   * @param name Name of this user.
-   * @param sex Gender of this user.
-   * @param phone Phone number of this user.
-   * @param SSN Social Security Number of this user.
+   * @param uid         UserID of this user.
+   * @param address     Address of this user.
+   * @param dob         Date of birth of this user.
+   * @param email       Email of this user.
+   * @param name        Name of this user.
+   * @param sex         Gender of this user.
+   * @param phone       Phone number of this user.
+   * @param SSN         Social Security Number of this user.
    * @param isLibrarian User type of this user.
    */
   public User(int uid, String address, Date dob, String email, String name, String sex, String phone, String SSN, boolean isLibrarian) {
@@ -128,22 +130,18 @@ public class User {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null || getClass() != obj.getClass()) {
-      return false;
-    }
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
     User user = (User) obj;
     return uid == user.uid
-        && Objects.equals(address, user.address)
-        && dob.equals(user.dob)
-        && Objects.equals(email, user.email)
-        && Objects.equals(name, user.name)
-        && Objects.equals(sex, user.sex)
-        && Objects.equals(phone, user.phone)
-        && Objects.equals(SSN, user.SSN)
-        && isLibrarian == user.isLibrarian;
+            && Objects.equals(address, user.address)
+            && dob.equals(user.dob)
+            && Objects.equals(email, user.email)
+            && Objects.equals(name, user.name)
+            && Objects.equals(sex, user.sex)
+            && Objects.equals(phone, user.phone)
+            && Objects.equals(SSN, user.SSN)
+            && isLibrarian == user.isLibrarian;
   }
 
   public Image getAvatar() {
@@ -159,9 +157,12 @@ public class User {
     try {
       this.avatar = new Image(avatar.getBinaryStream());
     } catch (Exception e) {
-      this.avatar = new Image(
-          LibMgmt.class.getResourceAsStream("img/accountAction/userPlaceholder.png"));
+      this.avatar = new Image(LibMgmt.class.getResourceAsStream("img/accountAction/userPlaceholder.png"));
     }
+  }
+
+  public void setAvatar(Image avatar) {
+    this.avatar = avatar;
   }
 
   /**

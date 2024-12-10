@@ -37,6 +37,7 @@ public class MemberCard {
     userType = new Text(user.isLibrarian() ? "Thủ thư" : "Người đọc");
     container = new BorderPane();
     container.setLeft(avatar);
+    BorderPane.setAlignment(avatar, Pos.CENTER);
     info = new VBox(name, uid, userType);
     container.setCenter(info);
     setFunction();

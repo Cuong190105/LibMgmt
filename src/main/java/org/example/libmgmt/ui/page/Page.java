@@ -65,7 +65,6 @@ public class Page {
    * @param p Target.
    */
   public void closePopUp(Popup p) {
-    System.out.println("tr");
     wrapper.getChildren().remove(p.getPopup());
   }
 

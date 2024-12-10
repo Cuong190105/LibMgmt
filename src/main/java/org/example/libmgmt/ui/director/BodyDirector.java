@@ -1,5 +1,6 @@
 package org.example.libmgmt.ui.director;
 
+import org.example.libmgmt.DB.Account;
 import org.example.libmgmt.DB.Document;
 import org.example.libmgmt.DB.User;
 import org.example.libmgmt.control.UserControl;
@@ -16,6 +17,7 @@ import org.example.libmgmt.ui.components.body.contentSection.LibrarianDashboard;
 import org.example.libmgmt.ui.components.body.contentSection.LoginForm;
 import org.example.libmgmt.ui.components.body.contentSection.MemberListView;
 import org.example.libmgmt.ui.components.body.contentSection.PDFViewer;
+import org.example.libmgmt.ui.components.body.contentSection.ReturnDocument;
 import org.example.libmgmt.ui.components.body.contentSection.SignUpForm;
 import org.example.libmgmt.ui.components.body.contentSection.UserDetails;
 import org.example.libmgmt.ui.components.body.searchPanel.DocumentSearchPanel;
@@ -192,6 +194,24 @@ public class BodyDirector {
     bodyBuilder.setTitle("Đổi mật khẩu", false);
     AccountInfoPanel aip = new AccountInfoPanel(UserControl.getAccount());
     bodyBuilder.setContent(aip);
+    bodyBuilder.style();
+  }
+
+  public void createNewMemberDetailPanel(BodyBuilder bodyBuilder, Account acc) {
+    bodyBuilder.reset();
+    bodyBuilder.setType(BodyType.MAIN);
+    bodyBuilder.setTitle("Cập nhật thông tin", true);
+    UserDetails ud = new UserDetails(acc);
+    bodyBuilder.setContent(ud);
+    bodyBuilder.style();
+  }
+
+  public void createReturnDocmentPanel(BodyBuilder bodyBuilder) {
+    bodyBuilder.reset();
+    bodyBuilder.setType(BodyType.MAIN);
+    bodyBuilder.setTitle("Trả tài liệu", true);
+    ReturnDocument rd = new ReturnDocument();
+    bodyBuilder.setContent(rd);
     bodyBuilder.style();
   }
 }

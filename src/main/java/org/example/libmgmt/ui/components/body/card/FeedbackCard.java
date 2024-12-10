@@ -47,7 +47,7 @@ public class FeedbackCard {
         container.setBackground(BG_IMPORTANT);
         markAsImportant.setText("Bỏ đánh dấu");
       }
-      fb.setImportant(!fb.isImportant());
+      fb.updateImportant(!fb.isImportant());
     });
   }
 

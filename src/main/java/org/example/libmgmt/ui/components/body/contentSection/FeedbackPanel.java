@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.libmgmt.DB.Feedback;
+import org.example.libmgmt.DB.FeedbackDAO;
 import org.example.libmgmt.ui.components.body.LoadingRing;
 import org.example.libmgmt.ui.components.body.ResultPageSwitch;
 import org.example.libmgmt.ui.components.body.card.FeedbackCard;
@@ -55,7 +56,7 @@ public class FeedbackPanel extends Content {
     wrapper.setVvalue(0);
     container.getChildren().clear();
     if (feedbackList != null && !feedbackList.isEmpty()) {
-      for (int i = page * 20; i < Math.min((page + 1) * 2, feedbackList.size()); i++) {
+      for (int i = page * 20; i < Math.min((page + 1) * 20, feedbackList.size()); i++) {
         container.getChildren().add(new FeedbackCard(feedbackList.get(i)).getCard());
       }
       ResultPageSwitch sw = new ResultPageSwitch(page == totalPage - 1, page == 0,
@@ -116,10 +117,9 @@ public class FeedbackPanel extends Content {
   }
 
   private void setFunction() {
-    for (int i = 0; i < 20; i++) {
-      FeedbackCard fc = new FeedbackCard(new Feedback());
-      container.getChildren().add(fc.getCard());
-    }
+    List<Feedback> fbList = FeedbackDAO.getInstance().allFeedback();
+    loadFeedback(1, fbList);
+    showFeedback();
   }
 
   public ScrollPane getContent() {

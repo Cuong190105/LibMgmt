@@ -1,10 +1,13 @@
+
 package org.example.libmgmt.DB;
 
 import java.io.InputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
 import javafx.scene.image.Image;
 import org.example.libmgmt.LibMgmt;
 
@@ -13,58 +16,47 @@ import org.example.libmgmt.LibMgmt;
  */
 public class Document {
   private int docID;
-  private Image cover;
   private String title;
   private String author;
   private String publisher;
+  private int publishYear;
   private int quantity;
   private List<String> tags;
   private int visited;
-  private int publishYear;
   private boolean thesis;
-  private String description;
   private String ISBN;
   private int votes;
   private int score;
+  private Image cover;
+  private String description;
+  private Blob content;
 
   /**
-   * Default constructor with fields preloaded.
+   * Default constructor with cover placeholder preloaded.
    */
   public Document() {
-    docID = 0;
-    title = "";
     this.cover = new Image(Objects.requireNonNull(LibMgmt.class
-        .getResourceAsStream("img/bookCoverPlaceholder.png")));
-    author = "";
-    publisher = "";
-    quantity = 0;
-    visited = 0;
-    publishYear = 0;
-    thesis = false;
-    description = "";
-    ISBN = "";
-    votes = 0;
-    score = 0;
+            .getResourceAsStream("img/bookCoverPlaceholder.png")));
     tags = new ArrayList<>();
   }
 
   /**
    * Complete constructor.
    *
-   * @param docID Sets document ID.
-   * @param cover Sets cover.
-   * @param title Sets title.
-   * @param author Sets author.
-   * @param publisher Sets publisher.
-   * @param quantity Sets quantity.
-   * @param tags Set tags.
-   * @param visited Set visited times.
+   * @param docID       Sets document ID.
+   * @param cover       Sets cover.
+   * @param title       Sets title.
+   * @param author      Sets author.
+   * @param publisher   Sets publisher.
+   * @param quantity    Sets quantity.
+   * @param tags        Set tags.
+   * @param visited     Set visited times.
    * @param publishYear Sets publish year.
-   * @param thesis Sets document type: true for thesis, false for book
+   * @param thesis      Sets document type: true for thesis, false for book
    * @param description Sets description.
-   * @param ISBN Sets ISBN
-   * @param votes Sets votes.
-   * @param score Sets critics score.
+   * @param ISBN        Sets ISBN
+   * @param votes       Sets votes.
+   * @param score       Sets critics score.
    */
   public Document(int docID, Image cover, String title, String author, String publisher,
                   int quantity, List<String> tags, int visited, int publishYear,
@@ -74,7 +66,7 @@ public class Document {
       this.cover = cover;
     } catch (Exception e) {
       this.cover = new Image(Objects.requireNonNull(LibMgmt.class
-          .getResourceAsStream("img/bookCoverPlaceholder.png")));
+              .getResourceAsStream("img/bookCoverPlaceholder.png")));
       throw e;
     }
     this.title = title;
@@ -197,6 +189,14 @@ public class Document {
     this.cover = cover;
   }
 
+  public void setCover(Blob cover) {
+    try {
+      this.cover = new Image(cover.getBinaryStream());
+    } catch (Exception e) {
+      this.cover = new Image(LibMgmt.class.getResourceAsStream("img/bookCoverPlaceholder.png"));
+    }
+  }
+
   public String getDescription() {
     return description;
   }
@@ -208,6 +208,13 @@ public class Document {
 
   public void setTags(List<String> tags) {
     this.tags = tags;
+  }
+
+  public void setTags(String tags) {
+    this.tags = new ArrayList<>();
+    if (tags != null && !tags.isEmpty()) {
+      Collections.addAll(this.tags, tags.split(","));
+    }
   }
 
   public String getTagsString() {
@@ -222,25 +229,36 @@ public class Document {
     this.votes = votes;
   }
 
+  public int getScore() {
+    return score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null || getClass() != obj.getClass()) return false;
     Document doc = (Document) obj;
     return this.docID == doc.docID &&
-        Objects.equals(this.title, doc.title) &&
-        Objects.equals(this.author, doc.author) &&
-        Objects.equals(this.publisher, doc.publisher) &&
-        this.quantity == doc.quantity &&
-        Objects.equals(this.tags, doc.tags) &&
-        this.visited == doc.visited &&
-        this.thesis == doc.thesis;
+            Objects.equals(this.title, doc.title) &&
+            Objects.equals(this.author, doc.author) &&
+            Objects.equals(this.publisher, doc.publisher) &&
+            this.quantity == doc.quantity &&
+            Objects.equals(this.tags, doc.tags) &&
+            this.visited == doc.visited &&
+            this.thesis == doc.thesis;
   }
 
+  /**
+   * for debugging purpose.
+   */
   public String print() {
     return " " + docID + "  " + title + "  " + author + "  "
-        + publisher + "  " + quantity + "  " + tags + "  "
-        + visited + "  " + thesis + "\n";
+            + publisher + "  " + publishYear + " " + quantity + "  " + tags + "  "
+            + visited + "  " + thesis + " " + ISBN;
   }
 
   /**
@@ -252,5 +270,18 @@ public class Document {
 
   public int getNumberOfCopies() {
     return 0;
+  }
+
+  // Constructor for tests
+  public Document(String title, String author, String publisher, int quantity) {
+    this.title = title;
+    this.author = author;
+    this.publisher = publisher;
+    this.quantity = quantity;
+    this.tags = new ArrayList<>();
+  }
+
+  public boolean canBorrow() {
+    return quantity > 0;
   }
 }
